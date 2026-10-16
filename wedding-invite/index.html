@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Veeral weds Konika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Cinzel:wght@500;700&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=block" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #fff4dc;
+    --maroon: #5a0f1f;
+    --ink: #3a0612;
+  }
+  html, body { margin: 0; background: #12030a; overflow: hidden; }
+  body { display: flex; align-items: flex-start; justify-content: center; }
+  #stage {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: #1a0509; transform-origin: 0 0; perspective: 2600px;
+  }
+  .slide { position: absolute; inset: 0; display: none; }
+  .abs { position: absolute; }
+  .center { left: 0; right: 0; text-align: center; }
+  .layer { position: absolute; inset: 0; }
+  .hi { font-family: 'Rozha One', serif; font-weight: 400; }
+  .tiro { font-family: 'Tiro Devanagari Hindi', serif; }
+  .cinzel { font-family: 'Cinzel', serif; font-weight: 700; text-transform: uppercase; }
+  .script { font-family: 'Great Vibes', cursive; }
+  .corm { font-family: 'Cormorant Garamond', serif; }
+  .ivory { color: var(--ivory); text-shadow: 0 2px 6px rgba(20,0,5,.7); }
+  .gold {
+    background: linear-gradient(180deg, #fff7d1 0%, #f8d978 30%, #dca640 55%, #f6d46f 75%, #b9842a 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .shadow { filter: drop-shadow(0 4px 0 rgba(50,0,12,.75)) drop-shadow(0 0 22px rgba(255,190,90,.35)); }
+  .pattern { position: absolute; inset: 0; opacity: .085; background-size: 120px 120px; }
+  .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(10,0,4,.65) 100%); }
+  svg { overflow: visible; }
+  .ribbon {
+    position: absolute; left: 190px; width: 700px; height: 104px;
+    background: linear-gradient(180deg, #fff1b8 0%, #f2c75c 45%, #c98f2c 100%);
+    clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
+    display: flex; align-items: center; justify-content: center; gap: 18px; color: var(--maroon);
+  }
+  .ribbon::before { content: ''; position: absolute; inset: 8px 46px; border-top: 2px solid rgba(90,15,31,.45); border-bottom: 2px solid rgba(90,15,31,.45); }
+  .ribbon .t { font-family: 'Rozha One', serif; font-size: 70px; line-height: 1; margin-top: 10px; }
+  .ribbon .w { font-family: 'Tiro Devanagari Hindi', serif; font-size: 38px; margin-top: 10px; }
+  .daylist { position: absolute; left: 150px; width: 780px; }
+  .daylist .row {
+    display: flex; align-items: baseline; gap: 14px; font-size: 40px; height: 58px;
+    font-family: 'Tiro Devanagari Hindi', serif; color: var(--ivory); text-shadow: 0 2px 6px rgba(20,0,5,.7);
+  }
+  .daylist .row .dots { flex: 1; border-bottom: 3px dotted rgba(246,212,111,.55); transform: translateY(-10px); }
+  .daylist .row .tm { font-family: 'Rozha One', serif; color: #f8d978; }
+  #fx { position: absolute; inset: 0; pointer-events: none; }
+  #doors { perspective: 2400px; }
+  #doors > div { backface-visibility: hidden; }
+  #playHint {
+    position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 10;
+    font: 600 22px 'Cormorant Garamond', serif; color: #fff4dc; background: rgba(90,15,31,.85);
+    border: 2px solid #f2c75c; border-radius: 40px; padding: 14px 30px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff4c2"/><stop offset=".28" stop-color="#f6d26b"/><stop offset=".55" stop-color="#c98f2c"/><stop offset=".78" stop-color="#f3cd6a"/><stop offset="1" stop-color="#9c6a1c"/>
+      </linearGradient>
+      <linearGradient id="g-gold-h" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#9c6a1c"/><stop offset=".22" stop-color="#f3cd6a"/><stop offset=".5" stop-color="#fff4c2"/><stop offset=".78" stop-color="#e2b04a"/><stop offset="1" stop-color="#9c6a1c"/>
+      </linearGradient>
+      <radialGradient id="g-gold-r" cx=".38" cy=".32" r=".75">
+        <stop offset="0" stop-color="#fff7d6"/><stop offset=".45" stop-color="#efc45a"/><stop offset="1" stop-color="#8f5e16"/>
+      </radialGradient>
+      <radialGradient id="g-marigold" cx=".4" cy=".35" r=".7">
+        <stop offset="0" stop-color="#ffe27a"/><stop offset=".55" stop-color="#ffa41b"/><stop offset="1" stop-color="#cf4f00"/>
+      </radialGradient>
+      <radialGradient id="g-marigold2" cx=".4" cy=".35" r=".7">
+        <stop offset="0" stop-color="#fffbc4"/><stop offset=".55" stop-color="#ffd31a"/><stop offset="1" stop-color="#d98a00"/>
+      </radialGradient>
+      <linearGradient id="g-leaf" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8fd14f"/><stop offset="1" stop-color="#2d6a1e"/>
+      </linearGradient>
+      <radialGradient id="g-flame" cx=".5" cy=".72" r=".62">
+        <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#fff2a8"/><stop offset=".6" stop-color="#ffb300"/><stop offset="1" stop-color="#e65100"/>
+      </radialGradient>
+      <radialGradient id="g-glow">
+        <stop offset="0" stop-color="#ffd27a" stop-opacity=".95"/><stop offset=".35" stop-color="#ffb347" stop-opacity=".45"/><stop offset="1" stop-color="#ff8a00" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="g-terracotta" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d9773f"/><stop offset="1" stop-color="#7a2e10"/>
+      </linearGradient>
+      <linearGradient id="g-red" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ef4a5f"/><stop offset="1" stop-color="#8e0a1f"/>
+      </linearGradient>
+      <linearGradient id="g-rani" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ff4f9a"/><stop offset="1" stop-color="#9c0f52"/>
+      </linearGradient>
+      <linearGradient id="g-green" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#34b878"/><stop offset="1" stop-color="#0b5d3a"/>
+      </linearGradient>
+      <linearGradient id="g-teal" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3fd6c6"/><stop offset="1" stop-color="#0b6461"/>
+      </linearGradient>
+      <linearGradient id="g-haldi" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff59a"/><stop offset="1" stop-color="#f2a900"/>
+      </linearGradient>
+      <linearGradient id="g-ivory" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e7d6ae"/>
+      </linearGradient>
+      <linearGradient id="g-elephant" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b9bad0"/><stop offset="1" stop-color="#6e7090"/>
+      </linearGradient>
+      <linearGradient id="g-elephant-d" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8e90ab"/><stop offset="1" stop-color="#4f516d"/>
+      </linearGradient>
+      <linearGradient id="g-maroon" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8e1b3a"/><stop offset="1" stop-color="#4a0717"/>
+      </linearGradient>
+      <linearGradient id="g-door" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#4a0816"/><stop offset=".5" stop-color="#7a1428"/><stop offset="1" stop-color="#3d0611"/>
+      </linearGradient>
+      <linearGradient id="g-palace" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3a0b24"/><stop offset="1" stop-color="#14030b"/>
+      </linearGradient>
+      <filter id="f-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  </svg>
+  <div id="slides"></div>
+  <div id="palace" class="abs" style="left:0;top:1722px;width:1080px;height:230px;opacity:0"></div>
+  <div id="couples"></div>
+  <canvas id="fx" width="1080" height="1920"></canvas>
+  <div id="toran" class="abs" style="left:0;top:0;width:1080px;height:200px"></div>
+  <div id="frame" class="layer" style="pointer-events:none"></div>
+  <div id="doors" class="layer"></div>
+</div>
+<div id="playHint" style="display:none">▶ Tap to play with music</div>
+<audio id="music" src="assets/music.m4a" preload="auto"></audio>
+
+<script>
+/* ============================================================
+   Veeral weds Konika — animated Rajasthani wedding invite
+   Every frame is a pure function of time t (seconds): seek(t).
+   tools/render.mjs steps through it frame by frame to make the MP4.
+   ============================================================ */
+const W = 1080, H = 1920, XF = 0.7;
+const clamp = (x, a = 0, b = 1) => x < a ? a : x > b ? b : x;
+const lerp = (a, b, p) => a + (b - a) * p;
+const E = {
+  lin: p => p,
+  out: p => 1 - Math.pow(1 - p, 3),
+  out5: p => 1 - Math.pow(1 - p, 5),
+  inout: p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2,
+  back: p => { const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); },
+};
+const rnd = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+const el = html => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+
+/* ------------------------------------------------------------
+   Content
+   ------------------------------------------------------------ */
+const DAYS = [
+  { hi: 'प्रथम दिवस', num: '१', en: 'Day One', date: 'गुरुवार, 19 नवम्बर 2026', dateEn: 'Thursday · 19 November 2026', couple: 'formal', theme: 'maroon' },
+  { hi: 'द्वितीय दिवस', num: '२', en: 'Day Two', date: 'शुक्रवार, 20 नवम्बर 2026', dateEn: 'Friday · 20 November 2026', couple: 'casual', theme: 'teal' },
+  { hi: 'तृतीय दिवस', num: '३', en: 'Day Three', date: 'शनिवार, 21 नवम्बर 2026', dateEn: 'Saturday · 21 November 2026', couple: 'traditional', theme: 'red' },
+];
+const EVENTS = [
+  { day: 0, hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05', tail: 'बजे', desc: 'विघ्नहर्ता श्री गणेश जी की स्थापना के साथ<br>मंगल उत्सव का शुभारम्भ', icon: 'ganesh', theme: 'saffron', fx: 'petals' },
+  { day: 0, hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15', tail: 'बजे', desc: 'ननिहाल से आए स्नेह भरे मायरे का<br>भावभीना स्वागत', icon: 'mayra', theme: 'rani', fx: 'rose' },
+  { day: 0, hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15', tail: 'बजे', desc: 'अंगूठियों के आदान-प्रदान संग<br>प्रेम के पहले वचन', icon: 'ring', theme: 'royal', fx: 'sparkle' },
+  { day: 1, hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00', tail: 'बजे', desc: 'खेल, मस्ती और रंगों से भरी<br>एक खुशनुमा सुबह', icon: 'carnival', theme: 'teal', fx: 'confetti' },
+  { day: 1, hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00', tail: 'बजे', desc: 'ढोल-नगाड़ों की थाप पर<br>नाचती-गाती बंदोली', icon: 'dhol', theme: 'marigold', fx: 'petals' },
+  { day: 1, hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00', tail: 'बजे', desc: 'सुरों, गीतों और नृत्य से सजी<br>एक यादगार शाम', icon: 'sangeet', theme: 'purple', fx: 'notes' },
+  { day: 1, hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात', time: '12:15', tail: 'बजे', desc: 'शुभ घड़ी में श्री विनायक पूजन<br>एवं मंगल कामना', icon: 'clock', theme: 'night', fx: 'stars' },
+  { day: 2, hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00', tail: 'बजे', desc: 'हल्दी के पीले रंग और<br>जनेऊ संस्कार की पावन रस्म', icon: 'haldi', theme: 'haldi', fx: 'haldi' },
+  { day: 2, hi: 'बारात प्रस्थान', en: 'Baraat Prasthan & Bandoli', when: 'दोपहर', time: '3:00', tail: 'बजे', desc: 'बंदोली संग सजी-धजी बारात का<br>धूमधाम से प्रस्थान', icon: 'safa', theme: 'red', fx: 'confetti' },
+  { day: 2, hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34', tail: 'बजे तक', desc: 'अग्नि को साक्षी मानकर<br>सात जन्मों का पवित्र बंधन', icon: 'agni', theme: 'fire', fx: 'embers' },
+];
+// background (bg light, bg dark) and arch interior (light, dark) per theme
+const THEMES = {
+  maroon:   { bg: ['#7a1430', '#2c040f'], arch: ['#ffd9a0', '#b8452e'] },
+  saffron:  { bg: ['#8a2a0a', '#330806'], arch: ['#ffd27a', '#d4500f'] },
+  rani:     { bg: ['#8c1046', '#33031a'], arch: ['#ffb3d1', '#b0175d'] },
+  royal:    { bg: ['#2f1d73', '#0d0727'], arch: ['#c3c8ff', '#4330a8'] },
+  teal:     { bg: ['#0d6466', '#032224'], arch: ['#a5f3e8', '#127a76'] },
+  marigold: { bg: ['#93430a', '#361402'], arch: ['#ffe39a', '#e0790f'] },
+  purple:   { bg: ['#5e1873', '#1f0428'], arch: ['#efc0ff', '#7a2296'] },
+  night:    { bg: ['#1a2463', '#03061a'], arch: ['#9fb0ff', '#1e2a78'] },
+  haldi:    { bg: ['#9a6b00', '#3a2400'], arch: ['#fff6a8', '#e7a600'] },
+  red:      { bg: ['#94101c', '#320306'], arch: ['#ffb0a8', '#b3141f'] },
+  fire:     { bg: ['#7a1a02', '#240300'], arch: ['#ffd36a', '#c22a06'] },
+};
+const COUPLES = {
+  formal: { src: 'assets/caricature_formal.png', w: 760, h: 1540 },
+  casual: { src: 'assets/caricature_casual.png', w: 1040, h: 1291 },
+  traditional: { src: 'assets/caricature_traditional.png', w: 747, h: 1540 },
+};
+
+/* ------------------------------------------------------------
+   SVG ornaments
+   ------------------------------------------------------------ */
+const JAALI = `url("data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='#f3cf6b' stroke-width='1.6'><path d='M60 8 L73 47 L112 60 L73 73 L60 112 L47 73 L8 60 L47 47Z'/><circle cx='60' cy='60' r='13'/><circle cx='0' cy='0' r='24'/><circle cx='120' cy='0' r='24'/><circle cx='0' cy='120' r='24'/><circle cx='120' cy='120' r='24'/><circle cx='60' cy='60' r='3' fill='#f3cf6b'/></g></svg>`)}")`;
+
+function petal(len, wid) { // pointed petal from origin pointing up (-y)
+  return `M0 0 Q${wid} ${-len * .45} 0 ${-len} Q${-wid} ${-len * .45} 0 0Z`;
+}
+function mandala(r, opts = {}) {
+  const col = opts.color || 'url(#g-gold)';
+  const sw = opts.sw || 2;
+  let g = '';
+  const rings = opts.rings || [
+    { n: 8, r0: .12, len: .2, wid: .07 }, { n: 16, r0: .3, len: .17, wid: .05 },
+    { n: 24, r0: .5, len: .16, wid: .035 }, { n: 32, r0: .68, len: .14, wid: .025 }, { n: 48, r0: .84, len: .12, wid: .016 },
+  ];
+  for (const ring of rings) {
+    for (let i = 0; i < ring.n; i++) {
+      const a = i * 360 / ring.n;
+      g += `<path d="${petal(ring.len * r, ring.wid * r)}" transform="rotate(${a}) translate(0 ${-ring.r0 * r})"/>`;
+    }
+    g += `<circle r="${ring.r0 * r}"/>`;
+  }
+  for (let i = 0; i < 64; i++) {
+    const a = i * Math.PI * 2 / 64;
+    g += `<circle cx="${Math.cos(a) * r * .98}" cy="${Math.sin(a) * r * .98}" r="${r * .008}" fill="${opts.dot || '#f6d26b'}"/>`;
+  }
+  return `<svg viewBox="${-r} ${-r} ${2 * r} ${2 * r}" width="100%" height="100%"><g fill="none" stroke="${col}" stroke-width="${sw}">${g}</g></svg>`;
+}
+
+// Multifoil (cusped) jharokha arch outline. Local coords, (0,0) top-left, open bottom.
+function archPath(w, h, lobes = 9, closed = false, ox = 0, oy = 0) {
+  const A = w * .55;
+  const pts = [];
+  for (let k = 0; k <= lobes; k++) {
+    const th = Math.PI - k * Math.PI / lobes;
+    pts.push([ox + w / 2 + (w / 2) * Math.cos(th), oy + A - A * Math.sin(th)]);
+  }
+  let d = `M${ox} ${oy + h} L${ox} ${oy + A}`;
+  for (let k = 1; k < pts.length; k++) {
+    const [x0, y0] = pts[k - 1], [x1, y1] = pts[k];
+    const c = Math.hypot(x1 - x0, y1 - y0);
+    d += ` A${(c * .58).toFixed(1)} ${(c * .58).toFixed(1)} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+  }
+  d += ` L${ox + w} ${oy + h}`;
+  if (closed) d += 'Z';
+  return { d, pts };
+}
+
+function archFrameSVG(w, h) {
+  const band = 26;
+  const outer = archPath(w + band * 2, h + band, 9, false, -band, -band);
+  const inner = archPath(w, h, 9, false);
+  const cusps = inner.pts.slice(1, -1).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="url(#g-gold-r)" stroke="#6b4210" stroke-width="1.5"/>`).join('');
+  let studs = '';
+  for (let y = inner.pts[0][1] + 30; y < h - 20; y += 46) {
+    studs += `<circle cx="${-band / 2}" cy="${y}" r="4.5" fill="#fff0b3"/><circle cx="${w + band / 2}" cy="${y}" r="4.5" fill="#fff0b3"/>`;
+  }
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path d="${outer.d}" fill="none" stroke="#4a2a06" stroke-width="10"/>
+    <path d="${outer.d}" fill="none" stroke="url(#g-gold-h)" stroke-width="5"/>
+    <path d="${inner.d}" fill="none" stroke="#3a0612" stroke-width="${band * 2 - 4}" opacity=".88"/>
+    <path d="${inner.d}" fill="none" stroke="#4a2a06" stroke-width="16"/>
+    <path d="${inner.d}" fill="none" stroke="url(#g-gold-h)" stroke-width="11"/>
+    <path d="${inner.d}" fill="none" stroke="#fff4c2" stroke-width="2" opacity=".8"/>
+    ${studs}${cusps}
+  </svg>`;
+}
+
+function marigold(x, y, r, alt) {
+  return `<g transform="translate(${x} ${y})"><circle r="${r}" fill="url(#${alt ? 'g-marigold2' : 'g-marigold'})"/>
+    <circle r="${r * .82}" fill="none" stroke="${alt ? '#c98200' : '#b84300'}" stroke-width="${r * .22}" stroke-dasharray="${r * .18} ${r * .22}" opacity=".55"/>
+    <circle r="${r * .38}" fill="none" stroke="${alt ? '#d99000' : '#c24d00'}" stroke-width="${r * .16}" stroke-dasharray="${r * .12} ${r * .16}" opacity=".5"/></g>`;
+}
+function leaf(x, y, ang, s = 1) {
+  return `<g transform="translate(${x} ${y}) rotate(${ang}) scale(${s})"><path d="M0 0 C10 10 10 34 0 50 C-10 34 -10 10 0 0Z" fill="url(#g-leaf)"/><path d="M0 2 L0 46" stroke="#1f4d14" stroke-width="1.4"/></g>`;
+}
+function bell(x, y, s = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -2 L0 4" stroke="#8a5a14" stroke-width="2"/>
+    <path d="M-4 4 C-14 8 -14 24 -18 30 L18 30 C14 24 14 8 4 4Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.2"/>
+    <rect x="-19" y="29" width="38" height="4" rx="2" fill="url(#g-gold-h)"/><circle cy="36" r="4" fill="url(#g-gold-r)"/></g>`;
+}
+
+function toranSVG() {
+  let rope = `<path d="M0 10 Q270 20 540 10 Q810 20 1080 10" stroke="#7a4a0e" stroke-width="4" fill="none"/>`;
+  let swags = '', strings = '', leaves = '';
+  const xs = []; for (let i = 0; i < 13; i++) xs.push(40 + i * 83.3);
+  // mango-leaf bandanwar along the rope
+  for (let x = 12; x < 1080; x += 30) leaves += leaf(x, 12, (Math.round(x / 30) % 2 ? 12 : -12), .85);
+  // marigold swags
+  for (let i = 0; i < xs.length - 1; i++) {
+    const x0 = xs[i], x1 = xs[i + 1];
+    for (let k = 0; k <= 6; k++) {
+      const u = k / 6, x = lerp(x0, x1, u), y = 22 + Math.sin(u * Math.PI) * 34;
+      swags += marigold(x, y, 10, (k + i) % 2);
+    }
+  }
+  // hanging strings (each in its own group so it can sway)
+  xs.forEach((x, i) => {
+    const n = [4, 2, 3, 2][i % 4];
+    let g = `<path d="M0 0 L0 ${18 + n * 24}" stroke="#7a4a0e" stroke-width="2"/>`;
+    for (let k = 0; k < n; k++) g += marigold(0, 20 + k * 24, 13, (k + i) % 2);
+    g += i % 2 ? leaf(0, 14 + n * 24, 0, .7) : bell(0, 10 + n * 24, 1);
+    strings += `<g class="string" data-i="${i}" transform="translate(${x} 12)">${g}</g>`;
+  });
+  return `<svg width="1080" height="200" viewBox="0 0 1080 200">${leaves}${rope}${strings}${swags}</svg>`;
+}
+
+function frameSVG() {
+  const corner = (x, y, rot) => {
+    let p = '';
+    for (let i = 0; i < 5; i++) p += `<path d="${petal(54 - Math.abs(i - 2) * 9, 11)}" transform="rotate(${i * 22.5 + 45})" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1"/>`;
+    return `<g transform="translate(${x} ${y}) rotate(${rot})">${p}<circle r="9" fill="url(#g-gold-r)" stroke="#6b4210"/></g>`;
+  };
+  return `<svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <rect x="14" y="14" width="1052" height="1892" fill="none" stroke="#4a2a06" stroke-width="8"/>
+    <rect x="14" y="14" width="1052" height="1892" fill="none" stroke="url(#g-gold-h)" stroke-width="4"/>
+    <rect x="28" y="28" width="1024" height="1864" fill="none" stroke="url(#g-gold-h)" stroke-width="1.5" opacity=".8"/>
+    ${corner(26, 1894, 180 + 90)}${corner(1054, 1894, 180)}
+  </svg>`;
+}
+
+function diyaSVG() {
+  return `<svg viewBox="-70 -110 140 150" width="100%" height="100%">
+    <ellipse class="glow" cx="0" cy="-40" rx="60" ry="64" fill="url(#g-glow)"/>
+    <path class="flame" d="M0 -78 C10 -58 14 -44 10 -34 C7 -26 -7 -26 -10 -34 C-14 -44 -10 -58 0 -78Z" fill="url(#g-flame)"/>
+    <path d="M-52 -18 Q0 -6 52 -18 Q46 22 0 26 Q-46 22 -52 -18Z" fill="url(#g-terracotta)" stroke="#5a2008" stroke-width="2"/>
+    <path d="M-52 -18 Q0 -6 52 -18" fill="none" stroke="url(#g-gold-h)" stroke-width="5"/>
+    <path d="M52 -18 Q66 -26 62 -36" fill="none" stroke="url(#g-terracotta)" stroke-width="8" stroke-linecap="round"/>
+    <g fill="#ffd27a">${[-30, -15, 0, 15, 30].map(x => `<circle cx="${x}" cy="4" r="3"/>`).join('')}</g>
+  </svg>`;
+}
+
+function palaceSVG() {
+  const win = (x, y, w, h) => `<path d="M${x} ${y + h} L${x} ${y + w / 2} A${w / 2} ${w / 2} 0 0 1 ${x + w} ${y + w / 2} L${x + w} ${y + h}Z" fill="#ffc861" opacity=".9"/>`;
+  const dome = (cx, by, r, hgt) => `<path d="M${cx - r} ${by} C${cx - r} ${by - hgt * .7} ${cx - r * .35} ${by - hgt * .75} ${cx} ${by - hgt} C${cx + r * .35} ${by - hgt * .75} ${cx + r} ${by - hgt * .7} ${cx + r} ${by}Z"/><rect x="${cx - 2}" y="${by - hgt - 18}" width="4" height="18"/><circle cx="${cx}" cy="${by - hgt - 20}" r="5"/>`;
+  const chhatri = (cx, by, s) => `<g transform="translate(${cx} ${by}) scale(${s})"><rect x="-34" y="-8" width="68" height="8"/><rect x="-30" y="-40" width="6" height="32"/><rect x="24" y="-40" width="6" height="32"/><rect x="-3" y="-40" width="6" height="32"/><rect x="-40" y="-48" width="80" height="8"/>${dome(0, -48, 34, 36)}</g>`;
+  let s = `<g fill="url(#g-palace)">`;
+  s += `<rect x="0" y="150" width="1080" height="80"/>`;
+  s += `<rect x="120" y="95" width="200" height="60"/><rect x="760" y="95" width="200" height="60"/>`;
+  s += `<rect x="330" y="70" width="420" height="90"/>`;
+  s += dome(540, 70, 76, 58) + `<rect x="450" y="62" width="180" height="10"/>`;
+  s += chhatri(350, 70, .9) + chhatri(730, 70, .9) + chhatri(140, 95, .75) + chhatri(940, 95, .75);
+  s += `<rect x="20" y="120" width="70" height="35"/><rect x="990" y="120" width="70" height="35"/>` + dome(55, 120, 30, 34) + dome(1025, 120, 30, 34);
+  s += `</g><g filter="url(#f-glow)">`;
+  for (let x = 360; x < 720; x += 46) s += win(x, 100, 22, 40);
+  for (let x = 140; x < 310; x += 40) s += win(x, 112, 18, 30);
+  for (let x = 780; x < 950; x += 40) s += win(x, 112, 18, 30);
+  for (let x = 30; x < 1060; x += 52) s += win(x, 172, 20, 36);
+  s += `</g>`;
+  return `<svg width="1080" height="230" viewBox="0 0 1080 230">${s}</svg>`;
+}
+
+function elephantSVG() {
+  const trunk = 'M282 98 C306 102 318 84 316 60 C314 42 300 36 292 48';
+  return `<svg viewBox="0 0 340 270" width="100%" height="100%">
+    <path d="M56 112 C42 130 40 150 44 172" stroke="#55577a" stroke-width="5" fill="none"/>
+    <path d="M44 168 l-6 14 l8 -2 l4 6 l3 -10Z" fill="#55577a"/>
+    <rect x="84" y="150" width="34" height="90" rx="12" fill="url(#g-elephant-d)"/>
+    <rect x="200" y="150" width="32" height="88" rx="12" fill="url(#g-elephant-d)"/>
+    <path d="M52 122 C50 74 108 52 172 56 C214 58 240 70 250 100 L250 150 C232 172 82 174 62 162 C54 152 52 138 52 122Z" fill="url(#g-elephant)"/>
+    <rect x="60" y="148" width="40" height="96" rx="14" fill="url(#g-elephant)"/>
+    <rect x="176" y="148" width="40" height="96" rx="14" fill="url(#g-elephant)"/>
+    <g fill="#fffaf0">${[66, 74, 82, 90, 182, 190, 198, 206].map(x => `<ellipse cx="${x + 2}" cy="241" rx="3.4" ry="2.6"/>`).join('')}</g>
+    <rect x="58" y="212" width="44" height="8" rx="3" fill="url(#g-gold-h)"/><rect x="174" y="212" width="44" height="8" rx="3" fill="url(#g-gold-h)"/>
+    <path d="M232 62 C252 36 296 38 302 74 C306 96 298 112 286 120 L262 124 C246 118 230 100 232 62Z" fill="url(#g-elephant)"/>
+    <path d="${trunk}" fill="none" stroke="url(#g-elephant)" stroke-width="30" stroke-linecap="round" pathLength="100" stroke-dasharray="40 100"/>
+    <path d="${trunk}" fill="none" stroke="url(#g-elephant)" stroke-width="22" stroke-linecap="round" pathLength="100" stroke-dasharray="72 100"/>
+    <path d="${trunk}" fill="none" stroke="url(#g-elephant)" stroke-width="14" stroke-linecap="round"/>
+    <g fill="#fff">${[[300, 92], [310, 80], [314, 66], [306, 54]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6"/>`).join('')}</g>
+    <path d="M276 116 Q292 130 312 122" stroke="#fffaf0" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M240 70 C218 70 210 102 218 128 C224 146 246 148 258 132 C264 112 262 82 240 70Z" fill="url(#g-elephant-d)" stroke="url(#g-gold)" stroke-width="3"/>
+    <path d="M238 86 C226 92 224 112 230 124" stroke="#ff7fb0" stroke-width="5" fill="none" opacity=".75"/>
+    <circle cx="278" cy="80" r="4.5" fill="#2b1a1f"/>
+    <path d="M262 50 C272 44 290 46 296 56 L288 92 C282 98 274 98 268 92Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.5"/>
+    <circle cx="281" cy="66" r="6" fill="#c2185b" stroke="#fff3c4" stroke-width="1.5"/>
+    <g fill="url(#g-gold-r)">${[270, 278, 286].map(x => `<circle cx="${x}" cy="100" r="3.2"/>`).join('')}</g>
+    <path d="M96 62 C132 52 180 52 216 62 L224 142 C190 154 124 154 92 142Z" fill="url(#g-rani)" stroke="url(#g-gold)" stroke-width="6"/>
+    <path d="M104 74 C136 66 176 66 208 74 L213 132 C186 140 128 140 101 132Z" fill="none" stroke="url(#g-gold)" stroke-width="2" stroke-dasharray="6 5"/>
+    <circle cx="158" cy="102" r="20" fill="url(#g-green)" stroke="url(#g-gold)" stroke-width="4"/>
+    <circle cx="158" cy="102" r="7" fill="url(#g-gold-r)"/>
+    <g fill="url(#g-gold-r)">${Array.from({ length: 11 }, (_, i) => `<circle cx="${96 + i * 12.6}" cy="${146 + Math.sin(i / 10 * Math.PI) * 6}" r="4"/>`).join('')}</g>
+    <path d="M118 56 C130 30 186 30 198 56Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.5"/>
+    <path d="M158 30 L158 14" stroke="url(#g-gold)" stroke-width="3"/><circle cx="158" cy="12" r="4" fill="url(#g-gold-r)"/>
+  </svg>`;
+}
+
+function doorSVG(mirror) {
+  const W2 = 540, studs = [];
+  for (let y = 70; y < 1880; y += 62) { studs.push([44, y]); studs.push([W2 - 44, y]); }
+  for (let x = 106; x < W2 - 80; x += 62) { studs.push([x, 70]); studs.push([x, 1850]); }
+  const panel = (x, y, w, h, arch) => {
+    const a = archPath(w, h, 7, true, x, y);
+    return arch ? `<path d="${a.d}" fill="url(#g-maroon)" stroke="url(#g-gold-h)" stroke-width="6"/>
+      <path d="${archPath(w - 36, h - 30, 7, true, x + 18, y + 18).d}" fill="none" stroke="url(#g-gold-h)" stroke-width="2"/>`
+      : `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#g-maroon)" stroke="url(#g-gold-h)" stroke-width="6"/>
+         <rect x="${x + 18}" y="${y + 18}" width="${w - 36}" height="${h - 36}" fill="none" stroke="url(#g-gold-h)" stroke-width="2"/>`;
+  };
+  const knob = mirror ? 40 : W2 - 40;
+  return `<svg width="540" height="1920" viewBox="0 0 540 1920">
+    <rect width="540" height="1920" fill="url(#g-door)"/>
+    <rect x="16" y="16" width="508" height="1888" fill="none" stroke="url(#g-gold-h)" stroke-width="10"/>
+    ${panel(90, 130, 360, 640, true)}
+    <g transform="translate(270 1030)"><g transform="scale(.42)" opacity=".95">${mandala(300).replace(/<svg[^>]*>|<\/svg>/g, '')}</g></g>
+    <circle cx="270" cy="1030" r="150" fill="none" stroke="url(#g-gold-h)" stroke-width="6"/>
+    ${panel(90, 1240, 360, 580, false)}
+    <g fill="url(#g-gold-r)">${studs.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9"/>`).join('')}</g>
+    <circle cx="${knob}" cy="980" r="34" fill="none" stroke="url(#g-gold)" stroke-width="9"/>
+    <circle cx="${knob}" cy="944" r="12" fill="url(#g-gold-r)"/>
+  </svg>`;
+}
+
+/* ---------------- Event / ceremony icons (200 x 200) ---------------- */
+const ICONS = {
+  ganesh: () => `
+    <path d="M72 80 C50 62 20 70 18 98 C16 126 36 144 64 136 C72 126 76 110 74 96Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M128 80 C150 62 180 70 182 98 C184 126 164 144 136 136 C128 126 124 110 126 96Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M62 90 C44 86 32 96 34 108 C36 122 48 128 62 124" fill="none" stroke="#b3202a" stroke-width="3.5"/>
+    <path d="M138 90 C156 86 168 96 166 108 C164 122 152 128 138 124" fill="none" stroke="#b3202a" stroke-width="3.5"/>
+    <path d="M72 70 C74 54 126 54 128 70 L130 102 C130 118 118 126 112 128 L88 128 C82 126 70 118 70 102Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M92 108 C88 134 84 154 98 168 C110 180 130 176 134 162 C137 151 126 146 120 153" fill="none" stroke="#6b4210" stroke-width="23" stroke-linecap="round"/>
+    <path d="M92 108 C88 134 84 154 98 168 C110 180 130 176 134 162 C137 151 126 146 120 153" fill="none" stroke="url(#g-gold)" stroke-width="18" stroke-linecap="round"/>
+    <g stroke="#9c6a1c" stroke-width="2" fill="none"><path d="M83 128 Q92 132 100 128"/><path d="M83 142 Q92 146 101 142"/><path d="M88 156 Q96 160 104 155"/></g>
+    <path d="M110 120 Q124 124 128 138" stroke="#fffaf0" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M74 66 L78 40 L89 50 L100 18 L111 50 L122 40 L126 66Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M73 66 Q100 76 127 66" stroke="#b3202a" stroke-width="5" fill="none"/>
+    <circle cx="100" cy="14" r="5" fill="url(#g-gold-r)"/><circle cx="100" cy="52" r="5.5" fill="#d81b60" stroke="#fff3c4" stroke-width="1.2"/>
+    <path d="M95 76 Q100 92 105 76" stroke="#d32f2f" stroke-width="3.2" fill="none"/><circle cx="100" cy="88" r="2.6" fill="#d32f2f"/>
+    <path d="M81 96 Q88 90 95 96 Q88 99 81 96Z" fill="#3b1d06"/><path d="M105 96 Q112 90 119 96 Q112 99 105 96Z" fill="#3b1d06"/>`,
+  mayra: () => `
+    <ellipse cx="100" cy="150" rx="84" ry="24" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <ellipse cx="100" cy="146" rx="70" ry="16" fill="url(#g-gold-r)" opacity=".7"/>
+    <rect x="46" y="96" width="56" height="50" rx="4" fill="url(#g-rani)" stroke="#6b4210" stroke-width="2"/>
+    <rect x="70" y="96" width="9" height="50" fill="url(#g-gold)"/><rect x="46" y="116" width="56" height="9" fill="url(#g-gold)"/>
+    <rect x="98" y="72" width="58" height="74" rx="4" fill="url(#g-green)" stroke="#6b4210" stroke-width="2"/>
+    <rect x="123" y="72" width="9" height="74" fill="url(#g-gold)"/><rect x="98" y="100" width="58" height="9" fill="url(#g-gold)"/>
+    <path d="M127 72 C110 52 104 70 127 72 C150 70 144 52 127 72Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.5"/>
+    <path d="M74 96 C60 80 56 94 74 96 C92 94 88 80 74 96Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.5"/>
+    <ellipse cx="160" cy="132" rx="16" ry="13" fill="#8d5a2b"/><path d="M152 120 L160 104 L168 120" fill="#4caf50"/>
+    <circle cx="40" cy="138" r="9" fill="url(#g-marigold)"/><circle cx="56" cy="146" r="7" fill="url(#g-marigold2)"/>`,
+  ring: () => `
+    <circle cx="80" cy="118" r="44" fill="none" stroke="#6b4210" stroke-width="18"/>
+    <circle cx="80" cy="118" r="44" fill="none" stroke="url(#g-gold)" stroke-width="13"/>
+    <circle cx="122" cy="118" r="44" fill="none" stroke="#5a5f6e" stroke-width="18"/>
+    <circle cx="122" cy="118" r="44" fill="none" stroke="url(#g-ivory)" stroke-width="13"/>
+    <path d="M110 76 A44 44 0 0 1 120 74" stroke="url(#g-gold)" stroke-width="13" fill="none"/>
+    <path d="M101 40 L139 40 L150 54 L120 86 L90 54Z" fill="#cfe9ff" stroke="#5a7aa8" stroke-width="2"/>
+    <path d="M90 54 L150 54 M110 40 L104 54 L120 86 L136 54 L130 40" fill="none" stroke="#5a7aa8" stroke-width="1.5"/>
+    <path d="M114 46 L124 46 L120 52Z" fill="#fff"/>
+    <g fill="#fff6c9"><path d="M162 36 l3 9 l9 3 l-9 3 l-3 9 l-3 -9 l-9 -3 l9 -3Z"/><path d="M48 52 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2Z"/></g>`,
+  carnival: () => `
+    <g class="spin" style="transform-origin:100px 92px">
+      <circle cx="100" cy="92" r="62" fill="none" stroke="url(#g-gold)" stroke-width="6"/>
+      <circle cx="100" cy="92" r="46" fill="none" stroke="url(#g-gold)" stroke-width="2"/>
+      ${Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<line x1="100" y1="92" x2="${100 + Math.cos(a) * 62}" y2="${92 + Math.sin(a) * 62}" stroke="url(#g-gold)" stroke-width="3"/>`; }).join('')}
+      ${Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4, c = ['#ff4f9a', '#3fd6c6', '#ffd31a', '#ff7043'][i % 4]; return `<rect x="${100 + Math.cos(a) * 62 - 9}" y="${92 + Math.sin(a) * 62 - 7}" width="18" height="15" rx="4" fill="${c}" stroke="#6b4210" stroke-width="1.5"/>`; }).join('')}
+      <circle cx="100" cy="92" r="9" fill="url(#g-gold-r)"/>
+    </g>
+    <path d="M100 92 L66 176 M100 92 L134 176" stroke="url(#g-gold)" stroke-width="7" stroke-linecap="round"/>
+    <rect x="52" y="172" width="96" height="9" rx="4" fill="url(#g-gold-h)"/>
+    <path d="M8 22 Q100 52 192 22" stroke="#6b4210" stroke-width="2" fill="none"/>
+    ${Array.from({ length: 8 }, (_, i) => { const x = 22 + i * 22, y = 22 + Math.sin((i + .5) / 8 * Math.PI) * 26, c = ['#ff4f9a', '#ffd31a', '#3fd6c6', '#ff7043'][i % 4]; return `<path d="M${x - 8} ${y} L${x + 8} ${y + 2} L${x} ${y + 18}Z" fill="${c}"/>`; }).join('')}`,
+  dhol: () => `
+    <path d="M40 120 L18 176 M160 120 L182 176" stroke="#7a4a0e" stroke-width="5" stroke-linecap="round"/>
+    <path d="M44 78 C44 58 156 58 156 78 L156 132 C156 152 44 152 44 132Z" fill="url(#g-red)" stroke="#6b4210" stroke-width="2"/>
+    <ellipse cx="44" cy="105" rx="16" ry="38" fill="url(#g-ivory)" stroke="url(#g-gold)" stroke-width="6"/>
+    <ellipse cx="156" cy="105" rx="16" ry="38" fill="url(#g-ivory)" stroke="url(#g-gold)" stroke-width="6"/>
+    <path d="M48 70 L72 140 L96 70 L120 140 L144 70 L156 102" fill="none" stroke="url(#g-gold)" stroke-width="3"/>
+    <path d="M52 140 L76 70 L100 140 L124 70 L148 140" fill="none" stroke="url(#g-gold)" stroke-width="3"/>
+    <rect x="44" y="99" width="112" height="12" fill="url(#g-gold-h)" opacity=".9"/>
+    <g class="stick1" style="transform-origin:150px 40px"><path d="M150 40 L112 82" stroke="#8d5a2b" stroke-width="6" stroke-linecap="round"/><path d="M112 82 q-10 6 -6 -6" stroke="#8d5a2b" stroke-width="6" fill="none" stroke-linecap="round"/></g>
+    <g class="stick2" style="transform-origin:46px 36px"><path d="M46 36 L82 78" stroke="#8d5a2b" stroke-width="5" stroke-linecap="round"/></g>
+    <g fill="#ffd31a"><path d="M100 20 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3Z"/></g>`,
+  sangeet: () => `
+    <path d="M30 168 L30 120 C30 104 76 104 76 120 L76 168 C76 178 30 178 30 168Z" fill="url(#g-terracotta)" stroke="#6b4210" stroke-width="2"/>
+    <ellipse cx="53" cy="118" rx="23" ry="7" fill="url(#g-ivory)" stroke="url(#g-gold)" stroke-width="3"/><ellipse cx="53" cy="118" rx="7" ry="2.5" fill="#222"/>
+    <path d="M86 150 C86 116 154 116 154 150 C154 178 86 178 86 150Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <ellipse cx="120" cy="130" rx="32" ry="9" fill="url(#g-ivory)" stroke="#9c6a1c" stroke-width="2"/><ellipse cx="114" cy="130" rx="10" ry="3.5" fill="#222"/>
+    <g class="note1"><ellipse cx="146" cy="74" rx="11" ry="8" transform="rotate(-20 146 74)" fill="url(#g-gold)"/><path d="M156 70 L156 24 L178 30 L178 44 L156 38" fill="url(#g-gold)" stroke="url(#g-gold)" stroke-width="3"/></g>
+    <g class="note2"><ellipse cx="72" cy="66" rx="10" ry="7" transform="rotate(-20 72 66)" fill="#ffb3d1"/><ellipse cx="102" cy="58" rx="10" ry="7" transform="rotate(-20 102 58)" fill="#ffb3d1"/><path d="M81 62 L81 22 L111 14 L111 54" fill="none" stroke="#ffb3d1" stroke-width="4"/><path d="M81 22 L111 14 L111 22 L81 30Z" fill="#ffb3d1"/></g>`,
+  clock: () => `
+    <path d="M100 8 L108 26 L92 26Z" fill="url(#g-gold)"/>
+    <circle cx="100" cy="104" r="78" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <circle cx="100" cy="104" r="66" fill="#0e1442" stroke="#fff4c2" stroke-width="2"/>
+    ${Array.from({ length: 12 }, (_, i) => { const a = i * Math.PI / 6; return `<circle cx="${100 + Math.sin(a) * 56}" cy="${104 - Math.cos(a) * 56}" r="${i % 3 ? 2.5 : 5}" fill="#f6d26b"/>`; }).join('')}
+    <text x="100" y="128" text-anchor="middle" font-family="Rozha One" font-size="40" fill="#f6d26b" opacity=".35">ॐ</text>
+    <line class="hourhand" x1="100" y1="104" x2="${100 + Math.sin(Math.PI / 24) * 30}" y2="${104 - Math.cos(Math.PI / 24) * 30}" stroke="#fff4c2" stroke-width="6" stroke-linecap="round"/>
+    <line x1="100" y1="104" x2="146" y2="104" stroke="#f6d26b" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="100" cy="104" r="6" fill="url(#g-gold-r)"/>
+    <path d="M40 172 L22 192 M160 172 L178 192" stroke="url(#g-gold)" stroke-width="7" stroke-linecap="round"/>`,
+  haldi: () => `
+    <path d="M30 100 Q100 116 170 100 Q164 170 100 174 Q36 170 30 100Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <ellipse cx="100" cy="100" rx="70" ry="16" fill="url(#g-haldi)" stroke="#9c6a1c" stroke-width="2"/>
+    <path d="M70 98 Q90 90 110 100 Q126 106 140 98" stroke="#e08a00" stroke-width="4" fill="none"/>
+    <path d="M60 126 Q100 140 140 126" stroke="#9c6a1c" stroke-width="2" fill="none"/>
+    ${[[56, 80], [140, 78], [100, 70]].map(([x, y], i) => marigold(x, y, 14, i % 2)).join('')}
+    <path d="M150 20 C196 40 186 150 120 154 C70 156 40 120 52 70" fill="none" stroke="#fff6e0" stroke-width="3.5" stroke-dasharray="10 0"/>
+    <path d="M150 20 C196 40 186 150 120 154 C70 156 40 120 52 70" fill="none" stroke="#e65100" stroke-width="1.2" stroke-dasharray="3 7"/>
+    <circle cx="150" cy="20" r="5" fill="#fff6e0"/>`,
+  safa: () => `
+    <path d="M150 112 C176 130 184 170 168 192 L156 192 C162 168 156 140 136 124Z" fill="url(#g-rani)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M30 120 C26 70 60 40 102 40 C146 40 176 70 170 120 C150 132 52 134 30 120Z" fill="url(#g-red)" stroke="#6b4210" stroke-width="2"/>
+    <g fill="none" stroke="#ffd31a" stroke-width="5" opacity=".9"><path d="M36 104 C70 84 130 70 166 92"/><path d="M40 82 C80 62 128 54 158 66"/><path d="M60 56 C90 46 120 44 140 50"/></g>
+    <g fill="none" stroke="#ff4f9a" stroke-width="3"><path d="M34 112 C72 94 130 82 168 104"/><path d="M42 92 C80 72 130 62 162 78"/></g>
+    <path d="M30 120 C52 134 150 132 170 120 L172 132 C150 146 50 148 28 132Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.5"/>
+    <path d="M102 34 C96 14 112 0 120 6 C110 10 108 22 112 34Z" fill="#fff6e0" stroke="#d9c7a0" stroke-width="1"/>
+    <ellipse cx="104" cy="44" rx="12" ry="16" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1.5"/>
+    <circle cx="104" cy="44" r="6" fill="#1aa36a" stroke="#fff3c4" stroke-width="1.2"/>
+    <g fill="url(#g-gold-r)">${Array.from({ length: 9 }, (_, i) => `<circle cx="${44 + i * 14}" cy="${150 + Math.sin(i / 8 * Math.PI) * 6}" r="3.5"/><circle cx="${44 + i * 14}" cy="${162 + Math.sin(i / 8 * Math.PI) * 6}" r="2.5"/>`).join('')}</g>`,
+  agni: () => `
+    <g class="flames" style="transform-origin:100px 118px">
+      <path d="M100 18 C128 54 148 74 140 104 C134 124 66 124 60 104 C52 74 72 54 100 18Z" fill="url(#g-flame)"/>
+      <path d="M64 50 C78 74 86 86 80 104 L58 108 C50 86 54 68 64 50Z" fill="#ff9800" opacity=".9"/>
+      <path d="M136 50 C122 74 114 86 120 104 L142 108 C150 86 146 68 136 50Z" fill="#ff9800" opacity=".9"/>
+      <path d="M100 58 C112 76 118 88 112 104 C106 112 94 112 88 104 C82 88 88 76 100 58Z" fill="#fffde7"/>
+    </g>
+    <path d="M30 112 L170 112 L156 134 L44 134Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M44 134 L156 134 L144 156 L56 156Z" fill="url(#g-terracotta)" stroke="#6b4210" stroke-width="2"/>
+    <path d="M56 156 L144 156 L134 178 L66 178Z" fill="url(#g-gold)" stroke="#6b4210" stroke-width="2"/>
+    <g fill="#b3202a">${[60, 80, 100, 120, 140].map(x => `<path d="M${x} 145 l4 -5 l4 5 l-4 5Z"/>`).join('')}</g>
+    <path d="M36 186 C70 168 130 168 164 186" stroke="#ffeb3b" stroke-width="4" fill="none" stroke-dasharray="2 6"/>`,
+};
+function iconSVG(name) { return `<svg viewBox="0 0 200 200" width="100%" height="100%">${ICONS[name]()}</svg>`; }
+
+function medallion(inner, size) {
+  let pet = '';
+  for (let i = 0; i < 24; i++) pet += `<path d="${petal(26, 9)}" transform="rotate(${i * 15}) translate(0 -96)" fill="url(#g-gold)" stroke="#6b4210" stroke-width="1"/>`;
+  return `<div class="abs" style="left:0;top:0;width:${size}px;height:${size}px">
+    <svg class="medRing" viewBox="-125 -125 250 250" width="100%" height="100%" style="position:absolute;inset:0">${pet}</svg>
+    <svg viewBox="-125 -125 250 250" width="100%" height="100%" style="position:absolute;inset:0">
+      <circle r="98" fill="url(#g-gold-h)" stroke="#4a2a06" stroke-width="3"/>
+      <circle r="88" fill="url(#g-maroon)"/>
+      <circle r="82" fill="none" stroke="#f6d26b" stroke-width="1.5" stroke-dasharray="3 5"/>
+    </svg>
+    <div class="medIcon abs" style="left:${size * .2}px;top:${size * .2}px;width:${size * .6}px;height:${size * .6}px">${inner}</div>
+  </div>`;
+}
+
+function divider(w = 560) {
+  return `<svg width="${w}" height="40" viewBox="0 0 ${w} 40">
+    <defs><linearGradient id="dv${w}" x1="0" x2="1"><stop offset="0" stop-color="#f6d26b" stop-opacity="0"/><stop offset=".5" stop-color="#f6d26b"/><stop offset="1" stop-color="#f6d26b" stop-opacity="0"/></linearGradient></defs>
+    <rect x="0" y="19" width="${w}" height="2" fill="url(#dv${w})"/>
+    <g transform="translate(${w / 2} 20)">
+      <path d="M-34 0 L0 -14 L34 0 L0 14Z" fill="url(#g-gold)" stroke="#6b4210"/>
+      <circle r="5" fill="#c2185b"/>
+      <circle cx="-52" r="4" fill="url(#g-gold-r)"/><circle cx="52" r="4" fill="url(#g-gold-r)"/>
+      <circle cx="-66" r="2.5" fill="url(#g-gold-r)"/><circle cx="66" r="2.5" fill="url(#g-gold-r)"/>
+    </g></svg>`;
+}
+
+/* ------------------------------------------------------------
+   Slide builders
+   ------------------------------------------------------------ */
+const slides = [];
+let cur = null;
+function slide(dur, opts = {}) {
+  const node = document.createElement('section');
+  node.className = 'slide';
+  document.getElementById('slides').appendChild(node);
+  cur = { el: node, dur, anims: [], loops: [], fx: opts.fx || null, fxStart: opts.fxStart || 0, hooks: [] };
+  slides.push(cur);
+  return cur;
+}
+// entrance animation registration
+function keepBase(n) {
+  if (n.dataset.base === undefined) n.dataset.base = n.style.transform || '';
+  if (n.dataset.fbase === undefined) n.dataset.fbase = n.style.filter || '';
+}
+function A(sel, type, delay, dur = .9, ease = 'out') {
+  const nodes = typeof sel === 'string' ? cur.el.querySelectorAll(sel) : [sel];
+  nodes.forEach(n => { keepBase(n); cur.anims.push({ n, type, delay, dur, ease }); });
+}
+// continuous motion registration: fn(lt) -> transform string
+function L(sel, fn) {
+  const nodes = typeof sel === 'string' ? cur.el.querySelectorAll(sel) : [sel];
+  nodes.forEach((n, i) => { keepBase(n); cur.loops.push({ n, fn, i }); });
+}
+function bgLayers(theme, extra = '') {
+  const th = THEMES[theme];
+  return `<div class="layer bgk" style="background:radial-gradient(ellipse at 50% 38%, ${th.bg[0]} 0%, ${th.bg[1]} 78%)"></div>
+    <div class="pattern" style="background-image:${JAALI}"></div>${extra}<div class="vignette"></div>`;
+}
+function archBlock(x, y, w, h, theme, cls = '') {
+  const th = THEMES[theme];
+  const clip = archPath(w, h, 9, true).d;
+  return `<div class="abs arch ${cls}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px">
+    <div class="abs archIn" style="inset:0;clip-path:path('${clip}');background:radial-gradient(ellipse at 50% 62%, ${th.arch[0]} 0%, ${th.arch[1]} 70%, #2a0610 125%)">
+      <div class="abs rays" style="left:${w / 2 - 700}px;top:${h * .62 - 700}px;width:1400px;height:1400px;background:repeating-conic-gradient(from 0deg, rgba(255,255,255,.13) 0deg 5deg, rgba(255,255,255,0) 5deg 15deg);border-radius:50%"></div>
+      <div class="abs archMandala" style="left:${w / 2 - 330}px;top:${h * .62 - 330}px;width:660px;height:660px;opacity:.28">${mandala(330, { color: '#fff6dc', sw: 1.6, dot: '#fff6dc' })}</div>
+    </div>
+    <div class="abs" style="inset:0">${archFrameSVG(w, h)}</div>
+  </div>`;
+}
+function ledge(x, y, w) {
+  let dent = '';
+  for (let i = 0; i < Math.floor((w - 20) / 26); i++) dent += `<path d="M${16 + i * 26} 30 l13 -10 l13 10Z" fill="url(#g-gold)" opacity=".85"/>`;
+  return `<svg class="abs" style="left:${x}px;top:${y}px" width="${w}" height="64" viewBox="0 0 ${w} 64">
+    <rect x="0" y="0" width="${w}" height="18" rx="4" fill="url(#g-gold-h)" stroke="#4a2a06" stroke-width="2"/>
+    <rect x="12" y="18" width="${w - 24}" height="42" fill="url(#g-maroon)" stroke="#4a2a06" stroke-width="2"/>
+    ${dent}
+    <g fill="url(#g-gold-r)">${Array.from({ length: Math.floor(w / 46) }, (_, i) => `<circle cx="${30 + i * 46}" cy="46" r="5"/>`).join('')}</g>
+    <rect x="12" y="56" width="${w - 24}" height="5" fill="url(#g-gold-h)"/>
+  </svg>`;
+}
+function coupleImg(key, cx, bottom, hgt, cls = '') {
+  const c = COUPLES[key], w = c.w * hgt / c.h;
+  return `<img class="abs couple ${cls}" src="${c.src}" style="left:${cx - w / 2}px;top:${bottom - hgt}px;width:${w}px;height:${hgt}px;filter:drop-shadow(0 18px 24px rgba(20,0,6,.55))">`;
+}
+function diyaRow(y, xs, size = 120) {
+  return xs.map(x => `<div class="abs diya" style="left:${x - size / 2}px;top:${y}px;width:${size}px;height:${size * 150 / 140}px">${diyaSVG()}</div>`).join('');
+}
+const flicker = (n, i) => lt => `scale(${1 + .06 * Math.sin(lt * 17 + i * 2.1) + .04 * Math.sin(lt * 31 + i)}, ${1 + .1 * Math.sin(lt * 13 + i * 1.7) + .05 * Math.sin(lt * 27 + i * 3)})`;
+function diyaLoops() {
+  cur.el.querySelectorAll('.diya .flame').forEach((f, i) => { f.style.transformBox = 'fill-box'; f.style.transformOrigin = '50% 100%'; cur.loops.push({ n: f, fn: flicker(f, i), i }); });
+  cur.el.querySelectorAll('.diya .glow').forEach((g, i) => { g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 50%'; cur.loops.push({ n: g, fn: lt => `scale(${1 + .07 * Math.sin(lt * 9 + i)})`, i }); });
+}
+const spin = (speed, base = 0) => lt => `rotate(${base + lt * speed}deg)`;
+
+/* 0 — Doors open on Shri Ganesh */
+function buildOpening() {
+  const s = slide(6.6, { fx: 'petals', fxStart: 2.2 });
+  s.el.innerHTML = `
+    <div class="layer" style="background:radial-gradient(ellipse at 50% 36%, #ffb554 0%, #c2410c 26%, #6b0f1a 58%, #2a0409 100%)"></div>
+    <div class="pattern" style="background-image:${JAALI}"></div>
+    <div class="abs" id="opRays" style="left:-160px;top:-60px;width:1400px;height:1400px;border-radius:50%;background:repeating-conic-gradient(from 0deg, rgba(255,236,170,.16) 0deg 4deg, rgba(255,236,170,0) 4deg 12deg);-webkit-mask:radial-gradient(circle, #000 20%, transparent 68%);mask:radial-gradient(circle, #000 20%, transparent 68%)"></div>
+    <div class="abs" id="opMandala" style="left:115px;top:255px;width:850px;height:850px;opacity:.55">${mandala(425)}</div>
+    <div class="abs" id="opGlow" style="left:230px;top:370px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle, rgba(255,246,200,.95), rgba(255,206,110,.45) 38%, transparent 68%)"></div>
+    <div class="abs" id="opGanesh" style="left:315px;top:455px;width:450px;height:450px">${iconSVG('ganesh')}</div>
+    <div class="abs center hi gold shadow" id="opTitle" style="top:1010px;font-size:86px;line-height:1.2">॥ श्री गणेशाय नमः ॥</div>
+    <div class="abs center tiro ivory" id="opShloka" style="top:1160px;font-size:42px;line-height:1.6">वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ ।<br>निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥</div>
+    <div class="abs center" id="opDiv" style="top:1340px">${divider(600)}</div>
+    <div class="abs center cinzel" id="opSub" style="top:1400px;font-size:30px;letter-spacing:10px;color:#f8d978">With the blessings of Lord Ganesha</div>
+    ${diyaRow(1560, [200, 380, 700, 880], 130)}
+    <div class="vignette"></div>`;
+  A('#opMandala', 'zoom', 1.2, 2.2);
+  A('#opGlow', 'zoom', 1.0, 1.6);
+  A('#opGanesh', 'pop', 1.5, 1.2, 'back');
+  A('#opTitle', 'up', 2.4, 1.0);
+  A('#opShloka', 'blur', 3.0, 1.2);
+  A('#opDiv', 'wipe', 3.5, 1.0);
+  A('#opSub', 'fade', 3.8, 1.0);
+  A('.diya', 'up', 2.0, 1.0);
+  L('#opMandala', spin(6));
+  L('#opRays', spin(-4));
+  L('#opGanesh', lt => `translateY(${Math.sin(lt * 1.6) * 8}px)`);
+  L('#opGlow', lt => `scale(${1 + .05 * Math.sin(lt * 2.4)})`);
+  diyaLoops();
+}
+
+/* 1 — Title */
+function buildTitle() {
+  const s = slide(7.6, { fx: 'petals' });
+  s.el.innerHTML = `
+    ${bgLayers('maroon', `<div class="abs" id="tMandala" style="left:40px;top:280px;width:1000px;height:1000px;opacity:.22">${mandala(500)}</div>`)}
+    <div class="abs center hi gold shadow" id="tTop" style="top:178px;font-size:58px">॥ शुभ विवाह ॥</div>
+    ${archBlock(150, 345, 780, 880, 'maroon', 'tArch')}
+    ${coupleImg('traditional', 540, 1200, 730, 'tCouple')}
+    <div class="abs" id="tLedge">${ledge(130, 1188, 820)}</div>
+    <div class="abs" id="tEleL" style="left:-6px;top:1004px;width:330px;height:262px">${elephantSVG()}</div>
+    <div class="abs" id="tEleR" style="left:756px;top:1004px;width:330px;height:262px;transform:scaleX(-1)"><div class="abs" style="inset:0">${elephantSVG()}</div></div>
+    <div class="abs" id="tMed" style="left:448px;top:253px;width:184px;height:184px">${medallion(`<div class="cinzel gold" style="font-size:52px;line-height:110px;text-align:center;letter-spacing:2px">V<span class="script" style="font-size:44px;text-transform:none;padding:0 3px">&amp;</span>K</div>`, 184)}</div>
+    <div class="abs center script gold shadow" id="tN1" style="top:1236px;font-size:150px;line-height:1.1">Veeral</div>
+    <div class="abs center cinzel" id="tWeds" style="top:1404px;font-size:34px;letter-spacing:14px;color:#fff4dc">— weds —</div>
+    <div class="abs center script gold shadow" id="tN2" style="top:1440px;font-size:150px;line-height:1.1">Konika</div>
+    <div class="abs center hi ivory" id="tHi" style="top:1618px;font-size:54px">वीरल <span style="color:#f8d978">संग</span> कोनिका</div>`;
+  A('.tArch', 'zoom', .2, 1.1);
+  A('.tCouple', 'rise', .7, 1.3);
+  A('#tLedge', 'fade', .6, .8);
+  A('#tMed', 'pop', 1.2, 1.0, 'back');
+  A('#tEleL', 'left', 1.3, 1.2);
+  A('#tEleR', 'left', 1.3, 1.2);  // element is mirrored, so 'left' slides it in from the right
+  A('#tTop', 'down', .3, .9);
+  A('#tN1', 'wipeL', 2.0, 1.2, 'inout');
+  A('#tWeds', 'fade', 2.8, .8);
+  A('#tN2', 'wipeL', 3.1, 1.2, 'inout');
+  A('#tHi', 'up', 4.0, .9);
+  L('#tMandala', spin(5));
+  L('.tArch .rays', spin(6));
+  L('.tArch .archMandala', spin(-8));
+  L('.medRing', spin(12));
+  L('.tCouple', lt => `translateY(${Math.sin(lt * 1.5) * 4}px)`);
+  L('#tEleL', lt => `rotate(${Math.sin(lt * 1.8) * 1.2}deg)`);
+  L('#tEleR > div', lt => `rotate(${Math.sin(lt * 1.8 + 1) * 1.2}deg)`);
+}
+
+/* 2 — Invitation */
+function buildInvite() {
+  const s = slide(6.8, { fx: 'sparkle' });
+  s.el.innerHTML = `
+    ${bgLayers('rani', `<div class="abs" id="iMandala" style="left:-60px;top:380px;width:1200px;height:1200px;opacity:.18">${mandala(600)}</div>`)}
+    <div class="abs center hi gold shadow" id="iHead" style="top:200px;font-size:76px">॥ सादर आमंत्रण ॥</div>
+    <div class="abs center" id="iDiv1" style="top:310px">${divider(620)}</div>
+    <div class="abs center tiro ivory" id="iP1" style="top:380px;font-size:44px;line-height:1.6">परमपिता परमेश्वर की असीम कृपा<br>एवं बड़ों के आशीर्वाद से</div>
+    <div class="abs center" id="iNames" style="top:560px">
+      <div class="tiro ivory" style="font-size:36px">चि.</div>
+      <div class="hi gold shadow" style="font-size:118px;line-height:1.15">वीरल</div>
+      <div class="tiro" style="font-size:56px;color:#ffd1e3;line-height:1.2;font-style:italic">संग</div>
+      <div class="tiro ivory" style="font-size:36px;margin-top:6px">सौ. कां.</div>
+      <div class="hi gold shadow" style="font-size:118px;line-height:1.15">कोनिका</div>
+    </div>
+    <div class="abs center tiro ivory" id="iP2" style="top:1120px;font-size:44px;line-height:1.6">के शुभ विवाह के मंगल उत्सव में<br>आप सपरिवार सादर आमंत्रित हैं</div>
+    <div class="abs center" id="iDiv2" style="top:1290px">${divider(620)}</div>
+    <div class="abs center corm" id="iEn" style="top:1340px;font-size:40px;font-style:italic;color:#ffe9c4;line-height:1.45;padding:0 110px">With the blessings of the Almighty and our elders, we joyfully invite you and your family to the wedding celebrations</div>
+    <div class="abs center cinzel gold" id="iDates" style="top:1560px;font-size:46px;letter-spacing:6px">19 – 21 November 2026</div>`;
+  A('#iHead', 'down', .2, .9);
+  A('#iDiv1', 'wipe', .6, .9);
+  A('#iP1', 'up', .8, .9);
+  A('#iNames > div', 'zoom', 1.3, .9);
+  cur.anims.slice(-5).forEach((a, i) => a.delay = 1.3 + i * .22);
+  A('#iP2', 'up', 2.6, .9);
+  A('#iDiv2', 'wipe', 3.0, .9);
+  A('#iEn', 'blur', 3.2, 1.1);
+  A('#iDates', 'up', 3.8, .9);
+  L('#iMandala', spin(4));
+}
+
+/* Day intro */
+const ARCH = { x: 160, y: 370, w: 760, h: 800 };
+function buildDay(d) {
+  const day = DAYS[d];
+  const s = slide(4.6, { fx: 'sparkle' });
+  const evs = EVENTS.filter(e => e.day === d);
+  s.el.innerHTML = `
+    ${bgLayers(day.theme)}
+    <div class="abs center cinzel" id="dEn" style="top:178px;font-size:32px;letter-spacing:12px;color:#f8d978">${day.en} · ${day.dateEn.split('·')[0].trim()}</div>
+    ${archBlock(ARCH.x, ARCH.y, ARCH.w, ARCH.h, day.theme, 'dArch')}
+    <div class="abs" id="dMed" style="left:${540 - 105}px;top:${ARCH.y - 105}px;width:210px;height:210px">${medallion(`<div class="tiro gold" style="font-size:100px;line-height:136px;text-align:center">${day.num}</div>`, 210)}</div>
+    <div class="abs center hi gold shadow" id="dHi" style="top:1236px;font-size:104px;line-height:1.15">${day.hi}</div>
+    <div class="abs center tiro ivory" id="dDate" style="top:1368px;font-size:42px">${day.date}</div>
+    <div class="daylist" id="dList" style="top:1448px">
+      ${evs.map(e => `<div class="row"><span>${e.hi}</span><span class="dots"></span><span class="tm"><span class="tiro" style="color:#ffe9c4;font-size:32px">${e.when}</span> ${e.time}</span></div>`).join('')}
+    </div>`;
+  A('#dEn', 'down', .2, .8);
+  A('.dArch', 'zoom', .15, 1.0);
+  A('#dMed', 'pop', .6, .9, 'back');
+  A('#dHi', 'blur', .7, 1.0);
+  A('#dDate', 'up', 1.1, .8);
+  cur.el.querySelectorAll('#dList .row').forEach((r, i) => A(r, 'left', 1.5 + i * .2, .8));
+  L('.dArch .rays', spin(6));
+  L('.dArch .archMandala', spin(-8));
+  L('.medRing', spin(12));
+  s.day = d;
+}
+
+/* Event */
+function buildEvent(i) {
+  const ev = EVENTS[i], day = DAYS[ev.day];
+  const s = slide(5.0, { fx: ev.fx });
+  const long = ev.time.length > 6;
+  s.el.innerHTML = `
+    ${bgLayers(ev.theme)}
+    <div class="abs center tiro" id="eDay" style="top:174px;font-size:36px;color:#f8d978;text-shadow:0 2px 6px rgba(20,0,5,.8)">${day.hi} &nbsp;·&nbsp; ${day.date}</div>
+    ${archBlock(ARCH.x, ARCH.y, ARCH.w, ARCH.h, ev.theme, 'eArch')}
+    <div class="abs" id="eMed" style="left:${540 - 112}px;top:${ARCH.y - 118}px;width:224px;height:224px">${medallion(iconSVG(ev.icon), 224)}</div>
+    <div class="abs center hi gold shadow" id="eHi" style="top:1238px;font-size:${ev.hi.length > 12 ? 92 : 104}px;line-height:1.15">${ev.hi}</div>
+    <div class="abs center cinzel" id="eEn" style="top:1366px;font-size:32px;letter-spacing:8px;color:#fff4dc">${ev.en}</div>
+    <div class="abs center" id="eDiv" style="top:1404px">${divider(560)}</div>
+    <div class="abs" id="eTime" style="left:0;top:1452px;width:1080px;height:104px"><div class="ribbon" style="top:0;${long ? 'left:120px;width:840px' : ''}"><span class="w">${ev.when}</span><span class="t">${ev.time}</span><span class="w">${ev.tail}</span></div></div>
+    <div class="abs center tiro ivory" id="eDesc" style="top:1578px;font-size:37px;line-height:1.45">${ev.desc}</div>`;
+  A('#eDay', 'down', .15, .8);
+  A('.eArch', 'fade', 0, .6);
+  A('#eMed', 'pop', .35, .9, 'back');
+  A('#eHi', 'blur', .55, .9);
+  A('#eEn', 'fade', .9, .8);
+  A('#eDiv', 'wipe', 1.0, .8);
+  A('#eTime', 'wipe', 1.2, .9, 'inout');
+  A('#eDesc', 'up', 1.6, .9);
+  L('.eArch .rays', spin(7));
+  L('.eArch .archMandala', spin(-9));
+  L('.medRing', spin(14));
+  L('#eMed .medIcon', lt => `translateY(${Math.sin(lt * 2.2) * 5}px)`);
+  // icon-specific life
+  const q = sel => cur.el.querySelectorAll(sel);
+  if (ev.icon === 'carnival') L('.spin', spin(40));
+  if (ev.icon === 'dhol') { L('.stick1', lt => `rotate(${Math.max(0, Math.sin(lt * 9)) * 16}deg)`); L('.stick2', lt => `rotate(${-Math.max(0, Math.sin(lt * 9 + 1.6)) * 16}deg)`); }
+  if (ev.icon === 'sangeet') { L('.note1', lt => `translateY(${Math.sin(lt * 3) * 6}px)`); L('.note2', lt => `translateY(${Math.sin(lt * 3 + 1.5) * 6}px)`); }
+  if (ev.icon === 'agni') L('.flames', lt => `scale(${1 + .05 * Math.sin(lt * 11)}, ${1 + .08 * Math.sin(lt * 7.3)})`);
+  q('.spin, .stick1, .stick2, .flames').forEach(n => n.style.transformBox = 'view-box');
+  s.day = ev.day;
+}
+
+/* Closing — all three looks together */
+function buildClosing() {
+  const s = slide(8.6, { fx: 'fireworks' });
+  s.el.innerHTML = `
+    ${bgLayers('maroon', `<div class="abs" id="cMandala" style="left:-110px;top:260px;width:1300px;height:1300px;opacity:.16">${mandala(650)}</div>`)}
+    <div class="abs center hi gold shadow" id="cHead" style="top:176px;font-size:62px">आपके आगमन की प्रतीक्षा में</div>
+    ${archBlock(30, 540, 318, 590, 'royal', 'cA1')}
+    ${archBlock(732, 540, 318, 590, 'teal', 'cA3')}
+    ${coupleImg('formal', 189, 1118, 520, 'cC1')}
+    ${coupleImg('casual', 891, 1118, 380, 'cC3')}
+    ${archBlock(318, 330, 444, 800, 'saffron', 'cA2')}
+    ${coupleImg('traditional', 540, 1110, 640, 'cC2')}
+    <div class="abs" id="cLedge">${ledge(24, 1100, 1032)}</div>
+    <div class="abs center script gold shadow" id="cNames" style="top:1196px;font-size:120px;line-height:1.1">Veeral &amp; Konika</div>
+    <div class="abs center cinzel gold" id="cDate" style="top:1356px;font-size:52px;letter-spacing:10px">21 · 11 · 2026</div>
+    <div class="abs center" id="cDiv" style="top:1436px">${divider(620)}</div>
+    <div class="abs center tiro ivory" id="cMsg" style="top:1482px;font-size:40px;line-height:1.55">आपकी गरिमामयी उपस्थिति<br>हमारे लिए आशीर्वाद होगी</div>
+    <div class="abs center corm" id="cEn" style="top:1626px;font-size:38px;font-style:italic;color:#ffe9c4">we can't wait to celebrate with you</div>`;
+  A('#cHead', 'down', .2, .9);
+  A('.cA2', 'zoom', .3, 1.0); A('.cC2', 'rise', .6, 1.2);
+  A('.cA1', 'left', .9, 1.0); A('.cC1', 'rise', 1.1, 1.1);
+  A('.cA3', 'right', .9, 1.0); A('.cC3', 'rise', 1.2, 1.1);
+  A('#cLedge', 'fade', .5, .8);
+  A('#cNames', 'wipeL', 2.0, 1.4, 'inout');
+  A('#cDate', 'up', 2.9, .9);
+  A('#cDiv', 'wipe', 3.2, .9);
+  A('#cMsg', 'blur', 3.4, 1.0);
+  A('#cEn', 'fade', 4.0, 1.0);
+  L('#cMandala', spin(4));
+  L('.arch .rays', spin(6));
+  L('.couple', (lt, i) => `translateY(${Math.sin(lt * 1.6 + i) * 4}px)`);
+}
+
+buildOpening();
+buildTitle();
+buildInvite();
+DAYS.forEach((_, d) => { buildDay(d); EVENTS.forEach((e, i) => { if (e.day === d) buildEvent(i); }); });
+buildClosing();
+
+let T = 0;
+for (const s of slides) { s.start = T; T += s.dur; }
+const DURATION = T + .4;
+
+/* Persistent day couples: stay in the arch through a day's slides */
+const dayCouples = DAYS.map((day, d) => {
+  const ss = slides.filter(s => s.day === d);
+  const t0 = ss[0].start, t1 = ss[ss.length - 1].start + ss[ss.length - 1].dur;
+  const key = day.couple;
+  const hgt = key === 'casual' ? 640 : 730;
+  const wrap = el(`<div class="layer" style="display:none">${coupleImg(key, 540, ARCH.y + ARCH.h - 2, hgt)}${ledge(ARCH.x - 24, ARCH.y + ARCH.h - 12, ARCH.w + 48)}</div>`);
+  document.getElementById('couples').appendChild(wrap);
+  return { wrap, img: wrap.querySelector('img'), t0, t1 };
+});
+
+/* Persistent pieces */
+document.getElementById('toran').innerHTML = toranSVG();
+document.getElementById('frame').innerHTML = frameSVG();
+document.getElementById('palace').innerHTML = palaceSVG() + diyaRow(118, [90, 990], 96);
+document.getElementById('doors').innerHTML = `
+  <div class="abs" id="doorL" style="left:0;top:0;width:540px;height:1920px;transform-origin:0 50%">${doorSVG(false)}</div>
+  <div class="abs" id="doorR" style="left:540px;top:0;width:540px;height:1920px;transform-origin:100% 50%">${doorSVG(true)}</div>
+  <div class="abs" id="doorLight" style="left:520px;top:0;width:40px;height:1920px;background:linear-gradient(90deg,transparent,rgba(255,236,170,.95),transparent);opacity:0"></div>`;
+const strings = [...document.querySelectorAll('#toran .string')].map(g => ({ g, x: +g.getAttribute('transform').match(/translate\(([\d.]+)/)[1], i: +g.dataset.i }));
+const palaceFlames = [...document.querySelectorAll('#palace .flame')];
+palaceFlames.forEach(f => { f.style.transformBox = 'fill-box'; f.style.transformOrigin = '50% 100%'; });
+
+/* ------------------------------------------------------------
+   Particles (deterministic in t)
+   ------------------------------------------------------------ */
+const cv = document.getElementById('fx'), cx = cv.getContext('2d');
+function drawFx(type, lt, alpha) {
+  if (alpha <= 0) return;
+  cx.save(); cx.globalAlpha = alpha;
+  if (type === 'petals' || type === 'rose' || type === 'haldi') {
+    const cols = type === 'rose' ? ['#ff4d6d', '#c9184a', '#ff8fab', '#ffb3c6'] : type === 'haldi' ? ['#ffd31a', '#ffe066', '#ffb300', '#fff3a0'] : ['#ff9800', '#ffb300', '#ff6f00', '#ffd54f', '#e53935'];
+    for (let i = 0; i < 46; i++) {
+      const sp = 150 + rnd(i, 2) * 170, x = rnd(i, 1) * W + Math.sin(lt * (1 + rnd(i, 5)) + i) * 50;
+      const y = ((rnd(i, 3) * (H + 200) + lt * sp) % (H + 200)) - 100;
+      const r = 9 + rnd(i, 4) * 13;
+      cx.save(); cx.translate(x, y); cx.rotate(lt * (rnd(i, 6) - .5) * 5 + i);
+      cx.scale(1, .45 + .55 * Math.abs(Math.sin(lt * 2 + i)));
+      cx.fillStyle = cols[i % cols.length];
+      cx.beginPath(); cx.ellipse(0, 0, r, r * .6, 0, 0, Math.PI * 2); cx.fill();
+      cx.fillStyle = 'rgba(255,255,255,.25)'; cx.beginPath(); cx.ellipse(-r * .25, -r * .15, r * .45, r * .2, 0, 0, Math.PI * 2); cx.fill();
+      cx.restore();
+    }
+  } else if (type === 'sparkle' || type === 'stars') {
+    const n = type === 'stars' ? 70 : 40;
+    for (let i = 0; i < n; i++) {
+      const x = rnd(i, 1) * W, y = 160 + rnd(i, 2) * (type === 'stars' ? 1100 : 1600);
+      const tw = Math.pow(Math.max(0, Math.sin(lt * (1.5 + rnd(i, 3) * 2.5) + i * 1.7)), 3);
+      const r = (type === 'stars' ? 3 : 5) + rnd(i, 4) * 9;
+      cx.save(); cx.translate(x, y); cx.globalAlpha = alpha * tw; cx.fillStyle = i % 3 ? '#fff6d0' : '#ffd36b';
+      cx.beginPath();
+      for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4, rr = k % 2 ? r * .22 : r; cx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+      cx.closePath(); cx.fill(); cx.restore();
+    }
+    if (type === 'stars') {
+      const p = (lt % 2.6) / .9; if (p < 1) {
+        const x0 = 900 - p * 600, y0 = 200 + p * 260; const g = cx.createLinearGradient(x0, y0, x0 + 160, y0 - 70);
+        g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+        cx.strokeStyle = g; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(x0, y0); cx.lineTo(x0 + 160, y0 - 70); cx.stroke();
+      }
+    }
+  } else if (type === 'confetti') {
+    const cols = ['#ff4f9a', '#3fd6c6', '#ffd31a', '#ff7043', '#9c6bff', '#ffffff'];
+    for (let i = 0; i < 70; i++) {
+      const sp = 180 + rnd(i, 2) * 200, x = rnd(i, 1) * W + Math.sin(lt * 1.4 + i) * 40;
+      const y = ((rnd(i, 3) * (H + 200) + lt * sp) % (H + 200)) - 100;
+      cx.save(); cx.translate(x, y); cx.rotate(lt * 3 * (rnd(i, 4) - .5) + i);
+      cx.scale(Math.cos(lt * 5 + i), 1); cx.fillStyle = cols[i % cols.length];
+      cx.fillRect(-7, -11, 14, 22); cx.restore();
+    }
+  } else if (type === 'notes') {
+    cx.font = '64px "FreeSerif", serif'; cx.textAlign = 'center';
+    for (let i = 0; i < 18; i++) {
+      const sp = 90 + rnd(i, 2) * 90, x = 80 + rnd(i, 1) * (W - 160) + Math.sin(lt * 1.5 + i) * 40;
+      const y = H + 60 - ((rnd(i, 3) * (H + 200) + lt * sp) % (H + 200));
+      cx.save(); cx.translate(x, y); cx.rotate(Math.sin(lt * 2 + i) * .3); cx.scale(.6 + rnd(i, 4) * .7, .6 + rnd(i, 4) * .7);
+      cx.fillStyle = i % 2 ? '#f8d978' : '#ffc2e0'; cx.shadowColor = 'rgba(255,200,120,.8)'; cx.shadowBlur = 14;
+      cx.fillText(i % 3 ? '♪' : '♫', 0, 0); cx.restore();
+    }
+  } else if (type === 'embers') {
+    cx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 70; i++) {
+      const sp = 140 + rnd(i, 2) * 220, x = rnd(i, 1) * W + Math.sin(lt * 2 + i) * 30;
+      const y = H - ((rnd(i, 3) * (H + 100) + lt * sp) % (H + 100));
+      const r = 2 + rnd(i, 4) * 5, g = cx.createRadialGradient(x, y, 0, x, y, r * 4);
+      g.addColorStop(0, 'rgba(255,240,180,1)'); g.addColorStop(.3, 'rgba(255,150,30,.8)'); g.addColorStop(1, 'rgba(255,60,0,0)');
+      cx.fillStyle = g; cx.beginPath(); cx.arc(x, y, r * 4, 0, Math.PI * 2); cx.fill();
+    }
+  } else if (type === 'fireworks') {
+    cx.globalCompositeOperation = 'lighter';
+    const cols = ['255,210,110', '255,120,170', '140,240,220', '255,255,255', '255,160,60'];
+    for (let b = 0; b < 9; b++) {
+      const period = 2.4, t0 = b * .55 + 1.0, tt = lt - t0; if (tt < 0) continue;
+      const ph = (tt % period) / period, cyc = Math.floor(tt / period);
+      if (ph > .75) continue;
+      const bx = 170 + rnd(b, cyc + 1) * 740, by = 200 + rnd(b, cyc + 7) * 260;
+      const rad = 60 + 160 * E.out(ph / .75), fade = 1 - ph / .75, col = cols[(b + cyc) % cols.length];
+      for (let k = 0; k < 36; k++) {
+        const a = k * Math.PI * 2 / 36 + b;
+        const x = bx + Math.cos(a) * rad, y = by + Math.sin(a) * rad + ph * ph * 120;
+        cx.fillStyle = `rgba(${col},${fade})`; cx.beginPath(); cx.arc(x, y, 3.2, 0, Math.PI * 2); cx.fill();
+        cx.fillStyle = `rgba(${col},${fade * .35})`; cx.beginPath(); cx.arc(bx + Math.cos(a) * rad * .8, by + Math.sin(a) * rad * .8 + ph * ph * 100, 2, 0, Math.PI * 2); cx.fill();
+      }
+    }
+    cx.globalCompositeOperation = 'source-over';
+    drawFx('petals', lt, .8);
+  }
+  cx.restore();
+}
+
+/* ------------------------------------------------------------
+   Renderer
+   ------------------------------------------------------------ */
+const IN = {
+  fade: p => ({ o: p }),
+  up: p => ({ o: p, t: `translateY(${(1 - p) * 70}px)` }),
+  down: p => ({ o: p, t: `translateY(${-(1 - p) * 60}px)` }),
+  left: p => ({ o: p, t: `translateX(${-(1 - p) * 180}px)` }),
+  right: p => ({ o: p, t: `translateX(${(1 - p) * 180}px)` }),
+  zoom: p => ({ o: p, t: `scale(${.6 + .4 * p})` }),
+  pop: p => ({ o: clamp(p * 2.5), t: `scale(${Math.max(p, 0)})` }),
+  rise: p => ({ o: clamp(p * 2), t: `translateY(${(1 - p) * 520}px)` }),
+  blur: p => ({ o: p, f: `blur(${(1 - p) * 16}px)`, t: `scale(${1.12 - .12 * p})` }),
+  wipe: p => ({ c: `inset(-20% ${(1 - p) * 50}% -20% ${(1 - p) * 50}%)` }),
+  wipeL: p => ({ c: `inset(-30% ${(1 - p) * 100}% -30% -5%)` }),
+};
+
+function seek(t) {
+  // slides
+  for (const s of slides) {
+    const lt = t - s.start;
+    const visible = lt >= 0 && lt < s.dur + XF;
+    if (!visible) { if (s.el.style.display !== 'none') s.el.style.display = 'none'; continue; }
+    s.el.style.display = 'block';
+    s.el.style.opacity = s === slides[0] ? 1 : clamp(lt / XF);
+    for (const a of s.anims) {
+      const p = E[a.ease](clamp((lt - a.delay) / a.dur));
+      const r = IN[a.type](p);
+      a.n.style.opacity = r.o === undefined ? 1 : r.o;
+      a.n.dataset.tin = r.t || '';
+      a.n.style.filter = `${a.n.dataset.fbase} ${r.f && p < 1 ? r.f : ''}`.trim();
+      a.n.style.clipPath = r.c || '';
+    }
+    const loopT = new Map();
+    for (const l of s.loops) loopT.set(l.n, (loopT.get(l.n) || '') + ' ' + l.fn(lt, l.i));
+    const touched = new Set([...s.anims.map(a => a.n), ...s.loops.map(l => l.n)]);
+    for (const n of touched) {
+      n.style.transform = `${n.dataset.base || ''} ${n.dataset.tin || ''} ${loopT.get(n) || ''}`.trim();
+    }
+  }
+  // day couples
+  for (const dc of dayCouples) {
+    const pin = E.out(clamp((t - dc.t0 - .15) / 1.1)), pout = clamp((t - dc.t1) / XF);
+    const vis = t >= dc.t0 && t < dc.t1 + XF;
+    dc.wrap.style.display = vis ? 'block' : 'none';
+    if (!vis) continue;
+    dc.wrap.style.opacity = clamp(pin * 2) * (1 - pout);
+    dc.img.style.transform = `translateY(${(1 - pin) * 520 + Math.sin(t * 1.5) * 4}px)`;
+  }
+  // doors
+  const pd = E.inout(clamp((t - .7) / 1.9));
+  document.getElementById('doors').style.display = pd >= 1 ? 'none' : 'block';
+  document.getElementById('doorL').style.transform = `rotateY(${pd * 100}deg)`;
+  document.getElementById('doorR').style.transform = `rotateY(${-pd * 100}deg)`;
+  document.getElementById('doorLight').style.opacity = clamp(t / .5) * (1 - clamp((t - .9) / .6));
+  // toran drops in, then sways
+  const pt = E.back(clamp((t - 1.6) / 1.2));
+  document.getElementById('toran').style.transform = `translateY(${(1 - pt) * -220}px)`;
+  for (const s of strings) s.g.setAttribute('transform', `translate(${s.x} 12) rotate(${Math.sin(t * 2.1 + s.i * .7) * 3.2})`);
+  // palace silhouette (after the opening)
+  const pp = clamp((t - slides[1].start) / 1.2);
+  const palace = document.getElementById('palace');
+  palace.style.opacity = pp;
+  palace.style.transform = `translateY(${(1 - E.out(pp)) * 80}px)`;
+  palaceFlames.forEach((f, i) => f.style.transform = flicker(f, i)(t));
+  // particles
+  cx.clearRect(0, 0, W, H);
+  for (const s of slides) {
+    if (!s.fx) continue;
+    const lt = t - s.start;
+    if (lt < s.fxStart || lt > s.dur + XF) continue;
+    const a = clamp((lt - s.fxStart) / .8) * (1 - clamp((lt - s.dur) / XF));
+    drawFx(s.fx, lt, a * .9);
+  }
+}
+
+window.__DURATION = DURATION;
+window.__seek = seek;
+window.__slides = slides.map(s => ({ start: s.start, dur: s.dur }));
+
+/* Live preview in a browser (the render script passes ?capture) */
+const capture = new URLSearchParams(location.search).has('capture');
+function fit() {
+  const st = document.getElementById('stage');
+  const sc = Math.min(innerWidth / W, innerHeight / H);
+  st.style.transform = `scale(${sc})`;
+  document.body.style.height = innerHeight + 'px';
+  st.style.marginLeft = ((innerWidth - W * sc) / 2) + 'px';
+  document.body.style.justifyContent = 'flex-start';
+}
+if (!capture) {
+  fit(); addEventListener('resize', fit);
+  const music = document.getElementById('music');
+  let t0 = null;
+  const loop = now => {
+    if (t0 === null) t0 = now;
+    let t = (now - t0) / 1000;
+    if (!music.paused) t = music.currentTime;
+    if (t > DURATION) { t0 = now; if (!music.paused) { music.currentTime = 0; } t = 0; }
+    seek(t);
+    requestAnimationFrame(loop);
+  };
+  document.fonts.ready.then(() => requestAnimationFrame(loop));
+  const hint = document.getElementById('playHint');
+  hint.style.display = 'block';
+  hint.onclick = () => { hint.style.display = 'none'; music.currentTime = 0; t0 = null; music.play().catch(() => {}); };
+} else {
+  seek(0);
+}
+</script>
+</body>
+</html>
