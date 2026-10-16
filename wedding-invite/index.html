@@ -166,7 +166,7 @@ const el = html => { const t = document.createElement('template'); t.innerHTML =
    Content
    ------------------------------------------------------------ */
 const DAYS = [
-  { hi: 'प्रथम दिवस', num: '१', en: 'Day One', date: 'गुरुवार, 19 नवम्बर 2026', dateEn: 'Thursday · 19 November 2026', couple: 'formal', theme: 'maroon' },
+  { hi: 'प्रथम दिवस', num: '१', en: 'Day One', date: 'गुरुवार, 19 नवम्बर 2026', dateEn: 'Thursday · 19 November 2026', couple: 'casual', theme: 'maroon' },
   { hi: 'द्वितीय दिवस', num: '२', en: 'Day Two', date: 'शुक्रवार, 20 नवम्बर 2026', dateEn: 'Friday · 20 November 2026', couple: 'casual', theme: 'teal' },
   { hi: 'तृतीय दिवस', num: '३', en: 'Day Three', date: 'शनिवार, 21 नवम्बर 2026', dateEn: 'Saturday · 21 November 2026', couple: 'traditional', theme: 'red' },
 ];
@@ -197,7 +197,6 @@ const THEMES = {
   fire:     { bg: ['#7a1a02', '#240300'], arch: ['#ffd36a', '#c22a06'] },
 };
 const COUPLES = {
-  formal: { src: 'assets/caricature_formal.png', w: 760, h: 1540 },
   casual: { src: 'assets/caricature_casual.png', w: 1040, h: 1291 },
   traditional: { src: 'assets/caricature_traditional.png', w: 747, h: 1540 },
 };
@@ -789,12 +788,10 @@ function buildClosing() {
   s.el.innerHTML = `
     ${bgLayers('maroon', `<div class="abs" id="cMandala" style="left:-110px;top:260px;width:1300px;height:1300px;opacity:.16">${mandala(650)}</div>`)}
     <div class="abs center hi gold shadow" id="cHead" style="top:176px;font-size:62px">आपके आगमन की प्रतीक्षा में</div>
-    ${archBlock(30, 540, 318, 590, 'royal', 'cA1')}
-    ${archBlock(732, 540, 318, 590, 'teal', 'cA3')}
-    ${coupleImg('formal', 189, 1118, 520, 'cC1')}
-    ${coupleImg('casual', 891, 1118, 380, 'cC3')}
-    ${archBlock(318, 330, 444, 800, 'saffron', 'cA2')}
-    ${coupleImg('traditional', 540, 1110, 640, 'cC2')}
+    ${archBlock(60, 470, 470, 660, 'teal', 'cA1')}
+    ${archBlock(550, 400, 470, 730, 'saffron', 'cA2')}
+    ${coupleImg('casual', 295, 1118, 520, 'cC1')}
+    ${coupleImg('traditional', 785, 1110, 640, 'cC2')}
     <div class="abs" id="cLedge">${ledge(24, 1100, 1032)}</div>
     <div class="abs center script gold shadow" id="cNames" style="top:1196px;font-size:120px;line-height:1.1">Veeral &amp; Konika</div>
     <div class="abs center cinzel gold" id="cDate" style="top:1356px;font-size:52px;letter-spacing:10px">21 · 11 · 2026</div>
@@ -804,7 +801,6 @@ function buildClosing() {
   A('#cHead', 'down', .2, .9);
   A('.cA2', 'zoom', .3, 1.0); A('.cC2', 'rise', .6, 1.2);
   A('.cA1', 'left', .9, 1.0); A('.cC1', 'rise', 1.1, 1.1);
-  A('.cA3', 'right', .9, 1.0); A('.cC3', 'rise', 1.2, 1.1);
   A('#cLedge', 'fade', .5, .8);
   A('#cNames', 'wipeL', 2.0, 1.4, 'inout');
   A('#cDate', 'up', 2.9, .9);
