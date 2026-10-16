@@ -1,6 +1,6 @@
 # Veeral weds Konika — Rajasthani wedding invite video
 
-`veeral-weds-konika-invite.mp4`: 1080×1920 (9:16, ready for WhatsApp, Instagram or Status), 30 fps, about 94 s, with a synthesized background score.
+`veeral-weds-konika-invite.mp4`: 1080×1920 (9:16, ready for WhatsApp, Instagram or Status), 30 fps, about 68 s, with a synthesized background score.
 
 ## What's in the video
 
@@ -31,7 +31,7 @@ NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite.m
 # single frames for checking
 NODE_PATH=$(npm root -g) node tools/render.mjs stills /tmp/stills 11 29 83
 # music
-python3 tools/make_music.py /tmp/music.wav 93.8 && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
+python3 tools/make_music.py /tmp/music.wav 67.9 && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
 ```
 
 ## Caricatures

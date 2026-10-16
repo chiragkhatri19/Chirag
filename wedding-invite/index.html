@@ -576,7 +576,7 @@ function slide(dur, opts = {}) {
   const node = document.createElement('section');
   node.className = 'slide';
   document.getElementById('slides').appendChild(node);
-  cur = { el: node, dur, anims: [], loops: [], fx: opts.fx || null, fxStart: opts.fxStart || 0, mask: opts.mask || null, hooks: [] };
+  cur = { el: node, dur, speed: opts.speed || 1, anims: [], loops: [], fx: opts.fx || null, fxStart: opts.fxStart || 0, mask: opts.mask || null, hooks: [] };
   slides.push(cur);
   return cur;
 }
@@ -587,7 +587,7 @@ function keepBase(n) {
 }
 function A(sel, type, delay, dur = .9, ease = 'out') {
   const nodes = typeof sel === 'string' ? cur.el.querySelectorAll(sel) : [sel];
-  nodes.forEach(n => { keepBase(n); cur.anims.push({ n, type, delay, dur, ease }); });
+  nodes.forEach(n => { keepBase(n); cur.anims.push({ n, type, delay: delay * cur.speed, dur: dur * cur.speed, ease }); });
 }
 // continuous motion registration: fn(lt) -> transform string
 function L(sel, fn) {
@@ -638,7 +638,7 @@ const spin = (speed, base = 0) => lt => `rotate(${base + lt * speed}deg)`;
 
 /* 0 — Doors open on Shri Ganesh */
 function buildOpening() {
-  const s = slide(7.5, { fx: 'petals', fxStart: 2.2 });
+  const s = slide(5.0, { fx: 'petals', fxStart: 1.8, speed: .75 });
   s.el.innerHTML = `
     <div class="layer" style="background:radial-gradient(ellipse at 50% 36%, #ffb554 0%, #c2410c 26%, #6b0f1a 58%, #2a0409 100%)"></div>
     <div class="pattern" style="background-image:${JAALI}"></div>
@@ -656,7 +656,7 @@ function buildOpening() {
   A('#opGlow', 'zoom', 1.0, 1.6);
   A('#opGanesh', 'pop', 1.5, 1.2, 'back');
   A('#opTitle', 'up', 2.4, 1.0);
-  A('#opShloka > div', 'blur', 3.0, 1.0); cur.anims[cur.anims.length - 1].delay = 3.4;
+  A('#opShloka > div', 'blur', 3.0, 1.0); cur.anims[cur.anims.length - 1].delay = 3.4 * cur.speed;
   A('#opDiv', 'wipe', 3.5, 1.0);
   A('#opSub', 'fade', 3.8, 1.0);
   A('.diya', 'up', 2.0, 1.0);
@@ -669,7 +669,7 @@ function buildOpening() {
 
 /* 1 — Title */
 function buildTitle() {
-  const s = slide(7.5, { fx: 'petals', mask: [1230, 1700] });
+  const s = slide(5.0, { fx: 'petals', mask: [1230, 1700], speed: .7 });
   s.el.innerHTML = `
     ${bgLayers('maroon', `<div class="abs" id="tMandala" style="left:40px;top:280px;width:1000px;height:1000px;opacity:.22">${mandala(500)}</div>`)}
     <div class="abs center hi gold shadow" id="tTop" style="top:178px;font-size:58px">॥ शुभ विवाह ॥</div>
@@ -705,7 +705,7 @@ function buildTitle() {
 
 /* 2 — Invitation */
 function buildInvite() {
-  const s = slide(7.5, { fx: 'sparkle' });
+  const s = slide(5.0, { fx: 'sparkle', speed: .7 });
   s.el.innerHTML = `
     ${bgLayers('rani', `<div class="abs" id="iMandala" style="left:-60px;top:380px;width:1200px;height:1200px;opacity:.18">${mandala(600)}</div>`)}
     <div class="abs center hi gold shadow" id="iHead" style="top:200px;font-size:76px">॥ सादर आमंत्रण ॥</div>
@@ -726,7 +726,7 @@ function buildInvite() {
   A('#iDiv1', 'wipe', .6, .9);
   A('#iP1', 'up', .8, .9);
   A('#iNames > div', 'zoom', 1.3, .9);
-  cur.anims.slice(-5).forEach((a, i) => a.delay = 1.3 + i * .22);
+  cur.anims.slice(-5).forEach((a, i) => a.delay = (1.3 + i * .22) * cur.speed);
   A('#iP2', 'up', 2.6, .9);
   A('#iDiv2', 'wipe', 3.0, .9);
   A('#iEn', 'blur', 3.2, 1.1);
@@ -738,7 +738,7 @@ function buildInvite() {
 const ARCH = { x: 160, y: 370, w: 760, h: 800 };
 function buildDay(d) {
   const day = DAYS[d];
-  const s = slide(3.75, { fx: 'sparkle', mask: [1220, 1700] });
+  const s = slide(2.5, { fx: 'sparkle', mask: [1220, 1700], speed: .6 });
   const evs = EVENTS.filter(e => e.day === d);
   s.el.innerHTML = `
     ${bgLayers(day.theme)}
@@ -765,7 +765,7 @@ function buildDay(d) {
 /* Event */
 function buildEvent(i) {
   const ev = EVENTS[i], day = DAYS[ev.day];
-  const s = slide(5.0, { fx: ev.fx, mask: [1220, 1700] });
+  const s = slide(3.75, { fx: ev.fx, mask: [1220, 1700], speed: .65 });
   const long = ev.time.length > 6;
   s.el.innerHTML = `
     ${bgLayers(ev.theme)}
@@ -801,7 +801,7 @@ function buildEvent(i) {
 
 /* Closing — both looks together */
 function buildClosing() {
-  const s = slide(10.0, { fx: 'fireworks', mask: [1180, 1700] });
+  const s = slide(7.5, { fx: 'fireworks', mask: [1180, 1700], speed: .8 });
   s.el.innerHTML = `
     ${bgLayers('maroon', `<div class="abs" id="cMandala" style="left:-110px;top:260px;width:1300px;height:1300px;opacity:.16">${mandala(650)}</div>`)}
     <div class="abs center hi gold shadow" id="cHead" style="top:176px;font-size:62px">आपके आगमन की प्रतीक्षा में</div>

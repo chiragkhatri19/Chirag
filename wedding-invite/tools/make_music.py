@@ -14,7 +14,7 @@ import numpy as np
 
 SR = 44100
 OUT = sys.argv[1] if len(sys.argv) > 1 else 'music.wav'
-DUR = float(sys.argv[2]) if len(sys.argv) > 2 else 94.15
+DUR = float(sys.argv[2]) if len(sys.argv) > 2 else 67.9
 N = int(SR * (DUR + 2.5))
 rng = np.random.default_rng(7)
 
@@ -111,8 +111,8 @@ while tt < DUR + 1:
     k += 1
 
 # ---- Opening alaap (free rhythm) during the doors / Ganesh slide
-for t0, sw, octv, v in [(0.4, 'S', 0, .8), (1.6, 'G', 0, .7), (2.5, 'P', 0, .75), (3.4, 'D', 0, .6), (3.9, 'P', 0, .7),
-                        (4.8, 'S', 1, .8), (5.6, 'N', 0, .5), (5.9, 'D', 0, .55), (6.2, 'P', 0, .6)]:
+for t0, sw, octv, v in [(0.4, 'S', 0, .8), (1.3, 'G', 0, .7), (2.0, 'P', 0, .75), (2.7, 'D', 0, .6), (3.1, 'P', 0, .7),
+                        (3.8, 'S', 1, .8), (4.3, 'N', 0, .5), (4.55, 'D', 0, .55), (4.8, 'P', 0, .6)]:
     add(mel, t0, santoor(freq(sw, octv), v, 3.0))
 for t0, f in [(0.7, 1568.0), (1.0, 2093.0), (2.4, 1760.0)]:
     add(bells, t0, bell(f, .9))
@@ -120,7 +120,7 @@ for t0, f in [(0.7, 1568.0), (1.0, 2093.0), (2.4, 1760.0)]:
 # ---- Rhythmic section from the title slide
 BPM = 96
 E8 = 60 / BPM / 2
-START = 7.5
+START = 5.0
 PHRASE = [  # (swar, octave, eighths)
     ('P', 0, 2), ('D', 0, 1), ('P', 0, 1), ('G', 0, 2), ('R', 0, 1), ('G', 0, 1),
     ('S', 0, 4), ('R', 0, 2), ('G', 0, 2),
@@ -177,7 +177,7 @@ for b in range(nbars):
 add(drums, START + nbars * bar, dhol_bass(1.0))
 
 # ---- Bells on day changes and the finale (slide starts from index.html)
-for t0 in (7.5, 22.5, 41.25, 65.0, 83.75):
+for t0 in (5.0, 15.0, 28.75, 46.25, 60.0):
     add(bells, t0, bell(1568.0, 0.8))
     add(bells, t0 + 0.12, bell(2349.0, 0.5))
 
