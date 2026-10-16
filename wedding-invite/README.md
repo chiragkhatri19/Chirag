@@ -26,7 +26,7 @@ All content lives in `index.html`, in the `DAYS` and `EVENTS` arrays near the to
 ## Re-rendering
 
 ```bash
-# video (headless Chromium + ffmpeg); about 3 minutes on 4 cores
+# video (headless Chromium + ffmpeg); about 4 minutes on 4 cores
 NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite.mp4 --audio assets/music.m4a
 # single frames for checking
 NODE_PATH=$(npm root -g) node tools/render.mjs stills /tmp/stills 11 29 83
