@@ -10,11 +10,14 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PAGE = pathToFileURL(path.join(ROOT, 'reel.html')).href + '?capture';
-const previewMode = process.argv[2] === '--preview';
-const out = path.resolve(previewMode ? process.argv[3] : (process.argv[2] || path.join(ROOT, 'veeral-konika-save-the-date.mp4')));
-const fpsArg = process.argv.indexOf('--fps');
-const fps = fpsArg >= 0 ? Number(process.argv[fpsArg + 1]) : 30;
+const args = process.argv.slice(2);
+const previewMode = args[0] === '--preview';
+const out = path.resolve(previewMode ? args[1] : (args[0] || path.join(ROOT, 'veeral-konika-save-the-date.mp4')));
+const pageArg = args.indexOf('--page');
+const pageFile = path.resolve(ROOT, pageArg >= 0 ? args[pageArg + 1] : 'reel.html');
+const PAGE = pathToFileURL(pageFile).href + '?capture';
+const fpsArg = args.indexOf('--fps');
+const fps = fpsArg >= 0 ? Number(args[fpsArg + 1]) : 30;
 const run = (cmd, args) => new Promise((resolve, reject) => {
   const p = spawn(cmd, args, { stdio: ['ignore', 'inherit', 'inherit'] });
   p.on('exit', code => code === 0 ? resolve() : reject(new Error(`${cmd} exited ${code}`)));
@@ -32,7 +35,7 @@ await page.evaluate(async () => {
 });
 const duration = await page.evaluate(() => window.__DURATION);
 if (previewMode) {
-  const at = Number(process.argv[4] || 0);
+  const at = Number(args[2] || 0);
   await page.evaluate(t => window.__seek(t), at);
   await page.screenshot({ path: out, type: 'png' });
   await browser.close();
@@ -55,6 +58,8 @@ ff.stdin.end();
 await ffDone;
 await browser.close();
 const music = path.join(ROOT, 'assets', 'music.m4a');
-await run('ffmpeg', ['-y', '-loglevel', 'error', '-i', silent, '-i', music, '-filter_complex', '[1:a]atrim=0:16,afade=t=out:st=14.7:d=1.3,volume=0.68[a]', '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out]);
+const fade = Math.min(1.3, duration);
+const audioFilter = `[1:a]atrim=0:${duration},afade=t=out:st=${duration - fade}:d=${fade},volume=0.68[a]`;
+await run('ffmpeg', ['-y', '-loglevel', 'error', '-i', silent, '-i', music, '-filter_complex', audioFilter, '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out]);
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(`wrote ${out}`);

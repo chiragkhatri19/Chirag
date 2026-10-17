@@ -22,6 +22,7 @@
 | `codex/` | The image-generation brief (`PROMPT.md`, `FIX1.md`), the reference images and the raw generated artwork. |
 | `tools/render.mjs` | Frame-by-frame renderer (headless Chromium + ffmpeg). |
 | `tools/render-reel.mjs` | Renderer for the short save-the-date teaser. |
+| `reel-cards.html` | Botanical-paper “SAVE / THE DATE” card version of the teaser. |
 | `tools/make_music.py` | Synthesized score: tanpura, santoor and dholak, with bells on each day change. |
 | `index_v1.html` | The first, code-drawn version (kept for reference). |
 
@@ -37,6 +38,14 @@ NODE_PATH=$(npm root -g) node tools/render-reel.mjs veeral-konika-save-the-date.
 
 The deterministic motion/layout source is `reel.html`; `tools/render-reel.mjs` captures it at 30 fps
 and adds a short fade on the invite's existing instrumental score.
+
+`veeral-konika-save-the-date-cards.mp4` is a second, playful 10-second treatment inspired by the
+paper-and-card reveal format. The couple appears on a light botanical background, with paired SAVE /
+THE DATE cards followed by the date and venue. Re-render it with:
+
+```bash
+NODE_PATH=$(npm root -g) node tools/render-reel.mjs veeral-konika-save-the-date-cards.mp4 --page reel-cards.html
+```
 
 ## Editing text, times or colours
 
