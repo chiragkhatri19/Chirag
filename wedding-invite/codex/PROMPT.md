@@ -68,8 +68,9 @@ Rules for every 2D CHARACTER image (section 4A):
 ## 4. Jobs
 
 The video has two halves, so there are two looks:
-- **Entry (painted 2D look):** the section 3 style. Jobs 01, 12–19.
-- **Events (cinematic 3D look):** jobs E01–E10 and F1–F4, described below.
+- **Opening (painted 2D look):** the section 3 style. A gold monogram inside a marigold wreath on a
+  watercolour card, then the invitation card, then the couple appears. Jobs 01, 15–20.
+- **Events (cinematic 3D look):** jobs E00–E10 and F1–F4, described below.
 
 ### 4A. PAINTED 2D CHARACTERS (transparent, 1024x1536 portrait unless noted)
 
@@ -79,35 +80,6 @@ embroidery, ivory churidar, cream embroidered mojari. Bride in an emerald-green 
 gold zari border and gold buttis, green dupatta over one shoulder, kundan choker, maang tikka, kundan
 jhumkas, green and gold bangles, hair in a low bun. They stand close, her hand resting on his chest,
 both smiling.
-
-`12_car` (**landscape 1536x1024**): refs: headshots + `01` style anchor. The couple in an open-top
-vintage two-seater convertible, cream-white with gold trim and chrome, decorated with marigold garlands
-and a floral bunch on the bonnet (no text, no number plate text). Groom driving in a cream bandhgala,
-bride beside him in a pink-and-gold lehenga with her dupatta fluttering behind in the wind. Both smile
-and wave at the viewer. The car drives toward the viewer in a front three-quarter view; the whole car,
-including all visible wheels, is inside the frame.
-
-### 4B. PAINTED 2D ENTRY SCENE LAYERS (for parallax; same painted style, no people, no vehicles, no text)
-
-The entry is a "driving through a Rajasthani town" shot. It is built from stacked layers that move at
-different speeds, so each layer must line up when stacked and must work on its own.
-
-`13a_street_far` (opaque, 1024x1536): golden-hour sky with soft clouds and a few birds, and a palace
-with domes on a hill in the far distance, sitting in the lower half of the frame. Nothing else.
-
-`13b_street_mid` (transparent, 1024x1536): two rows of sandstone havelis with jharokha balconies and
-colourful doors, one row on the left side and one on the right, framing a central gap. The road runs
-from the bottom centre into the distance. Everything above and between the buildings is transparent,
-so the sky layer shows through.
-
-`13c_street_near` (transparent, 1024x1536): only foreground decorations, namely strings of colourful
-triangular bunting and marigold garlands crossing the top third of the frame, plus a few potted plants
-and a hanging lantern at the far left and right edges. Everything else is transparent.
-
-`14_bg_venue_gate` (opaque, 1024x1536): a grand decorated wedding-venue entrance at dusk. A tall carved
-sandstone gateway with a big arch draped in marigold and rose garlands, hanging brass lanterns, fairy
-lights, a red carpet from the bottom centre to the gate, diyas lining the path, a lit palace-like
-building visible through the arch. Keep the lower-middle third clear (the car stops there).
 
 ### 4C. CARD ART (painted)
 
@@ -128,9 +100,14 @@ mango-leaf toran garland with small brass bells, spanning the full width.
 `19_orn_diya` (transparent, 1024x1536): a single brass diya on a small brass stand with a warm flame,
 centred.
 
+`20_orn_wreath` (transparent, 1024x1024 square): a circular wreath of marigolds, red and pink roses,
+jasmine buds and mango leaves, with two small brass bells and a maroon silk ribbon bow at the bottom.
+The centre is completely empty and transparent (a gold monogram is placed there later). The wreath
+fills most of the square, and nothing is cropped.
+
 ### 4D. CINEMATIC 3D EVENT SCENES (opaque, 1024x1536 portrait)
 
-Do `E01` first. Once it passes QC, attach `out/E01_ganesh_sthapana.png` to every later E- and F-job
+Do `E00` first. Once it passes QC, attach `out/E00_venue_entrance.png` to every later E- and F-job
 as the **3D style anchor**, so all scenes look like one continuous venue rendered by one studio.
 
 **Look for every E-job:** a premium cinematic 3D-rendered wedding-venue scene, like a high-end animated
@@ -146,13 +123,20 @@ and rose decor, brass lanterns and diyas. Colours are ivory, maroon, marigold, r
 - Place them in the lower half of the frame, **full figure, faces clearly visible**, standing beside
   (not in front of) the signboard, at about 35–45% of the frame height.
 
-**The signboard (critical):** every scene contains one decorated signboard that matches the event:
+**The signboard (critical):** every scene from E01 to E10 contains one decorated signboard that matches the event:
 an easel, an arch panel, a framed board or a wall panel. Its **flat face is a blank rectangle filled
 with pure chroma green #00FF00**, which the video tool replaces with the event text later. Rules:
 - No text, letters or symbols on the board or anywhere else in the image.
 - Flowers may frame the green face, but nothing may overlap it.
 - The green face is a simple four-corner rectangle (perspective allowed), at least 40% of the image
   width, fully inside the frame, in the upper-middle area.
+
+`E00_venue_entrance` (no people, no signboard, no green): the establishing shot at golden hour. The
+camera looks straight down a long red-carpet aisle that passes through a series of three carved
+sandstone arches draped in marigold strings and sheer ivory-and-maroon fabric. Diyas line the aisle and
+brass lanterns hang from the arches, with a lit palace courtyard at the far end. The composition is
+symmetrical and the vanishing point is at the centre, because the camera flies forward through these
+arches. Use this as the 3D style anchor instead of E01: generate it first.
 
 `E01_ganesh_sthapana`: midday. A marigold-decorated mandap with a beautiful Ganesha idol on a red-cloth
 pedestal at the back. A carved brass-framed signboard on an easel stands at the front left, with the
@@ -221,7 +205,7 @@ some large blurred petals near the camera, spread over the whole frame.
 After generating each image, inspect it yourself. Use a GPT vision-capable model through the same
 SDK, passing the generated image **and** the reference headshots. Score it 1–10 on:
 1. **Likeness:** does each face match its headshot exactly?
-2. **Style consistency:** 2D jobs match `01_anchor_traditional`; E- and F-jobs match `E01_ganesh_sthapana`.
+2. **Style consistency:** 2D jobs match `01_anchor_traditional`; E- and F-jobs match `E00_venue_entrance`.
 3. **Anatomy:** hands and fingers, limbs, proportions.
 4. **Completeness:** whole figure or object inside the frame, nothing cropped.
 5. **Cleanliness:** truly transparent background where required, no halo, no ground shadow, no text.
@@ -234,21 +218,20 @@ passes only if **every score is 9 or 10**. If it fails, regenerate with the defe
 prompt as explicit corrections. Allow up to **5 attempts per job** and keep the best-scoring one.
 Log every attempt and score to `wedding-invite/codex/out/qc_log.json`.
 
-For every E-job, also detect the green face with numpy (pixels where G>200, R<80, B<80). Write its four
+For every E-job from E01 to E10, also detect the green face with numpy (pixels where G>200, R<80, B<80). Write its four
 corner points (pixel coordinates, clockwise from top-left) to `wedding-invite/codex/out/boards.json` as
 `{"E01_ganesh_sthapana": [[x,y],[x,y],[x,y],[x,y]], ...}`. If the region is not one clean four-sided
 shape, the job fails QC.
 
 Then verify the files with Pillow:
-- Character, ornament, `13b`, `13c` and F-layer PNGs are RGBA, and the four corner pixels have alpha 0.
-- Backgrounds (`13a`, `14`, `15`) and E-scenes are opaque RGB.
+- Character, ornament and F-layer PNGs are RGBA, and the four corner pixels have alpha 0.
+- `15_bg_card_wash` and the E-scenes are opaque RGB.
 - Every image matches the size requested.
 
 ## 6. Deliverables
 
-- `wedding-invite/codex/out/`: `01_anchor_traditional`, `12_car`, `13a_street_far`, `13b_street_mid`,
-  `13c_street_near`, `14_bg_venue_gate`, `15_bg_card_wash`, `16`–`19` ornaments, `E01`–`E10`, and
-  `F1`–`F4` (28 PNG files), plus `boards.json`.
+- `wedding-invite/codex/out/`: `01_anchor_traditional`, `15_bg_card_wash`, `16`–`20` ornaments,
+  `E00`–`E10`, and `F1`–`F4` (22 PNG files), plus `boards.json`.
 - `wedding-invite/codex/out/contact_sheet.jpg`: every output on one sheet, labelled with its job id.
 - `wedding-invite/codex/out/qc_log.json`.
 - `wedding-invite/codex/generate.py`: the script you used. It must not contain the API key.
