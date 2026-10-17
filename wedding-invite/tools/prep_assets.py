@@ -21,6 +21,18 @@ greenness = g - np.maximum(r, b)
 a = 1 - np.clip((greenness - 60) / 80, 0, 1)
 spill = (greenness > 0) & (a > 0)
 p[..., 1] = np.where(spill, np.minimum(g, np.maximum(r, b) + 4), g)
+# the last panorama segment has a washed-out patch of ground (x 4074+, y 1191+): match its tone to the
+# street on its left (a proper repaint of this patch is queued for the next Codex round)
+import cv2  # noqa: E402
+lab = cv2.cvtColor(p.clip(0, 255).astype(np.uint8), cv2.COLOR_RGB2LAB).astype(np.float32)
+ref = lab[1270:1536, 3560:4060].reshape(-1, 3)
+x0, y0 = 4040, 1240
+reg = lab[y0:, x0:]
+src = reg.reshape(-1, 3)
+fixed = (reg - src.mean(0)) / (src.std(0) + 1e-3) * ref.std(0) + ref.mean(0)
+wgt = np.clip(np.arange(reg.shape[1]) / 110, 0, 1)[None, :, None] * np.clip(np.arange(reg.shape[0]) / 40, 0, 1)[:, None, None]
+lab[y0:, x0:] = reg * (1 - wgt) + fixed * wgt
+p = cv2.cvtColor(lab.clip(0, 255).astype(np.uint8), cv2.COLOR_LAB2RGB).astype(np.float32)
 out = np.dstack([p, a * 255]).clip(0, 255).astype(np.uint8)
 Image.fromarray(out, 'RGBA').save(os.path.join(DST, 'street.webp'), quality=90, method=6)
 

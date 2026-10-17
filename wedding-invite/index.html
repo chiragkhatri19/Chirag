@@ -26,6 +26,7 @@
   .night { color: #fff3dc; text-shadow: 0 2px 10px rgba(20,6,30,.85), 0 0 26px rgba(20,6,30,.6); }
   .night .gold { color: #f6d27a; }
   .scrim { padding: 26px 0 34px; background: radial-gradient(closest-side, rgba(255,241,214,.9), rgba(255,241,214,.55) 60%, rgba(255,241,214,0)); }
+  .softscrim { background: radial-gradient(closest-side, rgba(255,241,214,.7), rgba(255,241,214,0)); }
   .rule { display: block; margin: 10px auto; width: 300px; height: 16px; }
   #hint { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 9; font: 600 22px 'Cormorant Garamond', serif;
           color: #fff4dc; background: rgba(92,18,16,.88); border: 2px solid #e9b85a; border-radius: 40px; padding: 14px 30px; cursor: pointer; display: none; }
@@ -81,7 +82,7 @@ const EVENTS = [
   { d: 2, img: 'E09', enTime: '3:00 PM', hi: 'बारात प्रस्थान · बंदोली', en: 'Baraat Prasthan · Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
   { d: 2, img: 'E10', enTime: '7:21 – 9:34 PM', hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', sky: 'night' },
 ];
-const WIPES = [['pillar', 'drape'], ['flowers', 'pillar', 'petals'], ['drape', 'pillar']];
+const WIPES = [['pillar', 'drape'], ['flowers', 'drape', 'petals'], ['pillar', 'drape']];
 
 /* ---------------- assets ---------------- */
 const IMG = {};
@@ -270,6 +271,13 @@ function drawStreet(t, c, alpha) {
     }
     const [x, y] = S(c, r.x, r.y);
     g.drawImage(holeScene(d, t), x, y, r.w * c.z, r.h * c.z);
+    if (d === 2 && t > TL.toEnd[0]) {                       // finale: the window glows warm behind the couple
+      const [hx0s, hy0s] = S(c, hx0, hy0), [hx1s, hy1s] = S(c, hx1, hy1);
+      const gcx = (hx0s + hx1s) / 2, gcy = (hy0s + hy1s) / 2, gr = Math.max(hx1s - hx0s, hy1s - hy0s);
+      const gg = g.createRadialGradient(gcx, gcy, 0, gcx, gcy, gr * .7);
+      gg.addColorStop(0, '#ffe3a0'); gg.addColorStop(1, '#c8641e');
+      g.save(); g.globalAlpha = ramp(t, TL.toEnd[0], TL.toEnd[0] + .8); g.fillStyle = gg; g.fillRect(hx0s, hy0s, hx1s - hx0s, hy1s - hy0s); g.restore();
+    }
   });
   g.save(); g.globalAlpha = alpha;
   g.drawImage(IMG.street, c.x0, c.y0, c.vw, c.vh, 0, 0, W, H);
@@ -289,8 +297,8 @@ function drawStreet(t, c, alpha) {
   // ...and heading back inside once the camera moves on to the events
   drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0] - .2, true, TL.toWin0[0] + .1);
   // couple waiting at the palace gate for the finale
-  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[0] + .9, false);
-  monogram(c, 3780, 600, 1.0, 1, (t - TL.end[0] - .6) / 1.2);
+  drawCouple(t, c, 4180, 1336, 780, TL.end[0] - .3, false);
+  monogram(c, 3780, 600, 1.0, ramp(t, TL.toEnd[1] - .3, TL.toEnd[1] + 1.2, 'out'), (t - TL.end[0] - 1.2) / 1.2);
 
   // cycle-rickshaw rolling along the street during the opening
   const rp = clamp((t - .8) / 11.5);
@@ -365,7 +373,13 @@ function drawCouple(t, c, x, feet, h, t0, fromDoor, tExit) {
   const bob = Math.sin((t - t0) * 2.4) * 3 * p;
   const [sx, sy] = S(c, x - ww / 2, fy - hh - bob);
   g.save();
-  g.globalAlpha *= clamp(p * 5);
+  if (fromDoor) {
+    if (p < .6) {
+      const half = lerp(78, ww * .6, E.inout(p / .6));
+      const [lx, ly] = S(c, x - half, fy - hh - 200), [rx2] = S(c, x + half, 0);
+      g.beginPath(); g.rect(lx, ly, rx2 - lx, hh * c.z + 400 * c.z); g.clip();
+    }
+  } else g.globalAlpha *= E.out(clamp(p * 3.5));
   // contact shadow
   const [shx, shy] = S(c, x, fy);
   const sg = g.createRadialGradient(shx, shy, 0, shx, shy, ww * .55 * c.z);
@@ -384,7 +398,7 @@ function drawPuppets(t, c) {
   const par = 1.2, wx = 560;
   const sx = (wx - c.cx) * c.z * par + W / 2, h = 1100, w = h * im.width / im.height;
   g.save(); g.globalAlpha = a;
-  g.translate(sx, -30); g.rotate(Math.sin(t * 1.4) * .025);
+  g.translate(sx, -330); g.rotate(Math.sin(t * 1.4) * .025);
   g.filter = 'blur(1.2px)';
   g.drawImage(im, -w / 2, 0, w, h);
   g.restore();
@@ -432,26 +446,29 @@ function wipe(kind, a, b, p, t) {
     const h = kind === 'pillar' ? 2350 : 2500, w = h * im.width / im.height;
     const cx = dir < 0 ? lerp(W + w / 2, -w / 2, e) : lerp(-w / 2, W + w / 2, e);
     const shift = 90;
-    if (dir < 0) { drawEvent(a, t, 0, cx, { ox: -shift * e }); drawEvent(b, t, cx, W, { ox: shift * (1 - e) }); }
-    else { drawEvent(b, t, 0, cx, { ox: -shift * (1 - e) }); drawEvent(a, t, cx, W, { ox: shift * e }); }
+    const cut = dir < 0 ? cx : cx + 101 * (w / 1149);       // the drape's solid fabric sits right of its centre
+    if (dir < 0) { drawEvent(a, t, 0, cut, { ox: -shift * e }); drawEvent(b, t, cut, W, { ox: shift * (1 - e) }); }
+    else { drawEvent(b, t, 0, cut, { ox: -shift * (1 - e) }); drawEvent(a, t, cut, W, { ox: shift * e }); }
     fg.save(); fg.filter = 'blur(1.5px)';
     fg.shadowColor = 'rgba(30,10,0,.55)'; fg.shadowBlur = 50;
     fg.drawImage(im, cx - w / 2, (H - h) / 2 + (kind === 'drape' ? -120 : 0), w, h); fg.restore();
   } else if (kind === 'flowers') {                         // a band of flowers rises past the lens; the cut follows the band
-    const s = 1.75, w = im.width * s, h = im.height * s;
-    const bandTop = .58 * h, bandMid = .79 * h;           // the bunch fills the lower ~40% of the image
+    const s = 1.4, sy0 = 864, srcH = im.height - sy0;    // the flower bunch occupies rows 864..1536
+    const w = im.width * s, bh = srcH * s;
     const e = E.inout(p);
-    const y = lerp(H - bandTop + 40, -h - 40, e);         // image top
-    const cut = y + bandMid;
+    const y = lerp(H + 40, -2 * bh - 40, e);              // top of the band (bunch + mirrored bunch)
+    const cut = y + bh;
     drawEvent(a, t, 0, W, { clipY: [0, cut] }); drawEvent(b, t, 0, W, { clipY: [cut, H] });
-    fg.drawImage(im, (W - w) / 2, y, w, h);
+    fg.drawImage(im, 0, sy0, im.width, srcH, (W - w) / 2, y, w, bh);
+    fg.save(); fg.translate(0, y + 2 * bh); fg.scale(1, -1);
+    fg.drawImage(im, 0, sy0, im.width, srcH, (W - w) / 2, 0, w, bh); fg.restore();
   } else {                                                 // petal burst with a warm bloom; swap only while petals cover
-    (p < .5 ? drawEvent(a, t) : drawEvent(b, t));
+    drawEvent(a, t); g.save(); g.globalAlpha = E.inout(clamp((p - .36) / .28)); drawEvent(b, t); g.restore();
     const cover = 1 - Math.abs(p - .5) * 2;
     const s = lerp(1.1, 1.8, E.out(p)), w = W * s, h = H * s;
     fg.save(); fg.globalAlpha = clamp(cover * 1.6); fg.drawImage(im, (W - w) / 2, (H - h) / 2, w, h);
     fg.drawImage(im, (W - w * .8) / 2, (H - h * .8) / 2, w * .8, h * .8);
-    const fl = Math.pow(cover, 2.2) * .45;
+    const fl = Math.pow(cover, 3) * .7;
     const gr = fg.createRadialGradient(W / 2, H * .45, 0, W / 2, H * .45, H * .75);
     gr.addColorStop(0, `rgba(255,238,200,${fl})`); gr.addColorStop(1, `rgba(255,238,200,${fl * .6})`);
     fg.globalCompositeOperation = 'source-over'; fg.fillStyle = gr; fg.fillRect(0, 0, W, H); fg.restore();
@@ -479,11 +496,11 @@ DAYS.forEach((d, i) => {
     <div class="tiro" style="font-size:42px">${d.date}</div>${RULE}`, TL[`toWin${i}`][0] + (i === 0 ? 1.0 : .7), TL[`zoomIn${i}`][0] + .55);
   d.events.forEach(e => {
     const long = e.hi.length > 11;
-    if (EN) block(e.sky, 120, `<div class="cinzel" style="font-size:28px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
+    if (EN) block(e.sky === 'day' ? 'day softscrim' : e.sky, 120, `<div class="cinzel" style="font-size:28px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
       <div class="script gold" style="font-size:${e.en.length > 18 ? 92 : 118}px;line-height:1.12;margin-top:4px">${e.en.replace(' · ', ' &amp; ')}</div>${RULE}
       <div class="corm" style="font-size:50px;font-weight:600">${e.enTime}</div>
       <div class="corm" style="font-size:36px;font-weight:600;margin-top:2px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : .12), e.t1 - (e.i === e.n - 1 ? .2 : .32), { stagger: .08 });
-    else block(e.sky, 120, `<div class="tiro" style="font-size:36px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
+    else block(e.sky === 'day' ? 'day softscrim' : e.sky, 120, `<div class="tiro" style="font-size:36px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
       <div class="hi gold" style="font-size:${long ? 100 : 116}px;line-height:1.16;margin-top:6px">${e.hi}</div>
       <div class="cinzel" style="font-size:28px;letter-spacing:6px">${e.en}</div>${RULE}
       <div class="hi" style="font-size:46px">${e.when} ${e.time}</div>
@@ -502,7 +519,7 @@ function seekTexts(t) {
     b.el.style.display = on ? 'block' : 'none';
     if (!on) continue;
     const out = ramp(t, b.t1, b.t1 + .45, 'inout');
-    if (b.scrim !== undefined || b.el.classList.contains('scrim')) b.el.style.opacity = ramp(t, b.t0 - .05, b.t0 + .45, 'out') * (1 - out);
+    if (b.scrim !== undefined || b.el.classList.contains('scrim') || b.el.classList.contains('softscrim')) b.el.style.opacity = ramp(t, b.t0 - .05, b.t0 + .45, 'out') * (1 - out);
     b.kids.forEach((k, i) => {
       const a = ramp(t, b.t0 + i * b.stagger, b.t0 + i * b.stagger + .55, 'out');
       k.style.opacity = a * (1 - out);
