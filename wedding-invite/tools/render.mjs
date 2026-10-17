@@ -26,6 +26,7 @@ async function openPage(browser) {
     await Promise.all(probes.map(f => document.fonts.load(f, 'श्री गणेश Veeral Konika 0123')));
     await document.fonts.ready;
     await Promise.all([...document.images].map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; })));
+    if (window.__ready) await window.__ready;
   });
   return page;
 }

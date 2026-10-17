@@ -1,39 +1,37 @@
-# Veeral weds Konika — Rajasthani wedding invite video
+# Veeral weds Konika: Rajasthani wedding invite video
 
-`veeral-weds-konika-invite.mp4`: 1080×1920 (9:16, ready for WhatsApp, Instagram or Status), 30 fps, about 68 s, with a synthesized background score.
+`veeral-weds-konika-invite.mp4` is a 1080×1920 (9:16) video at 30 fps, about 72 s long, with a synthesized background score.
 
-## What's in the video
+## Story
 
-| # | Slide | Caricature |
-|---|-------|-----------|
-| 1 | Palace doors open → ॥ श्री गणेशाय नमः ॥ with the Vakratunda shloka | — |
-| 2 | Title: शुभ विवाह · Veeral weds Konika, with elephants and a V&K crest | lehenga look |
-| 3 | सादर आमंत्रण: चि. वीरल संग सौ. कां. कोनिका, 19–21 November 2026 | — |
-| 4 | प्रथम दिवस: गुरुवार, 19 नवम्बर 2026 (day schedule) | garden look |
-| 5–7 | गणेश स्थापना (दोपहर 12:05) · मायरा स्वागत (शाम 4:15) · रिंग सेरेमनी (शाम 7:15) | garden look |
-| 8 | द्वितीय दिवस: शुक्रवार, 20 नवम्बर 2026 | garden look |
-| 9–12 | कार्निवल (सुबह 8:00) · बंदोली (शाम 4:00) · संगीत संध्या (शाम 7:00) · घड़ी विनायक (रात 12:15) | garden look |
-| 13 | तृतीय दिवस: शनिवार, 21 नवम्बर 2026 | lehenga look |
-| 14–16 | हल्दी एवं जनेऊ (सुबह 8:00) · बारात प्रस्थान एवं बंदोली (दोपहर 3:00) · मंगल फेरा (रात्रि 7:21 – 9:34) | lehenga look |
-| 17 | Finale: all three looks together, "आपके आगमन की प्रतीक्षा में" | all |
+1. **A painted Rajasthani street.** The camera opens on a gold V&K monogram under "॥ श्री गणेशाय नमः ॥", with puppets swaying in the foreground and a cycle-rickshaw rolling past.
+2. **The invitation.** An elder at his window unrolls a long cloth banner that reads श्री गणेशाय नमः, then the blessings, चि. वीरल संग सौ. कां. कोनिका, the dates and the venue.
+3. **The couple's entry.** Veeral and Konika step out of the haveli doorway.
+4. **Three days through three windows.** For each day, the camera pans to that day's window, shows the day card, then flies through the window into its events. Each event is its own painted scene, with the event name, time and venue. Between events the camera passes behind a pillar or drape, or through flowers or a burst of petals. After the last event the camera pulls back out to the street.
+   - Day 1: गणेश स्थापना, मायरा स्वागत, रिंग सेरेमनी
+   - Day 2: कार्निवल, बंदोली, संगीत संध्या, घड़ी विनायक
+   - Day 3: हल्दी एवं जनेऊ, बारात प्रस्थान, मंगल फेरा
+5. **Finale.** The couple waits at the palace gate under "आपके आगमन की प्रतीक्षा में", with the venue रुणिचा धाम, बालोतरा (राजस्थान).
 
-Each event slide has its own colour theme, an icon medallion (Ganesha, mayra gift thaal, rings, Ferris wheel, dhol, tabla, clock at 12:15, haldi bowl with janeu, safa, agni kund), and matching particles: marigold petals, rose petals, confetti, music notes, stars or embers.
+## Files
 
-## Editing text, times or colours
-
-All content lives in `index.html`, in the `DAYS` and `EVENTS` arrays near the top of the script. Open `index.html` in a browser to preview it live, then tap to play it with music.
+| Path | What it is |
+|------|------------|
+| `index.html` | The whole animation, driven by `seek(t)`. Text, times and venue are in `DAYS` / `EVENTS` / `VENUE` near the top. |
+| `assets/v2/` | Web-ready artwork made from `codex/out` by `tools/prep_assets.py` (the green day windows are keyed out). |
+| `codex/` | The image-generation brief (`PROMPT.md`, `FIX1.md`), the reference images and the raw generated artwork. |
+| `tools/render.mjs` | Frame-by-frame renderer (headless Chromium + ffmpeg). |
+| `tools/make_music.py` | Synthesized score: tanpura, santoor and dholak, with bells on each day change. |
+| `index_v1.html` | The first, code-drawn version (kept for reference). |
 
 ## Re-rendering
 
 ```bash
-# video (headless Chromium + ffmpeg); about 4 minutes on 4 cores
+python3 tools/prep_assets.py                       # after changing anything in codex/out
+python3 tools/make_music.py /tmp/music.wav 71.65 4.6 4.6,19.4,34.45,52.9,65.75 \
+  && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
 NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite.mp4 --audio assets/music.m4a
-# single frames for checking
-NODE_PATH=$(npm root -g) node tools/render.mjs stills /tmp/stills 11 29 83
-# music
-python3 tools/make_music.py /tmp/music.wav 67.9 && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
+NODE_PATH=$(npm root -g) node tools/render.mjs stills /tmp/stills 10 22 70   # single frames
 ```
 
-## Caricatures
-
-`assets/caricature_*.png` are generated from the couple's photos by `tools/cutout.mjs` (background removal) and `tools/make_caricatures.py`. The second script finds the faces, enlarges the heads with a smooth chin-anchored warp, then adds cel shading, soft ink lines and a white sticker outline. The original photos are not in this repository; see the docstring at the top of `make_caricatures.py` for how to run it. If you get hand-drawn caricatures from an artist, save them over these three PNGs (transparent background) and re-render.
+If you change any timings, print `window.__TL` in the page to get the new day-change times for the music bells.

@@ -4,7 +4,7 @@ Tanpura drone + santoor-style melody (Bilawal / major scale, folk feel) + dholak
 with bell chimes on the day changes. Everything is additive synthesis, so there is nothing
 to license.
 
-    python3 tools/make_music.py assets/music.wav [duration_seconds]
+    python3 tools/make_music.py assets/music.wav [duration] [rhythm_start] [bell_times,comma,separated]
     ffmpeg -i assets/music.wav -c:a aac -b:a 192k assets/music.m4a
 """
 import sys
@@ -120,7 +120,7 @@ for t0, f in [(0.7, 1568.0), (1.0, 2093.0), (2.4, 1760.0)]:
 # ---- Rhythmic section from the title slide
 BPM = 96
 E8 = 60 / BPM / 2
-START = 5.0
+START = float(sys.argv[3]) if len(sys.argv) > 3 else 5.0
 PHRASE = [  # (swar, octave, eighths)
     ('P', 0, 2), ('D', 0, 1), ('P', 0, 1), ('G', 0, 2), ('R', 0, 1), ('G', 0, 1),
     ('S', 0, 4), ('R', 0, 2), ('G', 0, 2),
@@ -177,7 +177,7 @@ for b in range(nbars):
 add(drums, START + nbars * bar, dhol_bass(1.0))
 
 # ---- Bells on day changes and the finale (slide starts from index.html)
-for t0 in (5.0, 15.0, 28.75, 46.25, 60.0):
+for t0 in ([float(x) for x in sys.argv[4].split(',')] if len(sys.argv) > 4 else (5.0, 15.0, 28.75, 46.25, 60.0)):
     add(bells, t0, bell(1568.0, 0.8))
     add(bells, t0 + 0.12, bell(2349.0, 0.5))
 
