@@ -16,6 +16,7 @@
   .tiro { font-family: 'Tiro Devanagari Hindi', serif; }
   .cinzel { font-family: 'Cinzel', serif; font-weight: 700; text-transform: uppercase; }
   .script { font-family: 'Great Vibes', cursive; }
+  .corm { font-family: 'Cormorant Garamond', serif; }
   .block { position: absolute; left: 60px; right: 60px; text-align: center; }
   .block > * { opacity: 0; }
   .w { display: inline-block; }
@@ -60,23 +61,25 @@ const rnd = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; 
 const ramp = (t, a, b, ease = 'inout') => E[ease](clamp((t - a) / (b - a)));
 
 /* ---------------- content ---------------- */
-const VENUE = 'रुणिचा धाम, बालोतरा (राजस्थान)';
+const LANG = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'hi';
+const EN = LANG === 'en';
+const VENUE = EN ? 'Runicha Dham, Balotra · Rajasthan' : 'रुणिचा धाम, बालोतरा (राजस्थान)';
 const DAYS = [
-  { hi: 'प्रथम दिवस', date: 'गुरुवार · 19 नवम्बर 2026', hole: [2450, 655, 2648, 950] },
-  { hi: 'द्वितीय दिवस', date: 'शुक्रवार · 20 नवम्बर 2026', hole: [3364, 654, 3547, 950] },
-  { hi: 'तृतीय दिवस', date: 'शनिवार · 21 नवम्बर 2026', hole: [3988, 491, 4177, 846] },
+  { enDay: 'Day One', enDate: 'Thursday · 19 November 2026', hi: 'प्रथम दिवस', date: 'गुरुवार · 19 नवम्बर 2026', hole: [2450, 655, 2648, 950] },
+  { enDay: 'Day Two', enDate: 'Friday · 20 November 2026', hi: 'द्वितीय दिवस', date: 'शुक्रवार · 20 नवम्बर 2026', hole: [3364, 654, 3547, 950] },
+  { enDay: 'Day Three', enDate: 'Saturday · 21 November 2026', hi: 'तृतीय दिवस', date: 'शनिवार · 21 नवम्बर 2026', hole: [3988, 491, 4177, 846] },
 ];
 const EVENTS = [
-  { d: 0, img: 'E01', hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05 बजे', sky: 'day' },
-  { d: 0, img: 'E02', hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15 बजे', sky: 'day' },
-  { d: 0, img: 'E03', hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15 बजे', sky: 'night' },
-  { d: 1, img: 'E04', hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
-  { d: 1, img: 'E05', hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', sky: 'night' },
-  { d: 1, img: 'E06', hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', sky: 'night' },
-  { d: 1, img: 'E07', hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात', time: '12:15 बजे', sky: 'night' },
-  { d: 2, img: 'E08', hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
-  { d: 2, img: 'E09', hi: 'बारात प्रस्थान', en: 'Baraat Prasthan · Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
-  { d: 2, img: 'E10', hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', sky: 'night' },
+  { d: 0, img: 'E01', enTime: '12:05 PM', hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05 बजे', sky: 'day' },
+  { d: 0, img: 'E02', enTime: '4:15 PM', hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15 बजे', sky: 'day' },
+  { d: 0, img: 'E03', enTime: '7:15 PM', hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15 बजे', sky: 'night' },
+  { d: 1, img: 'E04', enTime: '8:00 AM', hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
+  { d: 1, img: 'E05', enTime: '4:00 PM', hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', sky: 'night' },
+  { d: 1, img: 'E06', enTime: '7:00 PM', hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', sky: 'night' },
+  { d: 1, img: 'E07', enTime: '12:15 AM · midnight', hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात', time: '12:15 बजे', sky: 'night' },
+  { d: 2, img: 'E08', enTime: '8:00 AM', hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
+  { d: 2, img: 'E09', enTime: '3:00 PM', hi: 'बारात प्रस्थान', en: 'Baraat Prasthan · Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
+  { d: 2, img: 'E10', enTime: '7:21 – 9:34 PM', hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', sky: 'night' },
 ];
 const WIPES = [['pillar', 'drape'], ['flowers', 'pillar', 'petals'], ['drape', 'pillar']];
 
@@ -84,7 +87,7 @@ const WIPES = [['pillar', 'drape'], ['flowers', 'pillar', 'petals'], ['drape', '
 const IMG = {};
 const names = ['street', 'couple', 'rickshaw', 'puppets', 'banner', 'drape', 'pillar', 'flowers', 'petals'];
 const load = (k, src) => new Promise(r => { const i = new Image(); i.onload = () => r(); i.onerror = () => r(); i.src = src; IMG[k] = i; });
-const fontsReady = Promise.all(['72px "Rozha One"', '40px "Tiro Devanagari Hindi"', 'italic 40px "Tiro Devanagari Hindi"', '40px "Cinzel"', '700 40px "Cinzel"', '80px "Great Vibes"']
+const fontsReady = Promise.all(['72px "Rozha One"', '40px "Tiro Devanagari Hindi"', 'italic 40px "Tiro Devanagari Hindi"', '40px "Cinzel"', '700 40px "Cinzel"', '80px "Great Vibes"', '600 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"']
   .map(f => document.fonts.load(f, 'श्री गणेशाय नमः V&K Veeral वीरल कोनिका 0123'))).then(() => document.fonts.ready);
 window.__ready = Promise.all([
   ...names.map(n => load(n, `assets/v2/${n}.webp`)),
@@ -189,7 +192,8 @@ function wtext(c, str, x, y, size, font, fill, alpha = 1, opts = {}) {
   const [sx, sy] = S(c, x, y), px = size * c.z;
   g.save();
   g.globalAlpha = alpha;
-  g.font = `${opts.weight || ''} ${px}px ${font}`;
+  const fm = font.match(/^((?:italic\s+)?(?:\d{3}\s+)?)(.*)$/);           // style/weight must come before the size
+  g.font = `${fm[1]}${opts.weight || ''} ${px}px ${fm[2]}`;
   g.textAlign = opts.align || 'center'; g.textBaseline = 'alphabetic';
   if (opts.shadow) { g.shadowColor = opts.shadow; g.shadowBlur = px * .25; g.shadowOffsetY = px * .03; }
   g.fillStyle = fill === 'gold' ? goldFill(sy - px, sy + px * .2) : fill;
@@ -247,7 +251,7 @@ function drawStreet(t, c, alpha) {
 
   // opening monogram + Ganesh line on the plaster panel at the left
   const pm = ramp(t, .5, 2.6, 'out');
-  wtext(c, '॥ श्री गणेशाय नमः ॥', 360, 672, 21, '"Tiro Devanagari Hindi"', '#7a1a10', ramp(t, .2, 1.0), { shadow: 'rgba(255,240,210,.8)' });
+  wtext(c, EN ? '|| Shree Ganeshaya Namah ||' : '॥ श्री गणेशाय नमः ॥', 360, 672, EN ? 13 : 21, EN ? '"Cinzel"' : '"Tiro Devanagari Hindi"', '#7a1a10', ramp(t, .2, 1.0), { shadow: 'rgba(255,240,210,.8)' });
   monogram(c, 360, 830, .92, pm, (t - 2.2) / 1.0);
 
   // banner hanging from the elder's rod, unrolling downward
@@ -288,7 +292,20 @@ function drawBanner(t, c) {
     g.fillStyle = gr; g.beginPath(); g.roundRect(sx + 6 * c.z, ry - rr, bw * c.z - 12 * c.z, rr * 2, rr); g.fill();
   }
   // the invitation, line by line
-  const lines = [
+  const lines = EN ? [
+    ['|| Shree Ganeshaya Namah ||', 430, 17, '"Cinzel"', '#8a2a14'],
+    ['With the blessings of the Almighty', 474, 19, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
+    ['and the love of our elders', 500, 19, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
+    ['we joyfully invite you to the wedding of', 546, 16, '600 "Cormorant Garamond"', '#5c1a10'],
+    ['Veeral', 612, 64, '"Great Vibes"', '#b2321a'],
+    ['with', 652, 22, 'italic 500 "Cormorant Garamond"', '#8a2a14'],
+    ['', 690, 15, '"Cinzel"', '#5c1a10'],
+    ['Konika', 744, 64, '"Great Vibes"', '#b2321a'],
+    ['Do join us with your family', 798, 18, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
+    ['for the wedding celebrations', 824, 18, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
+    ['19 – 21 November 2026', 876, 20, '700 "Cinzel"', '#8a2a14'],
+    ['Runicha Dham, Balotra · Rajasthan', 906, 16, '600 "Cormorant Garamond"', '#5c1a10'],
+  ] : [
     ['॥ श्री गणेशाय नमः ॥', 430, 19, '"Tiro Devanagari Hindi"', '#8a2a14'],
     ['परमपिता परमेश्वर की असीम कृपा', 474, 16.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
     ['एवं बड़ों के आशीर्वाद से', 500, 16.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
@@ -421,21 +438,29 @@ function block(cls, top, html, t0, t1, opts = {}) {
   if (opts.scrim) el.style.background = opts.scrim;
 }
 // couple entry title (over the wall, above the doorway)
-block('day scrim', 130, `<div class="script" style="font-size:96px;line-height:1;color:#8a1e12">Veeral weds Konika</div>
+block('day scrim', 130, EN ? `<div class="script" style="font-size:118px;line-height:1;color:#8a1e12">Veeral weds Konika</div>
+  <div class="cinzel" style="font-size:30px;letter-spacing:8px;margin-top:10px">The Wedding Celebrations</div>${RULE}` : `<div class="script" style="font-size:96px;line-height:1;color:#8a1e12">Veeral weds Konika</div>
   <div class="hi" style="font-size:66px;margin-top:6px">वीरल <span class="gold">संग</span> कोनिका</div>${RULE}`, TL.couple[0] + .5, TL.toWin0[0] + .15);
 DAYS.forEach((d, i) => {
-  block('day scrim', 150, `<div class="hi gold" style="font-size:96px;line-height:1.1">${d.hi}</div>
+  block('day scrim', 150, EN ? `<div class="script gold" style="font-size:118px;line-height:1.05">${d.enDay}</div>
+    <div class="corm" style="font-size:44px;font-weight:600">${d.enDate}</div>${RULE}` : `<div class="hi gold" style="font-size:96px;line-height:1.1">${d.hi}</div>
     <div class="tiro" style="font-size:42px">${d.date}</div>${RULE}`, TL[`toWin${i}`][0] + (i === 0 ? 1.0 : .7), TL[`zoomIn${i}`][0] + .55);
   d.events.forEach(e => {
     const long = e.hi.length > 11;
-    block(e.sky, 120, `<div class="tiro" style="font-size:32px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
+    if (EN) block(e.sky, 120, `<div class="cinzel" style="font-size:24px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
+      <div class="script gold" style="font-size:${e.en.length > 18 ? 92 : 118}px;line-height:1.12;margin-top:4px">${e.en.replace(' · ', ' &amp; ')}</div>${RULE}
+      <div class="corm" style="font-size:50px;font-weight:600">${e.enTime}</div>
+      <div class="corm" style="font-size:32px;font-weight:600;margin-top:2px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : WIPE / 2 - .05), e.t1 - (e.i === e.n - 1 ? .2 : WIPE / 2 - .1), { stagger: .12 });
+    else block(e.sky, 120, `<div class="tiro" style="font-size:32px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
       <div class="hi gold" style="font-size:${long ? 100 : 116}px;line-height:1.16;margin-top:6px">${e.hi}</div>
       <div class="cinzel" style="font-size:28px;letter-spacing:6px">${e.en}</div>${RULE}
       <div class="tiro" style="font-size:48px">${e.when} <span class="hi">${e.time}</span></div>
       <div class="tiro" style="font-size:30px;margin-top:4px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : WIPE / 2 - .05), e.t1 - (e.i === e.n - 1 ? .2 : WIPE / 2 - .1), { stagger: .12 });
   });
 });
-block('day scrim', 90, `<div class="hi gold" style="font-size:76px;line-height:1.2">आपके आगमन की<br>प्रतीक्षा में</div>${RULE}
+block('day scrim', 90, EN ? `<div class="script gold" style="font-size:96px;line-height:1.08">Awaiting your<br>gracious presence</div>${RULE}
+  <div class="cinzel" style="font-size:34px;letter-spacing:5px">19 – 21 November 2026</div>
+  <div class="corm" style="font-size:36px;font-weight:600">${VENUE}</div>` : `<div class="hi gold" style="font-size:76px;line-height:1.2">आपके आगमन की<br>प्रतीक्षा में</div>${RULE}
   <div class="tiro" style="font-size:40px">19 – 21 नवम्बर 2026</div>
   <div class="tiro" style="font-size:34px">${VENUE}</div>`, TL.end[0] + 1.6, DURATION + 1, { stagger: .3 });
 
@@ -523,6 +548,7 @@ function seek(t) {
   seekTexts(t);
 }
 
+document.documentElement.lang = LANG;
 window.__DURATION = DURATION;
 window.__seek = seek;
 window.__TL = TL;
