@@ -1,11 +1,33 @@
-# Codex fix round 1: redo all ten event scenes, and repair the street
+# Codex fix round 1: new bride face, redo the anchor and all ten event scenes, repair the street
 
 Use the same setup and QC loop as `PROMPT.md`, with the changes below. Overwrite the files in
 `wedding-invite/codex/out/`, update `qc_log.json`, `windows.json` and `contact_sheet.jpg`, then commit and push.
 
-## Why
+## Step 0: rebuild the bride's face (do this first)
 
-The client approved **only `out/01_anchor_couple.png`**. All ten event scenes (E01–E10) are rejected,
+The client says the bride's face is wrong everywhere. Three **real photos** of her are now in
+`refs/bride_photo_1.jpg`, `bride_photo_2.jpg` and `bride_photo_3.jpg`. They are the only source of
+truth for her face. Section 1 of `PROMPT.md` has the corrected description: oval face, strongly arched
+thick eyebrows, wide-set large eyes, a small mole on her right cheek beside the nose, and centre-parted
+hair pulled back. **Never use `refs/bride_headshot.png` again.**
+
+**Regenerate `01_anchor_couple`.** Call `images.edit` on the current `out/01_anchor_couple.png` with a
+mask covering only the bride's head and neck. Attach the three bride photos as references. Prompt:
+
+> Repaint only the bride's face and head so she is an exact, instantly recognisable likeness of the
+> woman in the three attached photos: oval face, softly defined chin, thick strongly arched dark
+> eyebrows, large wide-set dark-brown eyes, straight nose, the small mole on her right cheek beside
+> the nose, and a gentle closed-lip smile. Hair centre-parted and pulled back into a low bun, with the
+> same maang tikka and jhumkas. Keep the exact same painted gouache illustration style, line quality,
+> lighting and subtle caricature proportions as the rest of the image. Change nothing outside the mask.
+
+QC: compare the bride against all three photos. She must score 9 or more for likeness, including the
+mole and the brows. The groom and everything else must stay pixel-identical. Save it over
+`out/01_anchor_couple.png`, then use this new version as the master for every E-job below.
+
+## Why the scenes are redone
+
+The client approved the **style of `out/01_anchor_couple.png`** (and, from now on, its new bride). All ten event scenes (E01–E10) are rejected,
 for three reasons:
 - **The old `pose_*.png` references dragged in the wrong look.** They pulled faces toward the earlier,
   wrong likeness, especially the bride, and toward a glossy, photo-filter rendering.
@@ -17,7 +39,8 @@ for three reasons:
 ## New rules for every E-job
 
 1. **References:**
-   - Attach ONLY `refs/groom_headshot.png`, `refs/bride_headshot.png`, `out/01_anchor_couple.png`,
+   - Attach ONLY `refs/groom_headshot.png`, `refs/bride_photo_1.jpg`, `refs/bride_photo_2.jpg`,
+     `refs/bride_photo_3.jpg`, the new `out/01_anchor_couple.png`,
      and one `refs/style_scene_day.jpg` or `refs/style_scene_night.jpg` (whichever matches the time).
    - **Never attach any `pose_*.png`.** Describe the outfits in words only (given below).
 2. **`01_anchor_couple.png` is the master.** Draw the couple exactly as in that image: same faces, same
@@ -32,8 +55,9 @@ for three reasons:
 5. Colour: soft and slightly muted, to sit naturally inside the gouache background. Use the same warm
    light as the scene, no glossy highlights, and a little paper grain over the figures too.
 6. Bride's face (repeat this in every prompt):
-   > Her face must match bride_headshot.png and 01_anchor_couple.png exactly: soft round face, full cheeks,
-   > wide softly rounded jaw, thick straight dark-brown eyebrows. Do NOT slim, narrow or lengthen her face.
+   > Her face must match the three attached bride photos and the bride in 01_anchor_couple.png exactly:
+   > oval face, softly defined chin, thick strongly arched dark eyebrows, large wide-set dark-brown eyes,
+   > straight nose, the small mole on her right cheek beside the nose. Do not beautify, slim or change her face.
 
 ## The ten scenes (keep each scene's setting from `PROMPT.md`; outfits, poses and faces as below)
 
@@ -106,7 +130,7 @@ for three reasons:
 ## QC additions
 
 On top of the QC in `PROMPT.md`, each E-job is checked on these points:
-- **likeness to the headshots, in the given angle**
+- **likeness to the groom headshot and the three bride photos, in the given angle**
 - **match to `01_anchor_couple.png` style**
 - **face posture differs from 01 and from every earlier E-job**: same angle plus same expression fails
 - **the brief's specific pose and expression are followed**

@@ -29,9 +29,12 @@ regenerate and save everything in one run.
   hair with a slight side quiff. Well-groomed full black beard, short on the cheeks and fuller on the
   chin, with a moustache joined to the beard. Thick straight eyebrows, warm brown eyes, confident
   gentle smile.
-- **Bride: Konika.** Indian woman, late 20s, fair skin, soft round face with full cheeks, softly
-  rounded jawline. Thick dark-brown eyebrows, large brown eyes, warm wide smile showing teeth. Dark
-  brown hair.
+- **Bride: Konika.** Indian woman, late 20s, fair wheatish skin. **Oval face** with a softly defined
+  chin and gently full cheeks. **Thick, dark, strongly arched eyebrows.** Large, wide-set, dark-brown
+  almond eyes with long lashes. A straight nose with a slightly rounded tip, and **a small dark mole on
+  her right cheek, just beside the nose** (on the left side of the image when she faces the viewer).
+  Medium lips, usually a soft closed-lip smile. Dark hair, centre-parted and pulled back smoothly. The
+  three real photos `refs/bride_photo_1.jpg`–`bride_photo_3.jpg` are the truth for her face.
 - **Faces must be an exact, instantly recognisable likeness of the headshots in `refs/`.** Never
   beautify, slim, age, lighten or westernise them. Match face shape, eye shape, eyebrows, nose, lips,
   smile, beard and hairline. If a face drifts from the headshot, regenerate.
@@ -41,7 +44,8 @@ regenerate and save everything in one run.
 | file | what it is | how to use it |
 |------|------------|---------------|
 | `groom_headshot.png` | realistic close-up of the groom | face likeness, every job with the groom |
-| `bride_headshot.png` | realistic close-up of the bride | face likeness, every job with the bride |
+| `bride_photo_1.jpg`, `bride_photo_2.jpg`, `bride_photo_3.jpg` | **real close-up photos of the bride** | **primary face reference for the bride; always attach all three** |
+| `bride_headshot.png` | old AI headshot | **do not use**, it has the wrong face |
 | `pose_traditional.png` … `pose_phera.png` | earlier illustrations of each outfit and pose | outfit, pose and jewellery reference for the job with the same name |
 | `style_street.jpg`, `style_banner.jpg`, `style_window.jpg`, `style_scene_night.jpg`, `style_scene_day.jpg` | frames from the reference reel | **art style reference only.** Copy the painting technique, palette and texture, never the exact content |
 
