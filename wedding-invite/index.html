@@ -309,7 +309,7 @@ function drawStreet(t, c, alpha) {
   // ...and heading back inside once the camera moves on to the events
   drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5 }, TL.couple[1] - .35);
   // couple waiting at the palace gate for the finale
-  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .44, fromSide: 1, minLight: .35 });
+  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .44, fromSide: 1, minLight: .62, warm: 1, leafBottom: 1126 });
   monogram(c, 3780, 600, 1.0, ramp(t, TL.end[0] + 1.0, TL.end[0] + 2.5, 'out'), (t - TL.end[0] - 2.5) / 1.2);
 
   // cycle-rickshaw rolling along the street during the opening
@@ -394,14 +394,21 @@ function drawCouple(t, c, x, feet, h, t0, door, tBack) {
   if (p < .55) {                                           // still inside: the door frame and leaves occlude them
     const k = E.sine(clamp((p - .45) / .1));
     const [ox0, oy0] = S(c, lerp(door.open[0], door.open[0] - 300, k), door.open[1]), [ox1, oy1] = S(c, lerp(door.open[2], door.open[2] + 300, k), door.open[3]);
-    g.beginPath(); g.rect(ox0, oy0, ox1 - ox0, oy1 - oy0); g.clip();
+    g.beginPath(); g.rect(ox0, oy0, ox1 - ox0, oy1 - oy0);
+    if (door.leafBottom !== undefined) {                  // below the door leaves nothing occludes them (feet on the step)
+      const [, ly] = S(c, 0, door.leafBottom); g.rect(-10, ly, W + 20, H - ly + 10);
+    }
+    g.clip();
   }
   const [shx, shy] = S(c, cx, fy);
   const sg = g.createRadialGradient(shx, shy, 0, shx, shy, ww * .55 * c.z);
   sg.addColorStop(0, 'rgba(70,35,10,.38)'); sg.addColorStop(1, 'rgba(70,35,10,0)');
   g.fillStyle = sg; g.save(); g.translate(shx, shy); g.scale(1, .16); g.translate(-shx, -shy);
   g.beginPath(); g.arc(shx, shy, ww * .55 * c.z, 0, 7); g.fill(); g.restore();
-  if (p < .5) g.filter = `brightness(${lerp(door.minLight || 0, 1, E.sine(clamp(p / .5)))})`;
+  if (p < .5) {
+    const k = E.sine(clamp(p / .5));
+    g.filter = door.warm ? `brightness(${lerp(door.minLight, 1, k)}) sepia(${.3 * (1 - k)}) saturate(${lerp(1.1, 1, k)})` : `brightness(${lerp(door.minLight || 0, 1, k)})`;
+  }
   g.drawImage(im, sx, sy, ww * c.z, hh * c.z);
   g.restore();
 }
