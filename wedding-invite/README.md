@@ -40,8 +40,8 @@ The deterministic motion/layout source is `reel.html`; `tools/render-reel.mjs` c
 and adds a short fade on the invite's existing instrumental score.
 
 `veeral-konika-save-the-date-cards.mp4` is a second, playful 10-second treatment inspired by the
-paper-and-card reveal format. The couple appears on a light botanical background, with paired SAVE /
-THE DATE cards followed by the date and venue. Re-render it with:
+paper-and-card reveal format. On a light botanical background, Konika holds “SAVE” and Veeral holds
+“ME!”; the joke then resolves to their names, date and venue. Re-render it with:
 
 ```bash
 NODE_PATH=$(npm root -g) node tools/render-reel.mjs veeral-konika-save-the-date-cards.mp4 --page reel-cards.html
