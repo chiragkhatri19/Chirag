@@ -296,7 +296,7 @@ function drawStreet(t, c, alpha) {
 
   // couple stepping out of the haveli doorway
   // ...and heading back inside once the camera moves on to the events
-  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0] + .1, true, TL.toWin0[0]);
+  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], true, TL.toWin0[0]);
   // couple waiting at the palace gate for the finale
   drawCouple(t, c, 4180, 1336, 780, TL.end[0], false);
   monogram(c, 3780, 600, 1.0, ramp(t, TL.toEnd[1] - .3, TL.toEnd[1] + 1.2, 'out'), (t - TL.end[0] - 1.2) / 1.2);
@@ -364,33 +364,34 @@ function drawBanner(t, c) {
 }
 
 function drawCouple(t, c, x, feet, h, t0, fromDoor, tExit) {
-  let p = fromDoor ? ramp(t, t0, t0 + 2.0, 'inout') : ramp(t, t0, t0 + 1.6, 'out');
-  if (tExit !== undefined) p = Math.min(p, 1 - ramp(t, tExit, tExit + 1.4, 'inout'));   // walk back inside
+  let p = fromDoor ? ramp(t, t0, t0 + 2.0, 'lin') : ramp(t, t0, t0 + .8, 'out');
+  if (tExit !== undefined) p = Math.min(p, 1 - ramp(t, tExit, tExit + 1.4, 'lin'));   // walk back inside
   if (p <= 0) return;
   const exitA = 1;
   const im = IMG.couple;
   // from the door: emerge from the dark interior (framed by the doorway), then step forward onto the street
-  const s2 = E.inout(clamp((p - .45) / .55));
-  const sc = fromDoor ? lerp(.5, 1, s2) : lerp(.94, 1, p);
-  const fy = fromDoor ? lerp(DOOR_SILL, feet, s2) : feet;
+  const s2 = E.sine(clamp((p - .45) / .55));
+  const sc = fromDoor ? lerp(.5, 1, s2) : lerp(.96, 1, p);
+  const fy = fromDoor ? lerp(DOOR_SILL, feet, s2) : feet + 30 * (1 - E.out(p));
   const hh = h * sc, ww = hh * im.width / im.height;
   const bob = Math.sin((t - t0) * 2.4) * 3 * p;
   const [sx, sy] = S(c, x - ww / 2, fy - hh - bob);
   g.save();
   g.globalAlpha *= exitA;
   if (fromDoor) {
+    g.globalAlpha *= clamp(p / .15);
     if (p < .45) {                                           // still inside: the door frame occludes them
       const [ox0, oy0] = S(c, DOOR_OPEN[0], DOOR_OPEN[1]), [ox1, oy1] = S(c, DOOR_OPEN[2], DOOR_OPEN[3]);
       g.beginPath(); g.rect(ox0, oy0, ox1 - ox0, oy1 - oy0); g.clip();
     }
-  } else g.globalAlpha *= ramp(t, t0, t0 + .8, 'out');
+  } else g.globalAlpha *= ramp(t, t0, t0 + .3, 'out');
   // contact shadow
   const [shx, shy] = S(c, x, fy);
   const sg = g.createRadialGradient(shx, shy, 0, shx, shy, ww * .55 * c.z);
   sg.addColorStop(0, 'rgba(70,35,10,.38)'); sg.addColorStop(1, 'rgba(70,35,10,0)');
   g.fillStyle = sg; g.save(); g.translate(shx, shy); g.scale(1, .16); g.translate(-shx, -shy);
   g.beginPath(); g.arc(shx, shy, ww * .55 * c.z, 0, 7); g.fill(); g.restore();
-  if (fromDoor && p < .7) g.filter = `brightness(${lerp(.25, 1, clamp(p / .7))})`;
+  if (fromDoor && p < .5) g.filter = `brightness(${lerp(0, 1, E.sine(clamp(p / .5)))})`;
   g.drawImage(im, sx, sy, ww * c.z, hh * c.z);
   g.restore();
 }
@@ -448,9 +449,9 @@ function flowerBand(im) {                 // the flower bunch with its flat bott
   _band = Object.assign(document.createElement('canvas'), { width: im.width, height: h });
   const o = _band.getContext('2d');
   o.drawImage(im, 0, sy0, im.width, h, 0, 0, im.width, h);
-  const gr = o.createLinearGradient(0, h * .62, 0, h);
+  const gr = o.createLinearGradient(0, h * .80, 0, h);
   gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,1)');
-  o.globalCompositeOperation = 'destination-out'; o.fillStyle = gr; o.fillRect(0, h * .62, im.width, h * .38);
+  o.globalCompositeOperation = 'destination-out'; o.fillStyle = gr; o.fillRect(0, h * .80, im.width, h * .20);
   return _band;
 }
 function wipe(kind, a, b, p, t) {
@@ -483,7 +484,7 @@ function wipe(kind, a, b, p, t) {
     const cover = 1 - Math.abs(p - .5) * 2;
     const s = lerp(1.1, 1.8, E.out(p)), w = W * s, h = H * s;
     const dy = lerp(-220, 220, p);
-    fg.save(); fg.globalAlpha = clamp(cover * 4); fg.drawImage(im, (W - w) / 2, (H - h) / 2 + dy, w, h);
+    fg.save(); fg.globalAlpha = E.sine(clamp(cover * 2.2)); fg.drawImage(im, (W - w) / 2, (H - h) / 2 + dy, w, h);
     fg.drawImage(im, (W - w * .8) / 2, (H - h * .8) / 2 + dy * .6, w * .8, h * .8);
     const fl = Math.pow(cover, 3) * .35;
     const gr = fg.createRadialGradient(W / 2, H * .45, 0, W / 2, H * .45, H * .75);
