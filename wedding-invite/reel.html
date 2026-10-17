@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080,initial-scale=1">
+<title>Veeral &amp; Konika — Save the Date</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Cormorant+Garamond:wght@500;600&display=block" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#21100b}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;color:#fff3d6;background:#8e572a;font-family:'Cormorant Garamond',serif}
+.bg{position:absolute;inset:-5%;width:110%;height:110%;object-fit:cover;will-change:transform,opacity}
+#night{opacity:0}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,9,5,.23),transparent 28%,rgba(27,10,5,.12) 58%,rgba(26,7,5,.48)),radial-gradient(ellipse at 50% 54%,transparent 42%,rgba(35,10,4,.26) 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
+.frame{position:absolute;inset:28px;border:1px solid rgba(247,213,137,.68);border-radius:50% 50% 8px 8px / 4% 4% 8px 8px;box-shadow:inset 0 0 0 8px rgba(92,35,11,.18),inset 0 0 0 10px rgba(244,207,121,.36),0 0 32px rgba(37,11,4,.3);pointer-events:none}
+.frame:before,.frame:after{content:'✦';position:absolute;color:#f7d58a;font-size:34px;left:50%;transform:translateX(-50%);text-shadow:0 2px 9px #4c210d}.frame:before{top:32px}.frame:after{bottom:30px}
+.topline{position:absolute;top:410px;width:100%;text-align:center;font:500 24px 'Cinzel',serif;letter-spacing:.34em;color:#fff0d0;opacity:0;text-shadow:0 2px 9px #46210e}
+.headline{position:absolute;top:495px;width:100%;text-align:center;font:500 78px 'Great Vibes',cursive;color:#fff1d2;opacity:0;line-height:1.06;text-shadow:0 4px 18px rgba(37,10,2,.58)}
+.date-label{position:absolute;top:620px;width:100%;text-align:center;font:500 23px 'Cinzel',serif;letter-spacing:.32em;color:#ffe6aa;opacity:0}
+.date{position:absolute;top:680px;width:100%;text-align:center;font:500 49px 'Cormorant Garamond',serif;letter-spacing:.075em;color:#fff2d2;opacity:0;text-shadow:0 3px 13px rgba(48,16,5,.65)}
+.rule{position:absolute;top:765px;left:355px;width:370px;height:1px;background:linear-gradient(90deg,transparent,#f5d48b,transparent);opacity:0}
+.place{position:absolute;top:795px;width:100%;text-align:center;font:500 21px 'Cinzel',serif;letter-spacing:.14em;color:#fff0d0;opacity:0;text-shadow:0 2px 9px rgba(48,16,5,.75)}
+.couple{position:absolute;left:50%;top:1010px;height:800px;width:auto;max-width:88%;object-fit:contain;transform:translate(-50%,80px) scale(.92);opacity:0;filter:drop-shadow(0 13px 22px rgba(48,19,5,.32));will-change:transform,opacity}
+.rickshaw{position:absolute;width:620px;height:auto;left:-700px;top:1430px;filter:drop-shadow(0 13px 10px rgba(50,22,8,.33));will-change:transform,opacity}
+.couple-title{position:absolute;top:820px;width:100%;text-align:center;font:500 88px 'Great Vibes',cursive;color:#fff3d7;opacity:0;text-shadow:0 4px 18px rgba(40,11,4,.72)}
+.amp{font:500 46px 'Cormorant Garamond',serif;color:#f7d590;padding:0 15px}
+.final-kicker{position:absolute;top:285px;width:100%;text-align:center;font:500 23px 'Cinzel',serif;letter-spacing:.34em;color:#ffe6b7;opacity:0;text-shadow:0 2px 8px #220a08}
+.final-names{position:absolute;top:345px;left:90px;right:90px;text-align:center;font:500 84px 'Great Vibes',cursive;line-height:1.12;color:#fff3dc;opacity:0;text-shadow:0 4px 15px rgba(12,4,5,.65)}
+.final-date{position:absolute;top:555px;width:100%;text-align:center;font:600 31px 'Cinzel',serif;letter-spacing:.16em;color:#ffe5a8;opacity:0;text-shadow:0 2px 9px rgba(12,4,5,.85)}
+.final-note{position:absolute;top:620px;width:100%;text-align:center;font:italic 32px 'Cormorant Garamond',serif;color:#fff3db;opacity:0;text-shadow:0 2px 9px rgba(12,4,5,.9)}
+.petal{position:absolute;top:-80px;width:14px;height:22px;border-radius:80% 10% 80% 10%;background:#e97842;opacity:.9;filter:drop-shadow(0 1px 2px rgba(45,15,4,.3));will-change:transform}
+.petal:nth-child(2n){background:#f1c66f;width:11px;height:17px}.petal:nth-child(3n){background:#c63e37;width:12px;height:19px}
+</style>
+</head>
+<body><main id="stage">
+  <img class="bg" id="wall" src="codex/out/P2.png">
+  <img class="bg" id="night" src="codex/out/E10_mangal_phera.png">
+  <div class="frame"></div>
+  <div class="topline" id="topline">A CELEBRATION AWAITS</div>
+  <div class="headline" id="headline">A little forever begins</div>
+  <div class="date-label" id="dateLabel">SAVE THE DATE</div>
+  <div class="date" id="date">19 — 21 NOVEMBER 2026</div>
+  <div class="rule" id="rule"></div>
+  <div class="place" id="place">RUNICHA DHAM · BALOTRA, RAJASTHAN</div>
+  <img class="rickshaw" id="rickshaw" src="codex/out/02_rickshaw.png">
+  <div class="couple-title" id="coupleTitle">Veeral <span class="amp">&amp;</span> Konika</div>
+  <img class="couple" id="couple" src="codex/out/01_anchor_couple.png">
+  <div class="final-kicker" id="finalKicker">WITH JOY IN OUR HEARTS</div>
+  <div class="final-names" id="finalNames">Veeral <span class="amp">&amp;</span> Konika</div>
+  <div class="final-date" id="finalDate">19 — 21 NOVEMBER 2026</div>
+  <div class="final-note" id="finalNote">Three days · one beautiful beginning</div>
+  <div class="shade"></div><div class="grain"></div>
+  <div id="petals"></div>
+</main>
+<script>
+const D=16, clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)), ease=v=>{v=clamp(v);return v*v*(3-2*v)};
+const el=id=>document.getElementById(id), mix=(a,b,p)=>a+(b-a)*p;
+for(let i=0;i<30;i++){const p=document.createElement('i');p.className='petal';p.dataset.i=i;el('petals').append(p)}
+window.__DURATION=D;
+window.__seek=t=>{
+  t=clamp(t,0,D);
+  const wall=el('wall'),night=el('night');
+  wall.style.transformOrigin='50% 8%';
+  wall.style.transform=`scale(${1.025+t*.0012}) translateX(${Math.sin(t*.17)*.35}%)`;
+  night.style.transform=`scale(${1.06+Math.max(0,t-9)*.004}) translateY(${Math.max(0,t-10)*-.16}%)`;
+  night.style.opacity=ease((t-9.5)/1.25);
+  el('topline').style.opacity=ease(t/.65)*(1-ease((t-5.7)/.8));
+  el('headline').style.opacity=ease((t-.4)/.8)*(1-ease((t-5.6)/.85));
+  el('dateLabel').style.opacity=ease((t-2.25)/.7)*(1-ease((t-6.6)/.75));
+  el('date').style.opacity=ease((t-2.6)/.8)*(1-ease((t-6.8)/.75));
+  el('rule').style.opacity=ease((t-3.1)/.6)*(1-ease((t-6.6)/.65));
+  el('place').style.opacity=ease((t-3.25)/.65)*(1-ease((t-5.65)/.55));
+  const r=el('rickshaw'),rp=ease(t/6.4);r.style.transform=`translateX(${mix(0,1780,rp)}px) translateY(${Math.sin(t*3)*5}px)`;r.style.opacity=1-ease((t-5.6)/.7);
+  const cp=ease((t-5.8)/1.05)*(1-ease((t-9.25)/.8));
+  el('couple').style.opacity=cp;el('couple').style.transform=`translate(-50%,${mix(80,0,ease((t-5.8)/1.1))}px) scale(${mix(.92,1,ease((t-5.8)/1.1))})`;
+  el('coupleTitle').style.opacity=ease((t-6.15)/.8)*(1-ease((t-9.35)/.65));
+  const fp=ease((t-10.75)/.85);
+  el('finalKicker').style.opacity=fp;el('finalNames').style.opacity=fp;el('finalDate').style.opacity=fp;el('finalNote').style.opacity=fp;
+  for(const p of document.querySelectorAll('.petal')){const i=+p.dataset.i;const phase=(t*.13+i/30)%1;const x=((i*137)%1080)+Math.sin(t*.7+i)*44;p.style.transform=`translate(${x}px,${phase*2040-60}px) rotate(${phase*520+i*31}deg)`;p.style.opacity=.74*Math.sin(Math.PI*phase)}
+};
+window.__seek(0);
+</script></body></html>

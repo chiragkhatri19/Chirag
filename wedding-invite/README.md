@@ -21,8 +21,35 @@
 | `assets/v2/` | Web-ready artwork made from `codex/out` by `tools/prep_assets.py` (the green day windows are keyed out). |
 | `codex/` | The image-generation brief (`PROMPT.md`, `FIX1.md`), the reference images and the raw generated artwork. |
 | `tools/render.mjs` | Frame-by-frame renderer (headless Chromium + ffmpeg). |
+| `tools/render-reel.mjs` | Renderer for the short save-the-date teaser. |
+| `reel-cards.html` | Botanical-paper “SAVE / THE DATE” card version of the teaser. |
 | `tools/make_music.py` | Synthesized score: tanpura, santoor and dholak, with bells on each day change. |
 | `index_v1.html` | The first, code-drawn version (kept for reference). |
+
+## Save-the-date reel
+
+`veeral-konika-save-the-date.mp4` is a 16-second vertical teaser built from the invite's gouache
+artwork. It reveals Veeral and Konika, the dates (19–21 November 2026), and venue (Runicha Dham,
+Balotra, Rajasthan), then closes on the mangal-phera scene. Re-render it with:
+
+```bash
+NODE_PATH=$(npm root -g) node tools/render-reel.mjs veeral-konika-save-the-date.mp4
+```
+
+The deterministic motion/layout source is `reel.html`; `tools/render-reel.mjs` captures it at 30 fps
+and adds a short fade on the invite's existing instrumental score.
+
+`veeral-konika-save-the-date-cards.mp4` is a second, playful 10-second treatment inspired by the
+paper-and-card reveal format. On a light botanical background, Konika holds “SAVE” and Veeral holds
+“ME!”; the joke then resolves to their names, date and venue. Re-render it with:
+
+```bash
+NODE_PATH=$(npm root -g) node tools/render-reel.mjs veeral-konika-save-the-date-cards.mp4 --page reel-cards.html
+```
+
+## Editing text, times or colours
+
+All content lives in `index.html`, in the `DAYS` and `EVENTS` arrays near the top of the script. Open `index.html` in a browser to preview it live, then tap to play it with music.
 
 ## Re-rendering
 
