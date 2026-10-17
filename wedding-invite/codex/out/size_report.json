@@ -1,0 +1,173 @@
+{
+  "images": {
+    "01_anchor_couple.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "02_rickshaw.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA"
+    },
+    "03_puppets.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "B1_banner.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "E01_ganesh_sthapana.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E02_mayra_swagat.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E03_ring_ceremony.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E04_carnival.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E05_bandoli.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E06_sangeet.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E07_ghadi_vinayak.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E08_haldi_janeu.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E09_baraat.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "E10_mangal_phera.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "F1_fg_drape.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "F2_fg_pillar.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "F3_fg_flowers.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "F4_fg_petals.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA"
+    },
+    "P1.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "P2.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "P3.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "P4.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "P5.png": {
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB"
+    },
+    "P_panorama.png": {
+      "size": [
+        4608,
+        1536
+      ],
+      "mode": "RGB"
+    }
+  },
+  "problems": []
+}
