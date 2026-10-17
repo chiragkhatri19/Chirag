@@ -47,7 +47,7 @@ Attach **both headshots plus the matching `pose_*.png`** (when one exists) to ev
 After `01_anchor_traditional` is approved, also attach `out/01_anchor_traditional.png` to every later
 character job as the **style anchor**, so all images look like one artist drew them.
 
-## 3. Art style (identical for every image)
+## 3. Art style for the painted 2D half (section 4A–4C)
 
 > Premium Indian wedding-invite caricature illustration, like the work of a professional 2D animation
 > studio. Polished hand-painted digital illustration: clean confident ink linework (thin warm-brown
@@ -57,7 +57,7 @@ character job as the **style anchor**, so all images look like one artist drew t
 > exact likeness. Subtle caricature proportions: heads about 15% larger than natural, bodies natural
 > and elegant (never chibi, never cartoonish). Expressions joyful and natural.
 
-Rules for every CHARACTER image:
+Rules for every 2D CHARACTER image (section 4A):
 - Full figures, head to toe, nothing cropped, with at least 40 px of empty margin on all sides.
 - Transparent background: no floor, no shadow, no backdrop, no props beyond those listed.
 - No text, letters, logos or watermarks anywhere.
@@ -67,116 +67,166 @@ Rules for every CHARACTER image:
 
 ## 4. Jobs
 
-### CHARACTERS (transparent, 1024x1536 portrait unless noted)
+The video has two halves, so there are two looks:
+- **Entry (painted 2D look):** the section 3 style. Jobs 01, 12–19.
+- **Events (cinematic 3D look):** jobs E01–E10 and F1–F4, described below.
 
-`01_anchor_traditional`: **do this first; it is the style anchor.** Refs: both headshots +
-`pose_traditional.png`. Groom in an ivory bandhgala sherwani with gold sequin zig-zag embroidery,
-ivory churidar, cream embroidered mojari. Bride in an emerald-green silk lehenga with heavy gold zari
-border and gold buttis, green dupatta over one shoulder, kundan choker, maang tikka, kundan jhumkas,
-green and gold bangles, hair in a low bun. They stand close, her hand resting on his chest, both smiling.
+### 4A. PAINTED 2D CHARACTERS (transparent, 1024x1536 portrait unless noted)
 
-`02_ganesh_sthapana`: refs: headshots + `pose_ganesh.png`. Groom in a saffron silk kurta with gold
-border, cream dhoti, maroon and gold stole over one shoulder, red tilak. Bride in a red and yellow
-Rajasthani bandhej silk saree with gold border, gold temple jewellery, gajra in her bun, red bindi.
-Both stand with folded hands in namaste; the bride also holds a small gold puja thali with a lit diya.
-
-`03_mayra_swagat`: refs: headshots + `pose_mayra.png`. Groom in a maroon silk bandhgala with gold
-buttons over a cream kurta, cream churidar. Bride in a rani-pink Rajputi poshak with heavy gold
-gota-patti, sheer pink odhni on the back of her head (face fully visible), borla, nath, kundan necklace.
-Warm welcoming pose, standing close.
-
-`04_ring_ceremony`: refs: headshots + `pose_ring.png`. Groom in a midnight-blue velvet bandhgala with
-gold embroidery, black trousers, black shoes. Bride in a blush-pink and champagne sequinned lehenga
-with a sheer dupatta, diamond choker and drop earrings, long open wavy hair. The groom slips a diamond
-ring onto her finger; both look at each other, laughing, with faces in three-quarter view toward the viewer.
-
-`05_carnival`: refs: headshots + `pose_carnival.png`. A fun games morning hosted by an anchor. Groom in
-a turquoise and orange printed short kurta, white pants, white sneakers, sunglasses pushed up on his
-head, holding a game scorecard and pointing at the bride in mock disbelief. Bride in a mustard-yellow
-and pink printed co-ord kurta set with a light dupatta, oxidised statement earrings, high ponytail
-with a flower, laughing, holding up a small gold winner's trophy. A few colourful balloons and a toy
-microphone at their feet.
-
-`06_bandoli`: refs: headshots + `pose_bandoli.png`. Groom in a mustard-yellow printed Jodhpuri bandhgala,
-white churidar, colourful leheriya safa turban (face fully visible). Bride in a bright pink and orange
-leheriya saree with gota border, gold jewellery, many bangles. Joyful folk-dance pose: groom with one
-arm raised, bride clapping.
-
-`07_sangeet`: refs: headshots + `pose_sangeet.png`. Groom in a black Indo-western sherwani with silver
-embroidery and a magenta pocket square. Bride in a deep purple and magenta mirror-work lehenga with a
-wide flared skirt, silver jhumkas, hair in a soft bun. Mid-dance: bride twirling with the lehenga
-flaring, groom in a playful bhangra pose with one arm raised. Keep the whole skirt inside the frame.
-
-`08_ghadi_vinayak`: refs: headshots + `pose_puja.png`. A calm midnight puja. Groom in a cream silk
-kurta pyjama with a maroon and gold stole, red tilak. Bride in a maroon silk saree with a gold zari
-border, gold jewellery, pallu over one shoulder, red bindi. Both with folded hands and calm devotional
-smiles, a small brass diya on a short brass stand glowing in front of them.
-
-`09_haldi_janeu`: refs: headshots + `01` style anchor. Groom in a yellow silk dhoti with a light
-yellow angavastram, a white sacred janeu thread across his bare chest from the left shoulder, marigold
-garland. Bride in a bright yellow floral lehenga with fresh marigold and jasmine flower jewellery.
-Light turmeric smudges on their cheeks and arms, laughing together, standing side by side.
-
-`10_baraat` (**landscape 1536x1024**): refs: groom headshot + `pose_baraat.png`. Groom alone in a regal
-ivory and gold wedding sherwani, pearl mala, red and gold Rajasthani safa with a jewelled kalgi and
-white feather, red velvet stole, holding a small sword, seated proudly on a decorated white mare with
-a red and gold embroidered saddle cloth, gold and red bridle, tassels, bells and a red plume. Horse in
-side view facing right, the whole horse visible including all hooves and the tail. The groom's face is
-turned to the viewer and fully visible (no sehra).
-
-`11_mangal_phera`: refs: headshots + `pose_phera.png`. Groom in the same ivory and gold wedding sherwani,
-red and gold safa with kalgi, pearl mala, red stole. Bride in a classic red bridal lehenga with heavy
-gold zardozi, red dupatta pinned on the back of her head (face fully visible), full bridal kundan
-jewellery, nath, maang tikka, red and gold chooda, mehendi on her hands. The groom's stole is tied to
-her dupatta in a gathbandhan knot. A small brass havan kund with a gentle fire stands in front of
-their feet, with a few marigolds around it. Both look at the viewer.
+`01_anchor_traditional`: **do this first; it is the style anchor for the 2D half.** Refs: both
+headshots + `pose_traditional.png`. Groom in an ivory bandhgala sherwani with gold sequin zig-zag
+embroidery, ivory churidar, cream embroidered mojari. Bride in an emerald-green silk lehenga with heavy
+gold zari border and gold buttis, green dupatta over one shoulder, kundan choker, maang tikka, kundan
+jhumkas, green and gold bangles, hair in a low bun. They stand close, her hand resting on his chest,
+both smiling.
 
 `12_car` (**landscape 1536x1024**): refs: headshots + `01` style anchor. The couple in an open-top
-vintage two-seater convertible, cream-white with gold trim and chrome, decorated with marigold
-garlands and a floral bunch on the bonnet (no text, no number plate text). Groom driving in a cream
-bandhgala, bride beside him in a pink-and-gold lehenga with her dupatta fluttering behind in the wind.
-Both smile and wave at the viewer. Front three-quarter view facing left, the whole car including all
-visible wheels inside the frame.
+vintage two-seater convertible, cream-white with gold trim and chrome, decorated with marigold garlands
+and a floral bunch on the bonnet (no text, no number plate text). Groom driving in a cream bandhgala,
+bride beside him in a pink-and-gold lehenga with her dupatta fluttering behind in the wind. Both smile
+and wave at the viewer. The car drives toward the viewer in a front three-quarter view; the whole car,
+including all visible wheels, is inside the frame.
 
-### BACKGROUNDS (opaque, 1024x1536 portrait, no people, no vehicles, no text)
+### 4B. PAINTED 2D ENTRY SCENE LAYERS (for parallax; same painted style, no people, no vehicles, no text)
 
-`13_bg_street`: painted Rajasthani town street at golden hour, in the same illustration style.
-Sandstone havelis with jharokha balconies on both sides, colourful bunting and marigold strings across
-the street, a palace with domes on a hill in the far distance, the road running from the bottom centre
-into the distance. Keep the lower-middle third of the road empty (a car is placed there later). Warm
-ivory, maroon, marigold and gold palette.
+The entry is a "driving through a Rajasthani town" shot. It is built from stacked layers that move at
+different speeds, so each layer must line up when stacked and must work on its own.
 
-`14_bg_venue_gate`: grand decorated wedding venue entrance at dusk: a tall carved sandstone gateway
-with a big arch draped in marigold and rose garlands, hanging brass lanterns, fairy lights, a red
-carpet from the bottom centre to the gate, diyas lining the path, a lit palace-like building behind.
-Keep the lower-middle third clear for the car and couple.
+`13a_street_far` (opaque, 1024x1536): golden-hour sky with soft clouds and a few birds, and a palace
+with domes on a hill in the far distance, sitting in the lower half of the frame. Nothing else.
 
-`15_bg_card_wash`: soft ivory handmade-paper texture with flowing maroon and deep-red watercolour
-washes entering from the top-right and bottom-left corners, scattered gold-leaf flecks, and a large
-calm empty ivory area in the middle for text. No objects.
+`13b_street_mid` (transparent, 1024x1536): two rows of sandstone havelis with jharokha balconies and
+colourful doors, one row on the left side and one on the right, framing a central gap. The road runs
+from the bottom centre into the distance. Everything above and between the buildings is transparent,
+so the sky layer shows through.
 
-### ORNAMENTS (transparent, 1024x1536, one object per image, same painted style, no text)
+`13c_street_near` (transparent, 1024x1536): only foreground decorations, namely strings of colourful
+triangular bunting and marigold garlands crossing the top third of the frame, plus a few potted plants
+and a hanging lantern at the far left and right edges. Everything else is transparent.
 
-`16_orn_lanterns`: two ornate brass Rajasthani lanterns with warm glowing light, hanging from fine
-chains that start at the very top edge of the image.
+`14_bg_venue_gate` (opaque, 1024x1536): a grand decorated wedding-venue entrance at dusk. A tall carved
+sandstone gateway with a big arch draped in marigold and rose garlands, hanging brass lanterns, fairy
+lights, a red carpet from the bottom centre to the gate, diyas lining the path, a lit palace-like
+building visible through the arch. Keep the lower-middle third clear (the car stops there).
 
-`17_orn_floral_corner`: a lush corner cluster of marigolds, red and pink roses, jasmine and green
-leaves, arranged to fit a top-left corner (flowers spilling toward the bottom-right).
+### 4C. CARD ART (painted)
 
-`18_orn_marigold_garland`: one long horizontal marigold and mango-leaf toran garland with small brass
-bells, spanning the full width, landscape 1536x1024.
+`15_bg_card_wash` (opaque, 1024x1536): soft ivory handmade-paper texture with flowing maroon and
+deep-red watercolour washes entering from the top-right and bottom-left corners, scattered gold-leaf
+flecks, and a large calm empty ivory area in the middle for text. No objects.
 
-`19_orn_diya`: a single brass diya on a small brass stand with a warm flame, centred.
+`16_orn_lanterns` (transparent, 1024x1536): two ornate brass Rajasthani lanterns with warm glowing
+light, hanging from fine chains that start at the very top edge of the image.
+
+`17_orn_floral_corner` (transparent, 1024x1536): a lush corner cluster of marigolds, red and pink
+roses, jasmine and green leaves, arranged to fit a top-left corner (flowers spilling toward the
+bottom-right).
+
+`18_orn_marigold_garland` (transparent, **landscape 1536x1024**): one long horizontal marigold and
+mango-leaf toran garland with small brass bells, spanning the full width.
+
+`19_orn_diya` (transparent, 1024x1536): a single brass diya on a small brass stand with a warm flame,
+centred.
+
+### 4D. CINEMATIC 3D EVENT SCENES (opaque, 1024x1536 portrait)
+
+Do `E01` first. Once it passes QC, attach `out/E01_ganesh_sthapana.png` to every later E- and F-job
+as the **3D style anchor**, so all scenes look like one continuous venue rendered by one studio.
+
+**Look for every E-job:** a premium cinematic 3D-rendered wedding-venue scene, like a high-end animated
+film or a luxury 3D wedding-invite reel. Use soft global illumination, warm golden-hour or night
+lighting as stated, shallow depth of field with creamy bokeh, and realistic flowers, fabric, brass and
+sandstone. The setting is one Rajasthani palace-courtyard venue: carved sandstone, jharokhas, marigold
+and rose decor, brass lanterns and diyas. Colours are ivory, maroon, marigold, rose pink and gold.
+
+**The couple in each scene:**
+- They appear as stylised 3D animated-film characters, with exact facial likeness to the headshots and
+  heads about 10% larger than natural.
+- They wear the outfit given for that scene, which follows the matching `pose_*.png`.
+- Place them in the lower half of the frame, **full figure, faces clearly visible**, standing beside
+  (not in front of) the signboard, at about 35–45% of the frame height.
+
+**The signboard (critical):** every scene contains one decorated signboard that matches the event:
+an easel, an arch panel, a framed board or a wall panel. Its **flat face is a blank rectangle filled
+with pure chroma green #00FF00**, which the video tool replaces with the event text later. Rules:
+- No text, letters or symbols on the board or anywhere else in the image.
+- Flowers may frame the green face, but nothing may overlap it.
+- The green face is a simple four-corner rectangle (perspective allowed), at least 40% of the image
+  width, fully inside the frame, in the upper-middle area.
+
+`E01_ganesh_sthapana`: midday. A marigold-decorated mandap with a beautiful Ganesha idol on a red-cloth
+pedestal at the back. A carved brass-framed signboard on an easel stands at the front left, with the
+green face. Outfits as in `pose_ganesh.png` (saffron kurta, cream dhoti, maroon stole; red-yellow
+bandhej saree). Couple with folded hands, the bride holding a puja thali.
+
+`E02_mayra_swagat`: late afternoon at a grand haveli doorway with a rangoli on the floor, a brass kalash,
+and gift trays covered with red cloth. The signboard is a carved wooden panel beside the door. Outfits as
+in `pose_mayra.png` (maroon bandhgala; rani-pink poshak, odhni on the back of her head). Welcoming pose.
+
+`E03_ring_ceremony`: evening, under fairy lights, beside a rose-and-white-flower arch. The signboard is
+a white framed easel with pink roses. Outfits as in `pose_ring.png` (navy velvet bandhgala; blush
+lehenga, open wavy hair). The groom slips a ring onto her finger.
+
+`E04_carnival`: bright morning on a lawn with colourful umbrellas, a balloon arch, bunting and small
+game stalls (ring toss, tin-can stack), and an anchor's mic stand. The signboard is a playful painted
+wooden board with balloons tied to it. Outfits as in `pose_carnival.png`. The bride holds a trophy and
+the groom a scorecard, both laughing.
+
+`E05_bandoli`: early evening on a festive street lane with strings of lights and marigolds overhead and a
+dhol on a stand. The signboard is a decorated wooden stand covered in marigold strings. Outfits as in
+`pose_bandoli.png` (mustard bandhgala with leheriya safa; leheriya saree). Folk-dance pose.
+
+`E06_sangeet`: night, on a stage with a glittering fairy-light curtain, gold drapes, warm spotlights and
+haze. The signboard is a large stage backdrop panel behind them and to one side. Outfits as in
+`pose_sangeet.png` (black embroidered sherwani; purple-magenta mirror-work lehenga). Dancing.
+
+`E07_ghadi_vinayak`: midnight. A small temple corner glowing with dozens of diyas and brass lamps,
+under a starry sky. The signboard is a brass-framed panel on a carved stand. Outfits: groom in a cream
+kurta with a maroon stole, bride in a maroon silk saree, as in `pose_puja.png`. Both with folded hands.
+
+`E08_haldi_janeu`: sunny morning in a courtyard draped in yellow marigold curtains, with brass urlis
+of turmeric paste and a low wooden patla. The signboard is a board made entirely of marigolds with
+the green face in the middle. Outfits: groom in a yellow dhoti with a white janeu thread across his
+chest and a marigold garland; bride in a yellow floral lehenga with flower jewellery. Laughing, with
+turmeric on their cheeks.
+
+`E09_baraat`: afternoon at the palace gate. The groom (alone) sits on a decorated white mare as in
+`pose_baraat.png` (ivory sherwani, red safa with kalgi), facing right. Behind him are a brass band
+with drums, colourful umbrellas and marigold arches. The signboard is a tall decorated arch panel at
+the left.
+
+`E10_mangal_phera`: night, inside a grand red-and-gold mandap with marigold and rose canopy, a brass
+havan kund with fire in the centre, and petals in the air. The signboard is a green-leaf (betel-leaf)
+wall panel at the back left with the green face. Outfits as in `pose_phera.png` (ivory sherwani and safa;
+red bridal lehenga, dupatta on the back of her head). Gathbandhan knot, standing beside the fire.
+
+### 4E. FOREGROUND TRANSITION LAYERS (transparent, 1024x1536, same 3D look, no text)
+
+These pass in front of the camera to "wipe" between scenes, as in luxury 3D reels.
+
+`F1_fg_curtain`: one tall sheer drape of maroon and gold fabric with a marigold tie-back, filling
+the full height of the frame, hanging from the very top edge to the very bottom edge.
+
+`F2_fg_pillar`: one carved sandstone palace pillar with floral garlands, filling the full height of
+the frame and about 35% of its width.
+
+`F3_fg_flowers`: a dense bunch of marigolds, roses and leaves, as if very close to the camera and
+softly out of focus, filling the bottom 40% of the frame.
+
+`F4_fg_petal_burst`: hundreds of falling rose and marigold petals at different sizes and depths, with
+some large blurred petals near the camera, spread over the whole frame.
 
 ## 5. Quality control (mandatory for every image; this is what makes it "perfect")
 
 After generating each image, inspect it yourself. Use a GPT vision-capable model through the same
 SDK, passing the generated image **and** the reference headshots. Score it 1–10 on:
 1. **Likeness:** does each face match its headshot exactly?
-2. **Style consistency** with `01_anchor_traditional` (after the anchor exists).
+2. **Style consistency:** 2D jobs match `01_anchor_traditional`; E- and F-jobs match `E01_ganesh_sthapana`.
 3. **Anatomy:** hands and fingers, limbs, proportions.
 4. **Completeness:** whole figure or object inside the frame, nothing cropped.
 5. **Cleanliness:** truly transparent background where required, no halo, no ground shadow, no text.
+   For E-jobs: the chroma-green face is pure #00FF00, rectangular, unobstructed, at least 40% of the image
+   width, and nothing else in the image is that green.
 6. **Brief match:** outfits, colours, props and pose exactly as written.
 
 Ask the vision model to return JSON: `{"scores": {...}, "defects": [...], "pass": true|false}`. An image
@@ -184,14 +234,21 @@ passes only if **every score is 9 or 10**. If it fails, regenerate with the defe
 prompt as explicit corrections. Allow up to **5 attempts per job** and keep the best-scoring one.
 Log every attempt and score to `wedding-invite/codex/out/qc_log.json`.
 
+For every E-job, also detect the green face with numpy (pixels where G>200, R<80, B<80). Write its four
+corner points (pixel coordinates, clockwise from top-left) to `wedding-invite/codex/out/boards.json` as
+`{"E01_ganesh_sthapana": [[x,y],[x,y],[x,y],[x,y]], ...}`. If the region is not one clean four-sided
+shape, the job fails QC.
+
 Then verify the files with Pillow:
-- Character and ornament PNGs are RGBA, and the four corner pixels have alpha 0.
-- Background PNGs are opaque RGB.
+- Character, ornament, `13b`, `13c` and F-layer PNGs are RGBA, and the four corner pixels have alpha 0.
+- Backgrounds (`13a`, `14`, `15`) and E-scenes are opaque RGB.
 - Every image matches the size requested.
 
 ## 6. Deliverables
 
-- `wedding-invite/codex/out/01_anchor_traditional.png` … `19_orn_diya.png` (19 files).
+- `wedding-invite/codex/out/`: `01_anchor_traditional`, `12_car`, `13a_street_far`, `13b_street_mid`,
+  `13c_street_near`, `14_bg_venue_gate`, `15_bg_card_wash`, `16`–`19` ornaments, `E01`–`E10`, and
+  `F1`–`F4` (28 PNG files), plus `boards.json`.
 - `wedding-invite/codex/out/contact_sheet.jpg`: every output on one sheet, labelled with its job id.
 - `wedding-invite/codex/out/qc_log.json`.
 - `wedding-invite/codex/generate.py`: the script you used. It must not contain the API key.
