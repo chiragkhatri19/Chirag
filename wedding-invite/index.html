@@ -25,7 +25,7 @@
   .day .gold { color: #9a2d12; }
   .night { color: #fff3dc; text-shadow: 0 2px 10px rgba(20,6,30,.85), 0 0 26px rgba(20,6,30,.6); }
   .night .gold { color: #f6d27a; }
-  .scrim { padding: 26px 0 34px; background: radial-gradient(ellipse 62% 58% at 50% 50%, rgba(255,241,214,.9), rgba(255,241,214,.62) 55%, rgba(255,241,214,0) 100%); }
+  .scrim { padding: 26px 0 34px; background: radial-gradient(closest-side, rgba(255,241,214,.9), rgba(255,241,214,.55) 60%, rgba(255,241,214,0)); }
   .rule { display: block; margin: 10px auto; width: 300px; height: 16px; }
   #hint { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 9; font: 600 22px 'Cormorant Garamond', serif;
           color: #fff4dc; background: rgba(92,18,16,.88); border: 2px solid #e9b85a; border-radius: 40px; padding: 14px 30px; cursor: pointer; display: none; }
@@ -34,8 +34,8 @@
 <body>
 <div id="stage">
   <canvas id="cv" width="1080" height="1920"></canvas>
-  <canvas id="fx" width="1080" height="1920"></canvas>
   <div id="texts"></div>
+  <canvas id="fx" width="1080" height="1920"></canvas>
 </div>
 <div id="hint">▶ Tap to play with music</div>
 <audio id="music" src="assets/music.m4a" preload="auto"></audio>
@@ -78,7 +78,7 @@ const EVENTS = [
   { d: 1, img: 'E06', enTime: '7:00 PM', hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', sky: 'night' },
   { d: 1, img: 'E07', enTime: '12:15 AM · midnight', hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात', time: '12:15 बजे', sky: 'night' },
   { d: 2, img: 'E08', enTime: '8:00 AM', hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
-  { d: 2, img: 'E09', enTime: '3:00 PM', hi: 'बारात प्रस्थान', en: 'Baraat Prasthan · Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
+  { d: 2, img: 'E09', enTime: '3:00 PM', hi: 'बारात प्रस्थान · बंदोली', en: 'Baraat Prasthan · Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
   { d: 2, img: 'E10', enTime: '7:21 – 9:34 PM', hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', sky: 'night' },
 ];
 const WIPES = [['pillar', 'drape'], ['flowers', 'pillar', 'petals'], ['drape', 'pillar']];
@@ -101,21 +101,21 @@ let cursor = 0;
 const seg = (name, dur) => { TL[name] = [cursor, cursor + dur]; cursor += dur; return TL[name]; };
 seg('open', 3.0);
 seg('toBanner', 1.6);
-seg('banner', 6.6);
-seg('toDoor', 1.4);
-seg('couple', 3.2);
-const EV_DUR = 3.4, WIPE = .9;
+seg('banner', 8.125);
+seg('toDoor', 1.25);
+seg('couple', 3.125);
+const EV_DUR = 3.75, WIPE = .9;   // 6 beats at 96 BPM
 DAYS.forEach((day, d) => {
-  seg(`toWin${d}`, d === 0 ? 1.3 : 1.4);
-  seg(`label${d}`, 1.0);
-  seg(`zoomIn${d}`, 1.3);
+  seg(`toWin${d}`, 1.25);
+  seg(`label${d}`, 1.25);
+  seg(`zoomIn${d}`, 1.25);
   const evs = EVENTS.filter(e => e.d === d);
   evs.forEach((e, i) => { e.t0 = cursor; e.t1 = cursor + EV_DUR; e.i = i; e.n = evs.length; cursor += EV_DUR; });
   day.events = evs;
-  seg(`zoomOut${d}`, 1.15);
+  seg(`zoomOut${d}`, 1.25);
 });
-seg('toEnd', 1.5);
-seg('end', 5.6);
+seg('toEnd', 1.25);
+seg('end', 5.625);
 const DURATION = cursor + .3;
 
 /* ---------------- street camera ---------------- */
@@ -126,11 +126,23 @@ const ZOOM_RECT = h => {               // scene rect that a window shows; full-f
   w *= 1.03; hh *= 1.03;
   return { x: cx - w / 2, y: cy - hh / 2, w, h: hh, cx, cy };
 };
-DAYS.forEach(d => {
-  d.rect = ZOOM_RECT(d.hole);
-  const z = H / d.rect.h;                                         // screen px per world px when the scene fills the frame (1280 x 1920 cover)
-  d.camIn = { cx: d.rect.cx, cy: d.rect.cy, vw: W / z };
+const OPENINGS = [[2479, 696, 142, 253], [3389, 701, 137, 244], [4001, 564, 159, 283]];   // largest 9:16 rect fully inside each window (assets/v2/holes.json)
+DAYS.forEach((d, i) => {
+  const [ox, oy, ow, oh] = OPENINGS[i];
+  d.rectA = ZOOM_RECT(d.hole);                                    // scene as seen through the window from the street
+  d.rect = d.rectA;
+  const vw = ow * .96;
+  d.camIn = { cx: ox + ow / 2, cy: oy + oh / 2, vw };             // camera ends fully inside the opening: no frame left on screen
+  const z = W / vw, sw = 1280 / z, sh = 1920 / z;                 // scene placed so it is exactly the full-frame cover at that point
+  d.rectB = { x: d.camIn.cx - sw / 2, y: d.camIn.cy - sh / 2, w: sw, h: sh };
 });
+const lerpRect = (a, b, q) => ({ x: lerp(a.x, b.x, q), y: lerp(a.y, b.y, q), w: lerp(a.w, b.w, q), h: lerp(a.h, b.h, q) });
+function zoomQ(d, t) {                // 0 = seen from the street, 1 = filling the frame
+  const [a0, a1] = TL[`zoomIn${d}`], [b0, b1] = TL[`zoomOut${d}`];
+  if (t >= a0 && t <= a1) return E.inout((t - a0) / (a1 - a0));
+  if (t >= b0 && t <= b1) return 1 - E.inout((t - b0) / (b1 - b0));
+  return 0;
+}
 const BANNER = { cx: 1395, top: 288, w: 560 };
 BANNER.h = BANNER.w * 1497 / 997;
 const DOOR = { x: 2120, feet: 1330, h: 900 };
@@ -139,8 +151,8 @@ const keys = [];                       // [t, cx, cy, vw]
 const K = (t, cx, cy, vw) => keys.push([t, cx, cy, vw]);
 K(0, 432, 768, 864);
 K(TL.open[1], 372, 812, 700);
-K(TL.toBanner[1], 1395, 724, 640);
-K(TL.banner[1], 1395, 734, 612);
+K(TL.toBanner[1], 1395, 640, 660);
+K(TL.banner[1], 1395, 650, 640);
 K(TL.toDoor[1], 2120, 768, 864);
 K(TL.couple[1], 2160, 768, 830);
 DAYS.forEach((d, i) => {
@@ -150,8 +162,8 @@ DAYS.forEach((d, i) => {
   K(TL[`zoomOut${i}`][0], d.camIn.cx, d.camIn.cy, d.camIn.vw);
   K(TL[`zoomOut${i}`][1], d.rect.cx, 790, 760);
 });
-K(TL.toEnd[1], 4062, 768, 864);
-K(DURATION, 4070, 770, 840);
+K(TL.toEnd[1], 4020, 768, 864);
+K(DURATION, 4026, 770, 850);
 
 function camAt(t) {
   let i = 0;
@@ -183,7 +195,7 @@ function cover(img, sx = 1, ox = 0, oy = 0) {   // draw an event scene to fill t
 }
 function goldFill(y0, y1) {
   const gr = g.createLinearGradient(0, y0, 0, y1);
-  gr.addColorStop(0, '#fff1bf'); gr.addColorStop(.35, '#f2c862'); gr.addColorStop(.62, '#b8801f'); gr.addColorStop(1, '#f0cf78');
+  gr.addColorStop(0, '#fff1bf'); gr.addColorStop(.35, '#f2c862'); gr.addColorStop(.62, '#8a5a10'); gr.addColorStop(1, '#f0cf78');
   return gr;
 }
 // world-anchored text (scales with the camera)
@@ -203,6 +215,7 @@ function wtext(c, str, x, y, size, font, fill, alpha = 1, opts = {}) {
   g.restore();
 }
 
+const gleamCanvas = Object.assign(document.createElement('canvas'), { width: 1080, height: 1920 });
 /* monogram painted on a plaster panel (world coords) */
 function monogram(c, cx, cy, s, p, gleam) {
   if (p <= 0) return;
@@ -212,9 +225,9 @@ function monogram(c, cx, cy, s, p, gleam) {
   g.save();
   const [lx] = S(c, cx - span / 2, cy);
   g.beginPath(); g.rect(-10, -10, lx + clamp(reveal) * span * c.z + 30 * c.z, H + 20); g.clip();
-  wtext(c, 'V', cx - 62 * s, cy + 40 * s, 128 * s, '"Cinzel"', 'gold', 1, { weight: 700, shadow: 'rgba(70,20,5,.55)', stroke: 'rgba(90,40,5,.5)' });
+  wtext(c, 'V', cx - 62 * s, cy + 40 * s, 128 * s, '"Cinzel"', 'gold', 1, { weight: 700, shadow: 'rgba(70,20,5,.55)', stroke: '#5c1210' });
   wtext(c, '&', cx + 2 * s, cy + 18 * s, 78 * s, '"Great Vibes"', '#8e1d14', 1, {});
-  wtext(c, 'K', cx + 64 * s, cy + 40 * s, 128 * s, '"Cinzel"', 'gold', 1, { weight: 700, shadow: 'rgba(70,20,5,.55)', stroke: 'rgba(90,40,5,.5)' });
+  wtext(c, 'K', cx + 64 * s, cy + 40 * s, 128 * s, '"Cinzel"', 'gold', 1, { weight: 700, shadow: 'rgba(70,20,5,.55)', stroke: '#5c1210' });
   g.restore();
   // thin gold rules and the names under it
   const a2 = clamp((p - .55) / .45);
@@ -222,12 +235,17 @@ function monogram(c, cx, cy, s, p, gleam) {
   g.save(); g.globalAlpha = a2; g.strokeStyle = goldFill(ry - 2, ry + 2); g.lineWidth = 2.2 * c.z * s;
   g.beginPath(); g.moveTo(rx - 80 * s * c.z * a2, ry); g.lineTo(rx + 80 * s * c.z * a2, ry); g.stroke(); g.restore();
   wtext(c, 'Veeral & Konika', cx, cy + 132 * s, 34 * s, '"Great Vibes"', '#7d1a12', a2, {});
-  if (gleam !== undefined && gleam > 0 && gleam < 1) {            // light sweep across the gold
-    const [gx, gy] = S(c, cx - span / 2 + gleam * span * 1.3, cy);
-    g.save(); g.globalCompositeOperation = 'lighter'; g.globalAlpha = .35 * Math.sin(gleam * Math.PI);
-    const gr = g.createLinearGradient(gx - 40 * c.z, 0, gx + 40 * c.z, 0);
-    gr.addColorStop(0, 'rgba(255,240,190,0)'); gr.addColorStop(.5, 'rgba(255,240,190,1)'); gr.addColorStop(1, 'rgba(255,240,190,0)');
-    g.fillStyle = gr; g.fillRect(gx - 40 * c.z, gy - 120 * s * c.z, 80 * c.z, 200 * s * c.z); g.restore();
+  if (gleam !== undefined && gleam > 0 && gleam < 1) {            // light sweep, clipped to the letters
+    const off = gleamCanvas, o = off.getContext('2d');
+    o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-over'; o.clearRect(0, 0, W, H);
+    const [vx, vy] = S(c, cx - 62 * s, cy + 40 * s), [kx] = S(c, cx + 64 * s, cy), px = 128 * s * c.z;
+    o.font = `700 ${px}px "Cinzel"`; o.textAlign = 'center'; o.fillStyle = '#fff';
+    o.fillText('V', vx, vy); o.fillText('K', kx, vy);
+    const [gx] = S(c, cx - span / 2 + gleam * span * 1.3, cy);
+    const gr = o.createLinearGradient(gx - 45 * c.z, 0, gx + 45 * c.z, 0);
+    gr.addColorStop(0, 'rgba(255,246,210,0)'); gr.addColorStop(.5, 'rgba(255,246,210,1)'); gr.addColorStop(1, 'rgba(255,246,210,0)');
+    o.globalCompositeOperation = 'source-in'; o.fillStyle = gr; o.fillRect(0, 0, W, H);
+    g.save(); g.globalCompositeOperation = 'lighter'; g.globalAlpha = .55 * Math.sin(gleam * Math.PI); g.drawImage(off, 0, 0); g.restore();
   }
 }
 
@@ -240,7 +258,17 @@ function holeScene(d, t) {
 function drawStreet(t, c, alpha) {
   // scenes behind the window openings
   DAYS.forEach((day, d) => {
-    const r = day.rect, [x, y] = S(c, r.x, r.y);
+    let r = lerpRect(day.rectA, day.rectB, zoomQ(d, t));
+    // the scene must always cover the part of the window opening that is on screen
+    const [hx0, hy0, hx1, hy1] = day.hole;
+    const ix0 = Math.max(hx0, c.x0), iy0 = Math.max(hy0, c.y0), ix1 = Math.min(hx1, c.x0 + c.vw), iy1 = Math.min(hy1, c.y0 + c.vh);
+    if (ix1 > ix0 && iy1 > iy0) {
+      const k = Math.max(1, (r.x + r.w - ix0) > 0 ? 0 : 1,
+        (ix1 - (r.x + r.w / 2)) / (r.w / 2), ((r.x + r.w / 2) - ix0) / (r.w / 2),
+        (iy1 - (r.y + r.h / 2)) / (r.h / 2), ((r.y + r.h / 2) - iy0) / (r.h / 2));
+      if (k > 1) r = { x: r.x + r.w / 2 - r.w * k / 2, y: r.y + r.h / 2 - r.h * k / 2, w: r.w * k, h: r.h * k };
+    }
+    const [x, y] = S(c, r.x, r.y);
     g.drawImage(holeScene(d, t), x, y, r.w * c.z, r.h * c.z);
   });
   g.save(); g.globalAlpha = alpha;
@@ -261,8 +289,8 @@ function drawStreet(t, c, alpha) {
   // ...and heading back inside once the camera moves on to the events
   drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0] - .2, true, TL.toWin0[0] + .1);
   // couple waiting at the palace gate for the finale
-  drawCouple(t, c, 4330, 1336, 800, TL.toEnd[0] + .9, false);
-  monogram(c, 3780, 600, 1.0, ramp(t, TL.end[0] + .2, TL.end[0] + 2.2, 'out'), (t - TL.end[0] - 2.0) / 1.0);
+  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[0] + .9, false);
+  monogram(c, 3780, 600, 1.0, 1, (t - TL.end[0] - .6) / 1.2);
 
   // cycle-rickshaw rolling along the street during the opening
   const rp = clamp((t - .8) / 11.5);
@@ -288,7 +316,7 @@ function drawBanner(t, c) {
   if (u < 1) {                                             // rolled cloth at the bottom edge
     const ry = sy + bh * c.z, rr = 16 * c.z;
     const gr = g.createLinearGradient(0, ry - rr, 0, ry + rr);
-    gr.addColorStop(0, '#d9c49a'); gr.addColorStop(.5, '#fff6df'); gr.addColorStop(1, '#a88c5c');
+    gr.addColorStop(0, '#cdb68a'); gr.addColorStop(.45, '#efe1bf'); gr.addColorStop(.7, '#e2cfa6'); gr.addColorStop(1, '#8f744a');
     g.fillStyle = gr; g.beginPath(); g.roundRect(sx + 6 * c.z, ry - rr, bw * c.z - 12 * c.z, rr * 2, rr); g.fill();
   }
   // the invitation, line by line
@@ -307,20 +335,20 @@ function drawBanner(t, c) {
     ['Runicha Dham, Balotra · Rajasthan', 906, 16, '600 "Cormorant Garamond"', '#5c1a10'],
   ] : [
     ['॥ श्री गणेशाय नमः ॥', 430, 19, '"Tiro Devanagari Hindi"', '#8a2a14'],
-    ['परमपिता परमेश्वर की असीम कृपा', 474, 16.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['एवं बड़ों के आशीर्वाद से', 500, 16.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
+    ['परमपिता परमेश्वर की असीम कृपा', 474, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
+    ['एवं बड़ों के आशीर्वाद से', 500, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
     ['चि.', 548, 15, '"Tiro Devanagari Hindi"', '#5c1a10'],
     ['वीरल', 608, 58, '"Rozha One"', '#b2321a'],
     ['संग', 652, 24, '"Tiro Devanagari Hindi"', '#8a2a14'],
     ['सौ. कां.', 690, 15, '"Tiro Devanagari Hindi"', '#5c1a10'],
     ['कोनिका', 750, 58, '"Rozha One"', '#b2321a'],
-    ['के शुभ विवाह के मंगल उत्सव में', 800, 16.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['आप सपरिवार सादर आमंत्रित हैं', 826, 16.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
+    ['के शुभ विवाह के मंगल उत्सव में', 800, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
+    ['आप सपरिवार सादर आमंत्रित हैं', 826, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
     ['19 – 21 नवम्बर 2026', 878, 25, '"Rozha One"', '#8a2a14'],
     ['रुणिचा धाम, बालोतरा (राजस्थान)', 908, 15.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
   ];
   lines.forEach(([s, y, size, font, col, it], i) => {
-    const a = ramp(t, b0 + 1.6 + i * .26, b0 + 2.2 + i * .26, 'out');
+    const a = ramp(t, b0 + 1.5 + i * .16, b0 + 2.1 + i * .16, 'out');
     if (a <= 0 || u < (y - BANNER.top + 20) / BANNER.h) return;
     wtext(c, s, BANNER.cx, y + (1 - a) * 8, size, `${it ? 'italic ' : ''}${font}`, col, a, {});
   });
@@ -331,13 +359,13 @@ function drawCouple(t, c, x, feet, h, t0, fromDoor, tExit) {
   if (tExit !== undefined) p = Math.min(p, 1 - ramp(t, tExit, tExit + 1.0, 'inout'));
   if (p <= 0) return;
   const im = IMG.couple;
-  const sc = fromDoor ? lerp(.7, 1, p) : lerp(.92, 1, p);
-  const fy = fromDoor ? lerp(1172, feet, p) : feet;
+  const sc = fromDoor ? lerp(.9, 1, p) : lerp(.94, 1, p);
+  const fy = fromDoor ? lerp(1250, feet, p) : feet;
   const hh = h * sc, ww = hh * im.width / im.height;
   const bob = Math.sin((t - t0) * 2.4) * 3 * p;
   const [sx, sy] = S(c, x - ww / 2, fy - hh - bob);
   g.save();
-  g.globalAlpha *= clamp(p * 2.2);
+  g.globalAlpha *= clamp(p * 5);
   // contact shadow
   const [shx, shy] = S(c, x, fy);
   const sg = g.createRadialGradient(shx, shy, 0, shx, shy, ww * .55 * c.z);
@@ -351,10 +379,10 @@ function drawCouple(t, c, x, feet, h, t0, fromDoor, tExit) {
 
 /* puppets hanging in the near foreground during the opening (parallax) */
 function drawPuppets(t, c) {
-  const im = IMG.puppets, a = 1 - ramp(t, TL.toBanner[0] + .2, TL.toBanner[0] + 1.0);
+  const im = IMG.puppets, a = 1 - ramp(t, TL.toBanner[0] + .1, TL.toBanner[0] + .5);
   if (a <= 0) return;
-  const par = 1.45, wx = 760;
-  const sx = (wx - c.cx) * c.z * par + W / 2, h = 760, w = h * im.width / im.height;
+  const par = 1.2, wx = 560;
+  const sx = (wx - c.cx) * c.z * par + W / 2, h = 1100, w = h * im.width / im.height;
   g.save(); g.globalAlpha = a;
   g.translate(sx, -30); g.rotate(Math.sin(t * 1.4) * .025);
   g.filter = 'blur(1.2px)';
@@ -377,7 +405,7 @@ function kb(e, t) {                    // gentle Ken Burns per scene; first and 
 function drawEvent(e, t, clipL, clipR, extra = {}) {
   const k = kb(e, t);
   g.save();
-  if (clipL !== undefined) { g.beginPath(); g.rect(clipL, 0, clipR - clipL, H); g.clip(); }
+  if (clipL !== undefined) { const [y0, y1] = extra.clipY || [0, H]; g.beginPath(); g.rect(clipL, y0, clipR - clipL, y1 - y0); g.clip(); }
   cover(IMG[e.img], k.s * (extra.s || 1), k.ox + (extra.ox || 0), k.oy);
   g.restore();
 }
@@ -406,23 +434,27 @@ function wipe(kind, a, b, p, t) {
     const shift = 90;
     if (dir < 0) { drawEvent(a, t, 0, cx, { ox: -shift * e }); drawEvent(b, t, cx, W, { ox: shift * (1 - e) }); }
     else { drawEvent(b, t, 0, cx, { ox: -shift * (1 - e) }); drawEvent(a, t, cx, W, { ox: shift * e }); }
-    g.save(); g.filter = 'blur(2px)';
-    g.shadowColor = 'rgba(30,10,0,.55)'; g.shadowBlur = 50;
-    g.drawImage(im, cx - w / 2, (H - h) / 2 + (kind === 'drape' ? -120 : 0), w, h); g.restore();
-  } else if (kind === 'flowers') {
-    const up = p < .5 ? E.out(p / .5) : 1 - E.inout((p - .5) / .5);
+    fg.save(); fg.filter = 'blur(1.5px)';
+    fg.shadowColor = 'rgba(30,10,0,.55)'; fg.shadowBlur = 50;
+    fg.drawImage(im, cx - w / 2, (H - h) / 2 + (kind === 'drape' ? -120 : 0), w, h); fg.restore();
+  } else if (kind === 'flowers') {                         // a band of flowers rises past the lens; the cut follows the band
+    const s = 1.75, w = im.width * s, h = im.height * s;
+    const bandTop = .58 * h, bandMid = .79 * h;           // the bunch fills the lower ~40% of the image
+    const e = E.inout(p);
+    const y = lerp(H - bandTop + 40, -h - 40, e);         // image top
+    const cut = y + bandMid;
+    drawEvent(a, t, 0, W, { clipY: [0, cut] }); drawEvent(b, t, 0, W, { clipY: [cut, H] });
+    fg.drawImage(im, (W - w) / 2, y, w, h);
+  } else {                                                 // petal burst with a warm bloom; swap only while petals cover
     (p < .5 ? drawEvent(a, t) : drawEvent(b, t));
-    const s = 3.2, w = im.width * s, h = im.height * s;
-    const y = lerp(H, -h * .62, up);
-    g.save(); g.filter = 'blur(5px)'; g.drawImage(im, (W - w) / 2, y, w, h); g.restore();
-  } else {                                                 // petal burst with a warm bloom
-    drawEvent(a, t); g.save(); g.globalAlpha = E.inout(clamp((p - .3) / .4)); drawEvent(b, t); g.restore();
-    const s = lerp(1.1, 2.8, E.out(p)), w = W * s, h = H * s;
-    g.save(); g.globalAlpha = Math.sin(p * Math.PI); g.drawImage(im, (W - w) / 2, (H - h) / 2, w, h);
-    const fl = Math.pow(Math.sin(p * Math.PI), 3) * .55;
-    const gr = g.createRadialGradient(W / 2, H * .45, 0, W / 2, H * .45, H * .7);
-    gr.addColorStop(0, `rgba(255,236,190,${fl})`); gr.addColorStop(1, 'rgba(255,236,190,0)');
-    g.globalCompositeOperation = 'lighter'; g.fillStyle = gr; g.fillRect(0, 0, W, H); g.restore();
+    const cover = 1 - Math.abs(p - .5) * 2;
+    const s = lerp(1.1, 1.8, E.out(p)), w = W * s, h = H * s;
+    fg.save(); fg.globalAlpha = clamp(cover * 1.6); fg.drawImage(im, (W - w) / 2, (H - h) / 2, w, h);
+    fg.drawImage(im, (W - w * .8) / 2, (H - h * .8) / 2, w * .8, h * .8);
+    const fl = Math.pow(cover, 2.2) * .45;
+    const gr = fg.createRadialGradient(W / 2, H * .45, 0, W / 2, H * .45, H * .75);
+    gr.addColorStop(0, `rgba(255,238,200,${fl})`); gr.addColorStop(1, `rgba(255,238,200,${fl * .6})`);
+    fg.globalCompositeOperation = 'source-over'; fg.fillStyle = gr; fg.fillRect(0, 0, W, H); fg.restore();
   }
 }
 
@@ -447,15 +479,15 @@ DAYS.forEach((d, i) => {
     <div class="tiro" style="font-size:42px">${d.date}</div>${RULE}`, TL[`toWin${i}`][0] + (i === 0 ? 1.0 : .7), TL[`zoomIn${i}`][0] + .55);
   d.events.forEach(e => {
     const long = e.hi.length > 11;
-    if (EN) block(e.sky, 120, `<div class="cinzel" style="font-size:24px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
+    if (EN) block(e.sky, 120, `<div class="cinzel" style="font-size:28px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
       <div class="script gold" style="font-size:${e.en.length > 18 ? 92 : 118}px;line-height:1.12;margin-top:4px">${e.en.replace(' · ', ' &amp; ')}</div>${RULE}
       <div class="corm" style="font-size:50px;font-weight:600">${e.enTime}</div>
-      <div class="corm" style="font-size:32px;font-weight:600;margin-top:2px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : WIPE / 2 - .05), e.t1 - (e.i === e.n - 1 ? .2 : WIPE / 2 - .1), { stagger: .12 });
-    else block(e.sky, 120, `<div class="tiro" style="font-size:32px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
+      <div class="corm" style="font-size:36px;font-weight:600;margin-top:2px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : .12), e.t1 - (e.i === e.n - 1 ? .2 : .32), { stagger: .08 });
+    else block(e.sky, 120, `<div class="tiro" style="font-size:36px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
       <div class="hi gold" style="font-size:${long ? 100 : 116}px;line-height:1.16;margin-top:6px">${e.hi}</div>
       <div class="cinzel" style="font-size:28px;letter-spacing:6px">${e.en}</div>${RULE}
-      <div class="tiro" style="font-size:48px">${e.when} <span class="hi">${e.time}</span></div>
-      <div class="tiro" style="font-size:30px;margin-top:4px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : WIPE / 2 - .05), e.t1 - (e.i === e.n - 1 ? .2 : WIPE / 2 - .1), { stagger: .12 });
+      <div class="hi" style="font-size:46px">${e.when} ${e.time}</div>
+      <div class="tiro" style="font-size:34px;margin-top:4px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : .12), e.t1 - (e.i === e.n - 1 ? .2 : .32), { stagger: .08 });
   });
 });
 block('day scrim', 90, EN ? `<div class="script gold" style="font-size:96px;line-height:1.08">Awaiting your<br>gracious presence</div>${RULE}
@@ -470,6 +502,7 @@ function seekTexts(t) {
     b.el.style.display = on ? 'block' : 'none';
     if (!on) continue;
     const out = ramp(t, b.t1, b.t1 + .45, 'inout');
+    if (b.scrim !== undefined || b.el.classList.contains('scrim')) b.el.style.opacity = ramp(t, b.t0 - .05, b.t0 + .45, 'out') * (1 - out);
     b.kids.forEach((k, i) => {
       const a = ramp(t, b.t0 + i * b.stagger, b.t0 + i * b.stagger + .55, 'out');
       k.style.opacity = a * (1 - out);
@@ -516,6 +549,7 @@ function inEvents(t) {
   return false;
 }
 function streetAlpha(t) {
+  return 1;     // the camera ends inside the opening, so no cross-fade is needed
   for (let i = 0; i < DAYS.length; i++) {
     const [a0, a1] = TL[`zoomIn${i}`], [b0, b1] = TL[`zoomOut${i}`];
     if (t >= a0 && t < a1) return 1 - ramp(t, a1 - .55, a1 - .02, 'inout');
@@ -526,6 +560,7 @@ function streetAlpha(t) {
 function seek(t) {
   g.setTransform(1, 0, 0, 1, 0, 0);
   g.clearRect(0, 0, W, H);
+  fg.clearRect(0, 0, W, H);
   if (inEvents(t)) drawEvents(t);
   else {
     const c = camAt(t);
@@ -537,15 +572,15 @@ function seek(t) {
   vg.addColorStop(0, 'rgba(40,12,0,0)'); vg.addColorStop(1, 'rgba(40,12,0,.38)');
   g.fillStyle = vg; g.fillRect(0, 0, W, H);
   // fade in from black, out at the end
-  const fade = Math.max(1 - ramp(t, 0, .7), ramp(t, DURATION - .6, DURATION));
-  if (fade > 0) { g.fillStyle = `rgba(20,6,2,${fade})`; g.fillRect(0, 0, W, H); }
 
-  fg.clearRect(0, 0, W, H);
   petals(t, 26, ramp(t, TL.couple[0] + .6, TL.couple[0] + 1.4) * (1 - ramp(t, TL.toWin0[0] + .6, TL.toWin0[1])), 1);
   if (inEvents(t)) petals(t, 16, .55, 2);
   petals(t, 34, ramp(t, TL.end[0], TL.end[0] + 1), 3);
   sparkles(t, 30, ramp(t, TL.end[0] + 1.2, TL.end[0] + 2.2));
   seekTexts(t);
+  // fade in from black and out at the end (on the top layer, so it covers the titles too)
+  const fade = Math.max(1 - ramp(t, 0, .7), ramp(t, DURATION - .6, DURATION));
+  if (fade > 0) { fg.fillStyle = `rgba(20,6,2,${fade})`; fg.fillRect(0, 0, W, H); }
 }
 
 document.documentElement.lang = LANG;

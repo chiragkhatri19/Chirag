@@ -7,7 +7,7 @@ import json
 import os
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'codex', 'out')
@@ -26,7 +26,8 @@ Image.fromarray(out, 'RGBA').save(os.path.join(DST, 'street.webp'), quality=90, 
 
 for i, n in enumerate(['E01_ganesh_sthapana', 'E02_mayra_swagat', 'E03_ring_ceremony', 'E04_carnival', 'E05_bandoli',
                        'E06_sangeet', 'E07_ghadi_vinayak', 'E08_haldi_janeu', 'E09_baraat', 'E10_mangal_phera'], 1):
-    Image.open(os.path.join(SRC, n + '.png')).convert('RGB').save(os.path.join(DST, 'E%02d.jpg' % i), quality=90)
+    im = Image.open(os.path.join(SRC, n + '.png')).convert('RGB').filter(ImageFilter.UnsharpMask(radius=1.6, percent=60, threshold=2))
+    im.save(os.path.join(DST, 'E%02d.jpg' % i), quality=92)   # shown at 1.25-1.33x, so a little crisping helps
 
 sizes = {}
 for n, name in [('01_anchor_couple', 'couple'), ('02_rickshaw', 'rickshaw'), ('03_puppets', 'puppets'), ('B1_banner', 'banner'),
