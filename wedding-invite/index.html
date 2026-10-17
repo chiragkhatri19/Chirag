@@ -307,9 +307,9 @@ function drawStreet(t, c, alpha) {
 
   // couple stepping out of the haveli doorway
   // ...and heading back inside once the camera moves on to the events
-  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5 }, TL.toWin0[0] + .05);
+  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5 }, TL.couple[1] - .35);
   // couple waiting at the palace gate for the finale
-  drawCouple(t, c, 4180, 1336, 780, TL.end[0] - .625, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .44 });
+  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .44, fromSide: 1, minLight: .35 });
   monogram(c, 3780, 600, 1.0, ramp(t, TL.end[0] + 1.0, TL.end[0] + 2.5, 'out'), (t - TL.end[0] - 2.5) / 1.2);
 
   // cycle-rickshaw rolling along the street during the opening
@@ -384,12 +384,13 @@ function drawCouple(t, c, x, feet, h, t0, door, tBack) {
   const s2 = E.sine(clamp((p - .45) / .55));
   const sc = lerp(door.small, 1, s2);
   const fy = lerp(door.sill, feet, s2);
-  const cx = lerp(door.x, x, s2);
+  let cx = lerp(door.x, x, s2);
+  if (door.fromSide && p < .45) cx = lerp(door.open[2] + 140, door.x, E.out(p / .45));   // walks into the opening from inside the courtyard
   const hh = h * sc, ww = hh * im.width / im.height;
   const bob = Math.sin((t - t0) * 2.4) * 3 * p;
   const [sx, sy] = S(c, cx - ww / 2, fy - hh - bob);
   g.save();
-  g.globalAlpha *= clamp(p / .15);
+  if (!door.fromSide) g.globalAlpha *= clamp(p / .15);
   if (p < .55) {                                           // still inside: the door frame and leaves occlude them
     const k = E.sine(clamp((p - .45) / .1));
     const [ox0, oy0] = S(c, lerp(door.open[0], door.open[0] - 300, k), door.open[1]), [ox1, oy1] = S(c, lerp(door.open[2], door.open[2] + 300, k), door.open[3]);
@@ -400,7 +401,7 @@ function drawCouple(t, c, x, feet, h, t0, door, tBack) {
   sg.addColorStop(0, 'rgba(70,35,10,.38)'); sg.addColorStop(1, 'rgba(70,35,10,0)');
   g.fillStyle = sg; g.save(); g.translate(shx, shy); g.scale(1, .16); g.translate(-shx, -shy);
   g.beginPath(); g.arc(shx, shy, ww * .55 * c.z, 0, 7); g.fill(); g.restore();
-  if (p < .5) g.filter = `brightness(${lerp(0, 1, E.sine(clamp(p / .5)))})`;
+  if (p < .5) g.filter = `brightness(${lerp(door.minLight || 0, 1, E.sine(clamp(p / .5)))})`;
   g.drawImage(im, sx, sy, ww * c.z, hh * c.z);
   g.restore();
 }
@@ -462,8 +463,9 @@ function petalField(im) {                 // petal layer with its rectangular bo
   const gy = o.createLinearGradient(0, 0, 0, h);
   gy.addColorStop(0, 'rgba(0,0,0,0)'); gy.addColorStop(f, 'rgba(0,0,0,1)'); gy.addColorStop(1 - f, 'rgba(0,0,0,1)'); gy.addColorStop(1, 'rgba(0,0,0,0)');
   o.fillStyle = gy; o.fillRect(0, 0, w, h);
-  const gx = o.createLinearGradient(0, 0, w, 0);
-  gx.addColorStop(0, 'rgba(0,0,0,0)'); gx.addColorStop(f, 'rgba(0,0,0,1)'); gx.addColorStop(1 - f, 'rgba(0,0,0,1)'); gx.addColorStop(1, 'rgba(0,0,0,0)');
+  const gx = o.createLinearGradient(0, 0, w, 0);            // the petals are hard-cropped at x 80 and 943
+  gx.addColorStop(0, 'rgba(0,0,0,0)'); gx.addColorStop(80 / w, 'rgba(0,0,0,0)'); gx.addColorStop(270 / w, 'rgba(0,0,0,1)');
+  gx.addColorStop(753 / w, 'rgba(0,0,0,1)'); gx.addColorStop(943 / w, 'rgba(0,0,0,0)'); gx.addColorStop(1, 'rgba(0,0,0,0)');
   o.fillStyle = gx; o.fillRect(0, 0, w, h);
   return _field;
 }
