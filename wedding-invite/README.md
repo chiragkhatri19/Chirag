@@ -1,6 +1,6 @@
 # Veeral weds Konika: Rajasthani wedding invite video
 
-`veeral-weds-konika-invite.mp4` is a 1080×1920 (9:16) video at 30 fps, about 72 s long, with a synthesized background score.
+`veeral-weds-konika-invite.mp4` (Hindi) and `veeral-weds-konika-invite-english.mp4` (English) are 1080×1920 (9:16) video at 30 fps, about 77 s long, with a synthesized background score.
 
 ## Story
 
@@ -55,9 +55,10 @@ All content lives in `index.html`, in the `DAYS` and `EVENTS` arrays near the to
 
 ```bash
 python3 tools/prep_assets.py                       # after changing anything in codex/out
-python3 tools/make_music.py /tmp/music.wav 71.65 4.6 4.6,19.4,34.45,52.9,65.75 \
+python3 tools/make_music.py /tmp/music.wav 76.775 4.6 4.6,20.85,37.1,57.1,70.85 \
   && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
 NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite.mp4 --audio assets/music.m4a
+INVITE_LANG=en NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite-english.mp4 --audio assets/music.m4a
 NODE_PATH=$(npm root -g) node tools/render.mjs stills /tmp/stills 10 22 70   # single frames
 ```
 
