@@ -70,3 +70,16 @@ Do the bride in `01_anchor_couple`, `E03`, `E06`, `E01` and `E10` first; they we
 
 The 11 updated PNGs in `out/`, plus `qc_log.json` with a `fix2` entry per head, listing the final
 likeness score and the number of attempts. In your final message, list every head with its score.
+
+## Also: the street ground patch
+
+`out/P_panorama.png` has a washed-out, smoother rectangle of ground with a hard vertical edge, at about
+x 4060–4608, y 1190–1536. Fix it with a masked `images.edit` on a 1024×1536 window covering x 3584–4608.
+Mask x 4040–4608, y 1180–1536, feathered by 30 px, and use this prompt:
+
+> Seamless continuation of the surrounding painted sandstone street ground: same warm ochre tone, same
+> wavy dry-brush sand texture and grain as the ground to the left, light from upper left. No smooth or light
+> patch, no rectangular tone change, no edges. Gouache style matching the adjacent area. Add no objects.
+
+**QC:** at 100% zoom there must be no visible edge or tone change, and the palace gate steps and door must be
+untouched. Paste the result back into `P_panorama.png`.
