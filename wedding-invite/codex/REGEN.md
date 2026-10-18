@@ -3,6 +3,23 @@
 **This replaces `FIX1.md` and `FIX2.md`.** Work fully autonomously and do not ask questions. Generate, check,
 regenerate and save everything in one run, then commit and push.
 
+## Tooling: use your built-in image generation, not the OpenAI API
+
+- **Create and edit every image with your own built-in image generation / image editing tool.**
+  - **Do NOT** use an `OPENAI_API_KEY`.
+  - **Do NOT** call the OpenAI Images API.
+  - **Do NOT** write a script that calls any external image API.
+  - **Ignore** the API instructions in section 0 of `PROMPT.md`.
+- **Reference images:** attach them directly to the image tool. Wherever this brief says "attach", it means give these files to your image tool as references.
+- **Edits with a mask:** use the tool's edit or inpaint mode on the source image. If the tool cannot take a mask:
+  1. Edit the cropped region.
+  2. Composite it back yourself in Python with Pillow/OpenCV, using a feathered mask.
+- **Sizes and transparency:** after generating, save every result as a PNG at the size this brief asks for (resize or crop with Pillow if needed). For cut-outs that need a transparent background:
+  1. Generate on a plain flat background (pure white, or pure chroma green if white appears in the figure).
+  2. Remove the background in Python, for example with `rembg`, or by chroma key plus edge decontamination.
+- **Local Python is fine** for detection, cropping, upscaling, masks, compositing, face-ID QC and contact sheets. Install what you need with pip.
+- **Visual QC:** look at the images yourself.
+
 ## Why the earlier images failed (do not repeat these mistakes)
 
 The client says none of the generated images look like them. There were three causes:
@@ -84,7 +101,7 @@ For every image below, attach:
 - the 3 photos of each person,
 - and 2–3 of the `refs/real/couple_*.jpg` photos that best match the pose.
 
-Generate at `1024x1536` with `quality="high"` and `input_fidelity="high"`.
+Generate in portrait 2:3 at the highest quality and resolution your image tool offers. Then save each result as 1024×1536.
 
 **Composition:** the couple fills about 45% of the image height, full figure, in the lower half. The top 35% is
 calm sky, canopy or plain wall, kept clear for text. No text anywhere in the image.
@@ -113,7 +130,7 @@ After each scene passes composition QC, refine every face separately at high res
 2. Crop a square around the head that is 2.2× the face height, centred on the face.
 3. Upscale the crop to 1024×1024 (Lanczos).
 4. Make a soft elliptical mask covering the face, hairline and ears, but not the headwear, jewellery or clothing. Feather it by 24 px.
-5. Call `images.edit` on the 1024 crop with the mask. Attach that person's 3 photos and their character sheet, with this prompt:
+5. Edit the 1024 crop with your image tool, inside the mask (see Tooling). Attach that person's 3 photos and their character sheet, with this prompt:
 
    > Repaint only the masked face as an exact, instantly recognisable likeness of the person in the attached real photos, in the same painted gouache style, lighting, head angle and expression as the surrounding image. [Paste that person's description from Rule 1.] Keep hair, headwear and jewellery unchanged.
 
@@ -132,7 +149,7 @@ After each scene passes composition QC, refine every face separately at high res
 
 **Pass rule:**
 - Every face in every scene needs a similarity of at least `max(0.30, S_sheet − 0.05)`.
-- It must also pass a vision-model check that names the person's distinctive features, with every one present:
+- It must also pass your own visual check against the real photos. Every one of these distinctive features must be present:
   - **Groom:** upswept straight quiff, full beard with a sharp cheek line, heavy straight brows.
   - **Bride:** thick arched brows, oval face, the mole beside her right nostril (it may be hidden in profile).
 
@@ -146,7 +163,7 @@ After each scene passes composition QC, refine every face separately at high res
 
 1. Take a 1024×1536 window covering x 3584–4608.
 2. Use a mask over x 4040–4608, y 1180–1536, feathered by 30 px.
-3. Run `images.edit` with this prompt:
+3. Edit it with your image tool, inside the mask (see Tooling), using this prompt:
 
    > Seamless continuation of the surrounding painted sandstone street ground, same warm ochre tone, wavy dry-brush sand texture and grain as the ground to the left, light from upper left; no smooth or light patch, no rectangular tone change, no edges; add no objects.
 
