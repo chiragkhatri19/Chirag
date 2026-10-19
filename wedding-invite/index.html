@@ -1008,7 +1008,7 @@ ${RULE_KID}
     } else {
       const ts = EN ? 82 : 94, tm = 38;
       if (n > 2) body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${WIDE}</div>` : ''}
-        <div data-fx="title" class="prow" style="font-size:${EN ? 54 : 62}px;margin-top:${k ? 0 : 6}px;--gut:${EN ? 30 : 60}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span><i class="pdot"></i><span class="${EN ? 'corm' : 'hi'}" style="font-size:30px;${EN ? 'font-weight:600' : ''}">${EN ? it.enTime : it.when + ' ' + it.time}</span></div>`).join('');
+        <div data-fx="title" class="prow" style="font-size:${EN ? 54 : 62}px;margin-top:${k ? 0 : 6}px;--gut:${EN ? 75 : 60}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span><i class="pdot"></i><span class="${EN ? 'corm' : 'hi'}" style="font-size:30px;${EN ? 'font-weight:600' : ''}">${EN ? it.enTime : it.when + ' ' + it.time}</span></div>`).join('');
       else body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${MINI}</div>` : ''}
         <div data-fx="title" style="font-size:${ts}px;line-height:1.12;margin-top:${k ? 0 : 8}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span></div>
         ${EN ? `<div class="corm" style="font-size:${tm + 4}px;font-weight:600;line-height:1.1">${it.enTime}</div>` : `<div class="hi" style="font-size:${tm}px;line-height:1.3">${it.when} ${it.time}</div>`}`).join('');
