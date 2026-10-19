@@ -1,16 +1,16 @@
 # Veeral weds Konika: Rajasthani wedding invite video
 
-`veeral-weds-konika-invite.mp4` (Hindi) and `veeral-weds-konika-invite-english.mp4` (English) are 1080×1920 (9:16) video at 30 fps, about 82 s long, with a synthesized background score.
+`veeral-weds-konika-invite.mp4` (Hindi) and `veeral-weds-konika-invite-english.mp4` (English) are 1080×1920 (9:16) video at 30 fps, about 50 s long, with a synthesized background score.
 
 ## Story
 
 1. **A painted Rajasthani street.** The camera pushes in on a plaster panel. A gilded Ganesha medallion draws on, "॥ श्री गणेशाय नमः ॥" inks in, and the V&K monogram traces its outline, floods with gold foil and catches a glint. Puppets sway in the foreground and a cycle-rickshaw rolls past.
 2. **The invitation.** An elder at his window unrolls a long cloth banner that reads श्री गणेशाय नमः, then the blessings, चि. वीरल संग सौ. कां. कोनिका, the dates and the venue.
 3. **The couple's entry.** Veeral and Konika step out of the haveli doorway under an ivory arch plaque that unfolds with their names.
-4. **Three days through three windows.** For each day, the camera pans to that day's window, shows the day card, then flies through the window into its events. Each event is its own painted scene, with the event name, time and venue. Between events the camera passes behind a pillar or drape, or through flowers or a burst of petals. After the last event the camera pulls back out to the street.
-   - Day 1: गणेश स्थापना, मायरा स्वागत, रिंग सेरेमनी
-   - Day 2: कार्निवल, बंदोली, संगीत संध्या, घड़ी विनायक
-   - Day 3: हल्दी एवं जनेऊ, बारात प्रस्थान, मंगल फेरा
+4. **Three days through three windows.** For each day the camera pans to that day's window and flies through it into the day's slides. Each slide is one painted scene, and some slides carry several events with their times. Between slides the camera passes behind a drape or pillar, or through flowers or a burst of petals, then pulls back out to the street.
+   - Day 1: गणेश स्थापना + मायरा स्वागत, then रिंग सेरेमनी
+   - Day 2: कार्निवल, then बंदोली + संगीत संध्या + घड़ी विनायक
+   - Day 3: हल्दी एवं जनेऊ, then बारात प्रस्थान एवं बंदोली, then मंगल फेरा
 5. **Finale.** The couple waits at the palace gate under "आपके आगमन की प्रतीक्षा में", with the venue रुणिचा धाम, बालोतरा (राजस्थान).
 
 ## Files
@@ -19,7 +19,7 @@
 |------|------------|
 | `index.html` | The whole animation, driven by `seek(t)`. Text, times and venue are in `DAYS` / `EVENTS` / `VENUE` near the top. |
 | `assets/v2/` | Web-ready artwork made from `codex/out` by `tools/prep_assets.py` (the green day windows are keyed out). |
-| `codex/` | The image-generation brief (`PROMPT.md`, `FIX1.md`), the reference images and the raw generated artwork. |
+| `codex/` | The image-generation briefs (current: `FINAL7.md`), the reference images and the raw generated artwork. |
 | `tools/render.mjs` | Frame-by-frame renderer (headless Chromium + ffmpeg). |
 | `tools/render-reel.mjs` | Renderer for the short save-the-date teaser. |
 | `reel-cards.html` | Botanical-paper “SAVE / THE DATE” card version of the teaser. |
@@ -55,7 +55,7 @@ All content lives in `index.html`, in the `DAYS` and `EVENTS` arrays near the to
 
 ```bash
 python3 tools/prep_assets.py                       # after changing anything in codex/out
-python3 tools/make_music.py /tmp/music.wav 81.775 5.225 5.225,22.725,40.225,61.475,75.225 \
+python3 tools/make_music.py /tmp/music.wav 50.3 3.75 3.75,14.375,24.375,35.0,45.625 \
   && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
 NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite.mp4 --audio assets/music.m4a
 INVITE_LANG=en NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite-english.mp4 --audio assets/music.m4a

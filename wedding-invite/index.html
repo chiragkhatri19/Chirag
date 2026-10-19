@@ -30,6 +30,7 @@
   .softscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(255,244,222,.84), rgba(255,244,222,.6) 55%, rgba(255,244,222,0)); }
   .nightscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(14,10,40,.55), rgba(14,10,40,.32) 55%, rgba(14,10,40,0)); }
   .rule { display: block; margin: 8px auto 10px; width: 360px; height: 24px; }
+  .mini { display: block; margin: 2px auto 12px; width: 160px; height: 14px; }
   /* foil titles: a base gradient plus a specular band (moved by seekTexts), clipped to the glyphs */
   .foil, .ruby { display: inline-block; padding: .2em .3em; margin: -.2em -.3em; text-shadow: none;
     -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
@@ -97,19 +98,26 @@ const DAYS = [
   { enDay: 'Day Two', enDate: 'Friday · 20 November 2026', hi: 'द्वितीय दिवस', date: 'शुक्रवार · 20 नवंबर 2026', hole: [3364, 654, 3547, 950] },
   { enDay: 'Day Three', enDate: 'Saturday · 21 November 2026', hi: 'तृतीय दिवस', date: 'शनिवार · 21 नवंबर 2026', hole: [3988, 491, 4177, 846] },
 ];
-const EVENTS = [
-  { d: 0, img: 'E01', cap: 680, enTime: '12:05 PM', hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05 बजे', sky: 'day' },
-  { d: 0, img: 'E02', enTime: '4:15 PM', hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15 बजे', sky: 'day' },
-  { d: 0, img: 'E03', enTime: '7:15 PM', hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15 बजे', sky: 'night' },
-  { d: 1, img: 'E04', enTime: '8:00 AM', hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
-  { d: 1, img: 'E05', enTime: '4:00 PM', hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', sky: 'night' },
-  { d: 1, img: 'E06', enTime: '7:00 PM', hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', sky: 'night' },
-  { d: 1, img: 'E07', enTime: 'Friday night · 12:15 AM', hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', sky: 'night' },
-  { d: 2, img: 'E08', enTime: '8:00 AM', hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
-  { d: 2, img: 'E09', enTime: '3:00 PM', hi: 'बारात प्रस्थान एवं बंदोली', en: 'Baraat Prasthan & Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
-  { d: 2, img: 'E10', top: 70, enTime: '7:21 – 9:34 PM', hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', sky: 'night' },
+const EVENTS = [   // one slide each; a slide can carry several events. dur: seconds on screen (multiples of a 96 BPM beat)
+  { d: 0, img: 'E01', dur: 3.75, sky: 'day', items: [
+    { hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05 बजे', enTime: '12:05 PM' },
+    { hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15 बजे', enTime: '4:15 PM' }] },
+  { d: 0, img: 'E03', dur: 2.5, sky: 'night', items: [
+    { hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15 बजे', enTime: '7:15 PM' }] },
+  { d: 1, img: 'E04', dur: 2.5, sky: 'day', items: [
+    { hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
+  { d: 1, img: 'E06', dur: 4.375, sky: 'night', items: [
+    { hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', enTime: '4:00 PM' },
+    { hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', enTime: '7:00 PM' },
+    { hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', enTime: 'Midnight · 12:15 AM' }] },
+  { d: 2, img: 'E08', dur: 2.5, sky: 'day', items: [
+    { hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
+  { d: 2, img: 'E09', dur: 2.5, sky: 'day', items: [
+    { hi: 'बारात प्रस्थान एवं बंदोली', en: 'Baraat Prasthan & Bandoli', when: 'दोपहर', time: '3:00 बजे', enTime: '3:00 PM' }] },
+  { d: 2, img: 'E10', dur: 3.125, sky: 'night', top: 70, items: [
+    { hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', enTime: '7:21 – 9:34 PM' }] },
 ];
-const WIPES = [['pillar', 'drape'], ['flowers', 'drape', 'petals'], ['flowers', 'pillar']];
+const WIPES = [['drape'], ['petals'], ['flowers', 'pillar']];
 
 /* ---------------- assets ---------------- */
 const IMG = {};
@@ -128,23 +136,22 @@ window.__ready = Promise.all([
 const TL = {};
 let cursor = 0;
 const seg = (name, dur) => { TL[name] = [cursor, cursor + dur]; cursor += dur; return TL[name]; };
-seg('open', 3.625);
-seg('toBanner', 1.6);
-seg('banner', 8.125);
+seg('open', 2.5);
+seg('toBanner', 1.25);
+seg('banner', 4.375);
 seg('toDoor', 1.25);
-seg('couple', 3.125);
-const EV_DUR = 3.75, WIPE = .9;   // 6 beats at 96 BPM
+seg('couple', 2.5);
+const WIPE = .9;
 DAYS.forEach((day, d) => {
   seg(`toWin${d}`, 1.25);
-  seg(`label${d}`, 2.5);
   seg(`zoomIn${d}`, 1.25);
   const evs = EVENTS.filter(e => e.d === d);
-  evs.forEach((e, i) => { e.t0 = cursor; e.t1 = cursor + EV_DUR; e.i = i; e.n = evs.length; cursor += EV_DUR; });
+  evs.forEach((e, i) => { e.t0 = cursor; e.t1 = cursor + e.dur; e.i = i; e.n = evs.length; cursor += e.dur; });
   day.events = evs;
   seg(`zoomOut${d}`, 1.25);
 });
 seg('toEnd', 1.25);
-seg('end', 6.25);
+seg('end', 4.375);
 const DURATION = cursor + .3;
 
 /* ---------------- street camera ---------------- */
@@ -186,15 +193,14 @@ K(TL.banner[1], 1395, 650, 640);
 K(TL.toDoor[1], 2120, 768, 864);
 K(TL.couple[1], 2160, 768, 830);
 DAYS.forEach((d, i) => {
-  K(TL[`toWin${i}`][1], d.rect.cx, 768, 864);
-  K(TL[`label${i}`][1], d.rect.cx, 790, 760);
+  K(TL[`toWin${i}`][1], d.rect.cx, 776, 820);
   K(TL[`zoomIn${i}`][1], d.camIn.cx, d.camIn.cy, d.camIn.vw);
   K(TL[`zoomOut${i}`][0], d.camIn.cx, d.camIn.cy, d.camIn.vw);
   K(TL[`zoomOut${i}`][1], d.rect.cx, 790, 760);
 });
 K(TL.toEnd[1] - .3, 4176, 768, 864);
-K(TL.end[0] + .8, 4176, 768, 864);                       // hold while they step out of the gate, then walk with them
-K(TL.end[0] + 1.9, 4020, 768, 864);
+K(TL.end[0] + .5, 4176, 768, 864);                       // hold while they step out of the gate, then walk with them
+K(TL.end[0] + 1.6, 4020, 768, 864);
 K(DURATION, 4026, 770, 850);
 
 function camAt(t) {
@@ -556,9 +562,9 @@ function drawStreet(t, c, alpha) {
 
   // opening, on the plaster panel at the left: Ganesha medallion, invocation, V&K monogram
   if (t < TL.banner[0]) {
-    emblem(c, PANEL.x, 667, 68, t, .5);
-    invocation(c, PANEL.x, 745, ramp(t, .85, 1.6, 'lin'), 'wall');
-    monogram(c, PANEL.x, 860, .78, t, 1.0, { date: 1 });
+    emblem(c, PANEL.x, 667, 68, t, .3);
+    invocation(c, PANEL.x, 745, ramp(t, .55, 1.1, 'lin'), 'wall');
+    monogram(c, PANEL.x, 860, .78, .6 + (t - .6) * 1.45, .6, { date: 1 });   // 1.45x the full-length choreography
   }
 
   // banner hanging from the elder's rod, unrolling downward
@@ -566,14 +572,15 @@ function drawStreet(t, c, alpha) {
 
   // couple stepping out of the haveli doorway
   // ...and heading back inside once the camera moves on to the events
-  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5, until: TL.toWin0[1],
+  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5, dur: 1.5, until: TL.toWin0[1],
     wipe: (t, c) => t >= TL.toWin0[0] ? nearPillarX(c) : null });   // hidden behind the pillar's centre line as it sweeps past
   // couple waiting at the palace gate for the finale
-  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .66, fromSide: 1, minLight: .62, warm: 1, leafBottom: 1126 });
-  monogram(c, 3785, 640, .92, t, TL.end[0] + 2.6, { keepOut: 1, nameSize: 33 });
+  drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .66, dur: 1.5, fromSide: 1, minLight: .62, warm: 1, leafBottom: 1126 });
+  const m0 = TL.end[0] + 1.35;
+  monogram(c, 3785, 640, .92, m0 + (t - m0) * 1.5, m0, { keepOut: 1, nameSize: 33 });
 
   // cycle-rickshaw rolling along the street during the opening
-  const rp = clamp((t - 3.6) / 4.2);
+  const rp = clamp((t - 2.4) / 3.0);
   if (rp > 0 && rp < 1) {
     const rx = lerp(-760, 2900, rp), bob = Math.abs(Math.sin(t * 9)) * 4;
     const rh = 380, rw = rh * IMG.rickshaw.width / IMG.rickshaw.height;
@@ -613,17 +620,17 @@ function invocation(c, x, y, a, where) {
 
 function drawBanner(t, c) {
   const [b0] = TL.banner;
-  const u = ramp(t, b0 + .1, b0 + 1.9, 'inout');          // unroll progress
+  const u = ramp(t, b0 + .05, b0 + 1.15, 'inout');        // unroll progress
   if (t < TL.toBanner[0]) return;
   const im = IMG.banner, bw = BANNER.w, bh = BANNER.h * u;
   const [sx, sy] = S(c, BANNER.cx - bw / 2, BANNER.top);
-  const [px0, py0] = S(c, BANNER.cx, BANNER.top), sway = .006 * Math.sin((t - b0 - 2.2) * 2 * Math.PI / 3.4) * ramp(t, b0 + 2.2, b0 + 3.4);
+  const [px0, py0] = S(c, BANNER.cx, BANNER.top), sway = .006 * Math.sin((t - b0 - 1.4) * 2 * Math.PI / 3.4) * ramp(t, b0 + 1.4, b0 + 2.4);
   g.save(); g.translate(px0, py0); g.transform(1, 0, sway, 1, 0, 0); g.translate(-px0, -py0);   // breeze: the top stays on the rod
   // soft shadow on the wall
   g.save(); g.fillStyle = 'rgba(60,25,5,.22)'; g.filter = 'blur(10px)';
   g.fillRect(sx + 14 * c.z, sy + 26 * c.z, bw * c.z, bh * c.z); g.restore();
   const HEM = .85, uc = Math.min(u, HEM);                 // the tassels below the hem stay wrapped in the roll until the last turn
-  const tq = ramp(t, b0 + 1.3, b0 + 2.0, 'out');          // the lace and tassels are lowered out of the last turn
+  const tq = ramp(t, b0 + .8, b0 + 1.2, 'out');          // the lace and tassels are lowered out of the last turn
   if (tq >= 1) g.drawImage(im, sx, sy, bw * c.z, BANNER.h * c.z);   // landed: one image, so no join line in the cloth
   else if (u > 0) g.drawImage(im, 0, 0, im.width, im.height * uc, sx, sy, bw * c.z, BANNER.h * uc * c.z);
   if (tq > 0 && tq < 1) {
@@ -631,7 +638,7 @@ function drawBanner(t, c) {
     g.save(); g.beginPath(); g.rect(sx - 40 * c.z, yc, bw * c.z + 80 * c.z, sh + 60 * c.z); g.clip();   // nothing shows above the cut
     g.drawImage(im, 0, im.height * HEM, im.width, im.height * (1 - HEM), sx, yc - (1 - tq) * sh, bw * c.z, sh); g.restore();
   }
-  const rk = 1 - ramp(t, b0 + 2.0, b0 + 2.14, 'inout');
+  const rk = 1 - ramp(t, b0 + 1.2, b0 + 1.32, 'inout');
   const rr = lerp(19, 12, uc / HEM) * c.z * rk, ry = sy + BANNER.h * uc * c.z + (u > 0 ? 0 : rr * .6);
   if (rr >= 1.5) {                                         // rolled cloth at the hem (skipped once it is a hairline)
     g.save();
@@ -671,13 +678,13 @@ function drawBanner(t, c) {
     { y: 893, s: 'रुणिचा धाम, बालोतरा (राजस्थान)', size: 18, font: body, col: ink1 },
   ];
   const cx = BANNER.cx;
-  let tl = b0 + 1.45;
+  let tl = b0 + .75;
   L.forEach((ln, i) => {
-    const t1 = tl; tl += ln.name ? .6 : .17;
+    const t1 = tl; tl += ln.name ? .42 : .1;
     if (u < (ln.y - BANNER.top + 20) / BANNER.h) return;
-    if (ln.inv) return invocation(c, cx, ln.y, ramp(t, t1, t1 + .7, 'lin'), 'cloth');
-    if (ln.div) return divider(c, cx, ln.y, ln.div, ramp(t, t1, t1 + .6, 'inout'), '#b98a34');
-    const a = ramp(t, t1, t1 + (ln.name ? 1.0 : .7), ln.name ? 'inout' : 'out');
+    if (ln.inv) return invocation(c, cx, ln.y, ramp(t, t1, t1 + .55, 'lin'), 'cloth');
+    if (ln.div) return divider(c, cx, ln.y, ln.div, ramp(t, t1, t1 + .5, 'inout'), '#b98a34');
+    const a = ramp(t, t1, t1 + (ln.name ? .8 : .55), ln.name ? 'inout' : 'out');
     const opts = { ls: ln.ls, mode: ln.name ? 'ltr' : 'center', feather: ln.name ? 30 : 26, lift: ln.name ? 0 : 6 };
     const w = measureW(c, ln.s, ln.size, ln.font, opts);
     if (ln.hon) {                                           // the name stays on the axis; the honorific hangs to its left
@@ -686,10 +693,10 @@ function drawBanner(t, c) {
         wtext(c, ln.hon, x0, ln.y + dy - 4, hs, body, ink2, 1, { align: 'left' });
         wtext(c, ln.s, cx - w / 2, ln.y + dy, ln.size, ln.font, 'ruby', 1, { align: 'left', emboss: 'rgba(201,151,63,.4)', embossOff: .014 });
       }, opts);
-      glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 6.5 - i * .03);
+      glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 3.2 - i * .03);
     } else {
       inkText(c, ln.s, cx, ln.y, ln.size, ln.font, ln.col, a, { ...opts, emboss: ln.name ? 'rgba(201,151,63,.4)' : undefined, embossOff: .014 });
-      if (ln.name) glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 6.5 - i * .03);
+      if (ln.name) glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 3.2 - i * .03);
     }
     if (ln.flank) divider(c, cx, ln.y - ln.size * .32, ln.flank, ramp(t, t1 + .2, t1 + .8, 'inout'), '#b98a34', { gap: w / 2 + 6 });
   });
@@ -706,7 +713,7 @@ function glintName(c, str, x, y, size, font, dt) {        // a warm gold sweep a
 // small and dark, framed by it, then steps forward to (x, feet). tBack: they walk back in.
 function drawCouple(t, c, x, feet, h, t0, door, tBack) {
   if (door.until !== undefined && t > door.until) return;
-  let p = ramp(t, t0, t0 + 2.0, 'lin');
+  let p = ramp(t, t0, t0 + (door.dur || 2.0), 'lin');
   if (tBack !== undefined) p = Math.min(p, 1 - ramp(t, tBack, tBack + 1.3, 'inout'));
   if (p <= 0) return;
   const im = IMG.couple;
@@ -958,24 +965,34 @@ block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1
   <div class="cinzel" style="font-size:26px;letter-spacing:8px;margin-top:8px">The Wedding Celebrations</div>${RULE_KID}` :
   `<div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">वीरल <span style="font-size:.56em">संग</span> कोनिका</span></div>
   <div class="tiro" style="font-size:31px;color:#8a2a14">॥<span style="margin:0 4px 0 12px">शुभ विवाह</span>॥</div>${RULE_KID}`,
-  TL.couple[0] + .4, TL.couple[1] - .55, { cart: { w: 860, top: 100, bottom: 34 } });
+  TL.couple[0] + .3, TL.couple[1] - .45, { cart: { w: 860, top: 100, bottom: 34 } });
+// event slides: day and date, then one title with its time, or a short programme of two or three events
+const MINI = `<svg class="mini" viewBox="0 0 160 14"><rect x="4" y="6.3" width="64" height="1.4" fill="url(#rgL)"/><rect x="92" y="6.3" width="64" height="1.4" fill="url(#rgR)"/><path d="M80 1.5 L85 7 L80 12.5 L75 7Z" fill="#c38a2a"/><circle cx="66" cy="7" r="1.6" fill="#c38a2a"/><circle cx="94" cy="7" r="1.6" fill="#c38a2a"/></svg>`;
 DAYS.forEach((d, i) => {
-  block('day', 170, EN ? `<div data-fx="title" style="font-size:96px;line-height:1.12"><span class="hi ruby">${d.enDay}</span></div>
-    <div class="corm" style="font-size:42px;font-weight:600">${d.enDate}</div>${RULE_KID}` : `<div data-fx="title" style="font-size:100px;line-height:1.12"><span class="hi ruby">${d.hi}</span></div>
-    <div class="tiro" style="font-size:40px">${d.date}</div>${RULE_KID}`, TL[`label${i}`][0] - .1, TL[`zoomIn${i}`][0] - .45, { cart: { w: i === 2 ? 640 : 680, top: 100, bottom: 30, tassel: i === 2 ? 90 : 44 } });
-  if (i === 2) Object.assign(blocks[blocks.length - 1].el.style, { left: '30px', right: '90px' });   // Day 3: clear of the garland on the right
   d.events.forEach(e => {
     const fc = foilOf(e.sky), cls = e.sky === 'day' ? 'day softscrim' : 'night nightscrim', last = e.i === e.n - 1;
-    const t0 = e.t0 + (e.i === 0 ? .15 : .12), t1 = e.t1 - (last ? .5 : .7);
-    if (EN) block(cls, e.top || 104, `<div class="cinzel" style="font-size:25px;letter-spacing:5px">${d.enDate}</div>
-      <div data-fx="title" style="font-size:${e.en.length > 18 ? 76 : 104}px;line-height:1.16;margin-top:6px"><span class="hi ${fc}">${e.en}</span></div>${RULE_KID}
-      <div class="corm" style="font-size:50px;font-weight:600">${e.enTime}</div>
-      <div class="corm" style="font-size:36px;font-weight:600;margin-top:2px">${VENUE_SHORT}</div>`, t0, t1, { stagger: .08, cap: e.cap });
-    else block(cls, e.top || 104, `<div class="tiro" style="font-size:32px">${d.date}</div>
-      <div data-fx="title" style="font-size:${e.hi.length > 20 ? 86 : e.hi.length > 11 ? 100 : 116}px;line-height:1.16;margin-top:6px"><span class="hi ${fc}">${e.hi}</span></div>
-      <div class="cinzel" style="font-size:27px;letter-spacing:6px">${e.en}</div>${RULE_KID}
-      <div class="hi" style="font-size:42px">${e.when} ${e.time}</div>
-      <div class="tiro" style="font-size:34px;margin-top:4px">${VENUE_SHORT}</div>`, t0, t1, { stagger: .08 });
+    const t0 = e.t0 + (e.i === 0 ? .15 : .12), t1 = e.t1 - (last ? .5 : .7), n = e.items.length;
+    const head = EN ? `<div class="cinzel gold" style="font-size:24px;letter-spacing:7px">${d.enDay}</div>
+      <div class="corm" style="font-size:31px;font-weight:600">${d.enDate}</div>`
+      : `<div class="hi gold" style="font-size:34px;letter-spacing:1px">${d.hi}</div>
+      <div class="tiro" style="font-size:29px">${d.date}</div>`;
+    let body;
+    if (n === 1) {
+      const it = e.items[0];
+      body = EN ? `<div data-fx="title" style="font-size:${it.en.length > 18 ? 76 : 104}px;line-height:1.16;margin-top:4px"><span class="hi ${fc}">${it.en}</span></div>${RULE_KID}
+        <div class="corm" style="font-size:48px;font-weight:600">${it.enTime}</div>`
+        : `<div data-fx="title" style="font-size:${it.hi.length > 20 ? 86 : it.hi.length > 11 ? 100 : 116}px;line-height:1.16;margin-top:4px"><span class="hi ${fc}">${it.hi}</span></div>
+        <div class="cinzel" style="font-size:26px;letter-spacing:6px">${it.en}</div>${RULE_KID}
+        <div class="hi" style="font-size:40px">${it.when} ${it.time}</div>`;
+    } else {
+      const ts = n > 2 ? (EN ? 66 : 76) : (EN ? 82 : 94), tm = n > 2 ? 34 : 38;
+      body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${MINI}</div>` : ''}
+        <div data-fx="title" style="font-size:${ts}px;line-height:1.12;margin-top:${k ? 0 : 8}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span></div>
+        ${EN ? `<div class="corm" style="font-size:${tm + 4}px;font-weight:600;line-height:1.1">${it.enTime}</div>` : `<div class="hi" style="font-size:${tm}px;line-height:1.3">${it.when} ${it.time}</div>`}`).join('');
+    }
+    const venue = EN ? `<div class="corm" style="font-size:34px;font-weight:600;margin-top:${n > 1 ? 10 : 2}px">${VENUE_SHORT}</div>`
+      : `<div class="tiro" style="font-size:32px;margin-top:${n > 1 ? 10 : 4}px">${VENUE_SHORT}</div>`;
+    block(cls, e.top || 104, head + body + venue, t0, t1, { stagger: n > 1 ? .09 : .07, cap: e.cap });
   });
 });
 block('day', 150, EN ? `<div class="corm" style="font-size:42px;font-style:italic;font-weight:500">Awaiting your</div>
@@ -984,7 +1001,7 @@ block('day', 150, EN ? `<div class="corm" style="font-size:42px;font-style:itali
   <div class="corm" style="font-size:34px;font-weight:600">${VENUE}</div>` : `<div class="tiro" style="font-size:40px;color:#8a2a14">आपके आगमन की</div>
   <div data-fx="title" style="font-size:96px;line-height:1.15"><span class="hi ruby">प्रतीक्षा में</span></div>${RULE_KID}
   <div class="hi" style="font-size:38px;color:#8a2a14">19 – 21 नवंबर 2026</div>
-  <div class="tiro" style="font-size:33px">${VENUE}</div>`, TL.end[0] + 1.85, DURATION + 1, { cart: { w: 600, top: 100, bottom: 36 } });
+  <div class="tiro" style="font-size:33px">${VENUE}</div>`, TL.end[0] + .75, DURATION + 1, { cart: { w: 600, top: 100, bottom: 36 } });
 Object.assign(blocks[blocks.length - 1].el.style, { left: '54px', right: '66px' });   // a little more air beside the garland
 
 function buildCart(b) {                      // sized to the block's laid-out text, once fonts are in
@@ -1144,7 +1161,7 @@ function seek(t) {
   lightLeak(t);
   seekTexts(t);
   // fade in from black and out at the end (on the top layer, so it covers the titles too)
-  const fade = Math.max(1 - ramp(t, 0, .7), ramp(t, DURATION - .6, DURATION));
+  const fade = Math.max(1 - ramp(t, 0, .5), ramp(t, DURATION - .6, DURATION));
   if (fade > 0) { fg.fillStyle = `rgba(20,6,2,${fade})`; fg.fillRect(0, 0, W, H); }
 }
 
