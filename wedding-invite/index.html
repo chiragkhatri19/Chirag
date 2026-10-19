@@ -133,7 +133,7 @@ const IMG = {};
 const names = ['street', 'couple', 'rickshaw', 'puppets', 'banner', 'drape', 'pillar', 'flowers', 'petals'];
 const load = (k, src) => new Promise(r => { const i = new Image(); i.onload = () => r(); i.onerror = () => r(); i.src = src; IMG[k] = i; });
 const fontsReady = Promise.all(['72px "Rozha One"', '40px "Tiro Devanagari Hindi"', 'italic 40px "Tiro Devanagari Hindi"', '40px "Cinzel"', '700 40px "Cinzel"', '80px "Great Vibes"', '600 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"', '700 40px "Cinzel Decorative"', '700 40px "Amita"']
-  .map(f => document.fonts.load(f, 'श्री गणेशाय नमः V&K Veeral वीरल कोनिका 0123'))).then(() => document.fonts.ready);
+  .map(f => document.fonts.load(f, 'श्री गणेशाय नमः V&K Veeral विरल कोनिका 0123'))).then(() => document.fonts.ready);
 window.__ready = Promise.all([
   ...names.map(n => load(n, `assets/v2/${n}.webp`)),
   ...EVENTS.map(e => load(e.img, `assets/v2/${e.img}.jpg`)),
@@ -680,7 +680,7 @@ function drawBanner(t, c) {
     { y: 450, div: 40 },
     { y: 486, s: 'परमपिता परमेश्वर की असीम कृपा', size: 17.5, font: body, col: ink1 },
     { y: 511, s: 'एवं बड़ों के आशीर्वाद से', size: 17.5, font: body, col: ink1 },
-    { y: 598, hon: 'चि.', s: 'वीरल', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
+    { y: 598, hon: 'चि.', s: 'विरल', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
     { y: 650, s: 'संग', size: 24, font: body, col: ink2, flank: 40 },
     { y: 728, hon: 'सौ. कां.', s: 'कोनिका', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
     { y: 782, s: 'के शुभ विवाह के मंगल उत्सव में', size: 17.5, font: body, col: ink1 },
@@ -983,7 +983,7 @@ const foilOf = sky => sky === 'night' ? 'foil' : 'ruby';
 // couple entry title (a plaque hanging over the wall, above the doorway)
 block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1.05"><span class="script ruby">Veeral <span style="font-size:.56em">weds</span> Konika</span></div>
   <div class="cinzel" style="font-size:26px;letter-spacing:8px;margin-top:8px">The Wedding Celebrations</div>${RULE_KID}` :
-  `<div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">वीरल <span style="font-size:.56em">संग</span> कोनिका</span></div>
+  `<div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">विरल <span style="font-size:.56em">संग</span> कोनिका</span></div>
   <div class="tiro" style="font-size:31px;color:#8a2a14">॥<span style="margin:0 4px 0 12px">शुभ विवाह</span>॥</div>${RULE_KID}`,
   TL.couple[0] + .3, TL.couple[1] - .45, { cart: { w: 860, top: 100, bottom: 34 } });
 // event slides: day and date, then one title with its time, or a short programme of two or three events

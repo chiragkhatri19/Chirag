@@ -5,7 +5,7 @@
 ## Story
 
 1. **A painted Rajasthani street.** The camera pushes in on a plaster panel. A gilded Ganesha medallion draws on, "॥ श्री गणेशाय नमः ॥" inks in, and the V&K monogram traces its outline, floods with gold foil and catches a glint. Puppets sway in the foreground and a cycle-rickshaw rolls past.
-2. **The invitation.** An elder at his window unrolls a long cloth banner that reads श्री गणेशाय नमः, then the blessings, चि. वीरल संग सौ. कां. कोनिका, the dates and the venue.
+2. **The invitation.** An elder at his window unrolls a long cloth banner that reads श्री गणेशाय नमः, then the blessings, चि. विरल संग सौ. कां. कोनिका, the dates and the venue.
 3. **The couple's entry.** Veeral and Konika step out of the haveli doorway under an ivory arch plaque that unfolds with their names.
 4. **Three days through three windows.** For each day the camera pans to that day's window and flies through it into the day's slides. Each slide is one painted scene, and some slides carry several events with their times. Between slides the camera passes behind a drape or pillar, or through flowers or a burst of petals, then pulls back out to the street.
    - Day 1: गणेश स्थापना + मायरा स्वागत, then रिंग सेरेमनी
