@@ -92,9 +92,11 @@ For every image, attach:
 
 **Scene composition (all 7 scenes):**
 - Opaque 1024×1536.
-- **The top 38% is calm and empty** (sky, plain wall or a soft canopy), because the event names, times and venue are written there.
+- **The top of the image is a calm text zone**, because the event names, times and venue are written there. Over the full width it holds only soft, low-contrast sky, plain wall or plain fabric: no domes, chhatris, canopies, flower garlands, lit stone, balconies or other high-detail elements.
+  - `E01_ganesh_sthapana` and `E06_sangeet` (they list two or three events): the **top 42%** (to y ≈ 645).
+  - All other scenes: the **top 36%** (to y ≈ 553).
 - The people stand in the lower 60%, full figure, about 45% of the image height.
-- The scene's subject (Ganesha idol, ring, trophy, mare, fire) must also sit below the top 38%.
+- The scene's subject (Ganesha idol, ring, trophy, mare, fire) must also sit below the text zone.
 
 **Overwrite these files in `out/`.** Keep the exact names, because the video pipeline reads them.
 
@@ -109,7 +111,7 @@ For every image, attach:
 | `E09_baraat.png` | **Baraat Prasthan + Bandoli** (day 3, afternoon). **The groom alone**, no bride. | Outside a palace gate, with a brass band, colourful umbrellas and marigold arches. | ivory and gold sherwani, red safa with kalgi, pearl strings; **face fully visible**, no sehra over it | On a decorated white mare facing right; head turned three-quarters toward the viewer, chin up, proud smile, one hand raised. |
 | `E10_mangal_phera.png` | **Mangal Phera** (day 3, night) | Night, under a red-and-gold mandap with a marigold canopy, a havan kund fire, diyas. | ivory sherwani with red safa; red bridal lehenga, dupatta on the back of her head (face visible), kundan jewellery, red chooda | Walking around the fire in side view, joined by the gathbandhan knot; he glances back at her; she smiles shyly, eyes open. |
 
-Then run a composition check: top 38% empty, full figures, correct outfits, hands correct, no text. **At most 3 attempts per image.**
+Then run a composition check: text zone calm, full figures, correct outfits, hands correct, no text. **At most 3 attempts per image.**
 
 ## 5. Step 3: high-resolution face pass (this is what makes them look like them)
 

@@ -30,7 +30,7 @@
   .softscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(255,244,222,.84), rgba(255,244,222,.6) 55%, rgba(255,244,222,0)); }
   .nightscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(14,10,40,.55), rgba(14,10,40,.32) 55%, rgba(14,10,40,0)); }
   .rule { display: block; margin: 8px auto 10px; width: 360px; height: 24px; }
-  .mini { display: block; margin: 2px auto 12px; width: 160px; height: 14px; }
+  .mini { display: block; margin: 2px auto 12px; width: 220px; height: 16px; }
   /* foil titles: a base gradient plus a specular band (moved by seekTexts), clipped to the glyphs */
   .foil, .ruby { display: inline-block; padding: .2em .3em; margin: -.2em -.3em; text-shadow: none;
     -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
@@ -109,7 +109,7 @@ const EVENTS = [   // one slide each; a slide can carry several events. dur: sec
   { d: 1, img: 'E06', dur: 4.375, sky: 'night', items: [
     { hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', enTime: '4:00 PM' },
     { hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', enTime: '7:00 PM' },
-    { hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', enTime: 'Midnight · 12:15 AM' }] },
+    { hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', enTime: 'Friday night · 12:15 AM' }] },
   { d: 2, img: 'E08', dur: 2.5, sky: 'day', items: [
     { hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
   { d: 2, img: 'E09', dur: 2.5, sky: 'day', items: [
@@ -136,9 +136,9 @@ window.__ready = Promise.all([
 const TL = {};
 let cursor = 0;
 const seg = (name, dur) => { TL[name] = [cursor, cursor + dur]; cursor += dur; return TL[name]; };
-seg('open', 2.5);
+seg('open', 3.125);
 seg('toBanner', 1.25);
-seg('banner', 4.375);
+seg('banner', 5.0);
 seg('toDoor', 1.25);
 seg('couple', 2.5);
 const WIPE = .9;
@@ -576,11 +576,11 @@ function drawStreet(t, c, alpha) {
     wipe: (t, c) => t >= TL.toWin0[0] ? nearPillarX(c) : null });   // hidden behind the pillar's centre line as it sweeps past
   // couple waiting at the palace gate for the finale
   drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .66, dur: 1.5, fromSide: 1, minLight: .62, warm: 1, leafBottom: 1126 });
-  const m0 = TL.end[0] + 1.35;
+  const m0 = TL.end[0] + 1.5;
   monogram(c, 3785, 640, .92, m0 + (t - m0) * 1.5, m0, { keepOut: 1, nameSize: 33 });
 
   // cycle-rickshaw rolling along the street during the opening
-  const rp = clamp((t - 2.4) / 3.0);
+  const rp = clamp((t - 3.05) / 3.0);
   if (rp > 0 && rp < 1) {
     const rx = lerp(-760, 2900, rp), bob = Math.abs(Math.sin(t * 9)) * 4;
     const rh = 380, rw = rh * IMG.rickshaw.width / IMG.rickshaw.height;
@@ -759,9 +759,15 @@ const nearPillarX = c => (NEAR_PILLAR.wx - c.cx) * c.z * NEAR_PILLAR.par + W / 2
 function drawNearPillar(t, c) {
   if (t < TL.toWin0[0] || t > TL.toWin0[1]) return;
   const im = IMG.pillar, h = NEAR_PILLAR.h, w = h * im.width / im.height, x = nearPillarX(c);
-  if (x - w / 2 > W || x + w / 2 < 0) return;
+  const dx = (nearPillarX(camAt(t + 1 / 30)) - x) * .5;     // shutter: half the per-frame travel
+  if (x - w / 2 - Math.abs(dx) > W || x + w / 2 + Math.abs(dx) < 0) return;
+  const N = clamp(Math.ceil(Math.abs(dx) / 4), 1, 12);
   g.save(); g.filter = 'blur(3px) brightness(.78)';
-  g.drawImage(im, x - w / 2, (H - h) / 2, w, h); g.restore();
+  for (let k = 0; k < N; k++) {                            // running average of N copies spread across the shutter
+    g.globalAlpha = 1 / (k + 1);
+    g.drawImage(im, x - w / 2 + dx * (N > 1 ? k / (N - 1) - .5 : 0), (H - h) / 2, w, h);
+  }
+  g.restore();
 }
 /* puppets hanging in the near foreground during the opening (parallax) */
 function drawPuppets(t, c) {
@@ -957,7 +963,8 @@ function block(cls, top, html, t0, t1, opts = {}) {
   textsEl.appendChild(el);
   const kids = [...el.children];
   kids.forEach(k => { k._foils = [...k.querySelectorAll('.foil, .ruby')]; });
-  blocks.push({ el, top, t0, t1, kids, stagger: opts.stagger || .16, cart: opts.cart, cap: opts.cap || 800 });
+  blocks.push({ el, top, t0, t1, kids, stagger: opts.stagger || .16, cart: opts.cart, cap: opts.cap || 800,
+    reveal: opts.reveal || [.75, .55], fade: opts.fade || .45 });
 }
 const foilOf = sky => sky === 'night' ? 'foil' : 'ruby';
 // couple entry title (a plaque hanging over the wall, above the doorway)
@@ -967,11 +974,11 @@ block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1
   <div class="tiro" style="font-size:31px;color:#8a2a14">॥<span style="margin:0 4px 0 12px">शुभ विवाह</span>॥</div>${RULE_KID}`,
   TL.couple[0] + .3, TL.couple[1] - .45, { cart: { w: 860, top: 100, bottom: 34 } });
 // event slides: day and date, then one title with its time, or a short programme of two or three events
-const MINI = `<svg class="mini" viewBox="0 0 160 14"><rect x="4" y="6.3" width="64" height="1.4" fill="url(#rgL)"/><rect x="92" y="6.3" width="64" height="1.4" fill="url(#rgR)"/><path d="M80 1.5 L85 7 L80 12.5 L75 7Z" fill="#c38a2a"/><circle cx="66" cy="7" r="1.6" fill="#c38a2a"/><circle cx="94" cy="7" r="1.6" fill="#c38a2a"/></svg>`;
+const MINI = `<svg class="mini" viewBox="0 0 220 16"><rect x="4" y="7" width="92" height="2" fill="url(#rgL)"/><rect x="124" y="7" width="92" height="2" fill="url(#rgR)"/><path d="M110 1.5 L116 8 L110 14.5 L104 8Z" fill="#c38a2a"/><circle cx="96" cy="8" r="2" fill="#c38a2a"/><circle cx="124" cy="8" r="2" fill="#c38a2a"/></svg>`;
 DAYS.forEach((d, i) => {
   d.events.forEach(e => {
     const fc = foilOf(e.sky), cls = e.sky === 'day' ? 'day softscrim' : 'night nightscrim', last = e.i === e.n - 1;
-    const t0 = e.t0 + (e.i === 0 ? .15 : .12), t1 = e.t1 - (last ? .5 : .7), n = e.items.length;
+    const n = e.items.length, t0 = e.t0 + (n > 1 ? (e.i === 0 ? .15 : .12) : .05), t1 = e.t1 - .3;   // gone by the cut or the zoom-out
     const head = EN ? `<div class="cinzel gold" style="font-size:24px;letter-spacing:7px">${d.enDay}</div>
       <div class="corm" style="font-size:31px;font-weight:600">${d.enDate}</div>`
       : `<div class="hi gold" style="font-size:34px;letter-spacing:1px">${d.hi}</div>
@@ -982,7 +989,7 @@ DAYS.forEach((d, i) => {
       body = EN ? `<div data-fx="title" style="font-size:${it.en.length > 18 ? 76 : 104}px;line-height:1.16;margin-top:4px"><span class="hi ${fc}">${it.en}</span></div>${RULE_KID}
         <div class="corm" style="font-size:48px;font-weight:600">${it.enTime}</div>`
         : `<div data-fx="title" style="font-size:${it.hi.length > 20 ? 86 : it.hi.length > 11 ? 100 : 116}px;line-height:1.16;margin-top:4px"><span class="hi ${fc}">${it.hi}</span></div>
-        <div class="cinzel" style="font-size:26px;letter-spacing:6px">${it.en}</div>${RULE_KID}
+${RULE_KID}
         <div class="hi" style="font-size:40px">${it.when} ${it.time}</div>`;
     } else {
       const ts = n > 2 ? (EN ? 66 : 76) : (EN ? 82 : 94), tm = n > 2 ? 34 : 38;
@@ -990,9 +997,10 @@ DAYS.forEach((d, i) => {
         <div data-fx="title" style="font-size:${ts}px;line-height:1.12;margin-top:${k ? 0 : 8}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span></div>
         ${EN ? `<div class="corm" style="font-size:${tm + 4}px;font-weight:600;line-height:1.1">${it.enTime}</div>` : `<div class="hi" style="font-size:${tm}px;line-height:1.3">${it.when} ${it.time}</div>`}`).join('');
     }
-    const venue = EN ? `<div class="corm" style="font-size:34px;font-weight:600;margin-top:${n > 1 ? 10 : 2}px">${VENUE_SHORT}</div>`
-      : `<div class="tiro" style="font-size:32px;margin-top:${n > 1 ? 10 : 4}px">${VENUE_SHORT}</div>`;
-    block(cls, e.top || 104, head + body + venue, t0, t1, { stagger: n > 1 ? .09 : .07, cap: e.cap });
+    const venue = EN ? `<div class="corm" style="font-size:34px;font-weight:600;margin-top:${n > 1 ? 24 : 2}px">${VENUE_SHORT}</div>`
+      : `<div class="tiro" style="font-size:32px;margin-top:${n > 1 ? 24 : 4}px">${VENUE_SHORT}</div>`;
+    block(cls, e.top || 104, head + body + venue, t0, t1, { stagger: n > 1 ? .09 : .04, cap: e.cap,
+      reveal: n > 1 ? [.75, .55] : [.5, .45], fade: .3 });
   });
 });
 block('day', 150, EN ? `<div class="corm" style="font-size:42px;font-style:italic;font-weight:500">Awaiting your</div>
@@ -1001,7 +1009,7 @@ block('day', 150, EN ? `<div class="corm" style="font-size:42px;font-style:itali
   <div class="corm" style="font-size:34px;font-weight:600">${VENUE}</div>` : `<div class="tiro" style="font-size:40px;color:#8a2a14">आपके आगमन की</div>
   <div data-fx="title" style="font-size:96px;line-height:1.15"><span class="hi ruby">प्रतीक्षा में</span></div>${RULE_KID}
   <div class="hi" style="font-size:38px;color:#8a2a14">19 – 21 नवंबर 2026</div>
-  <div class="tiro" style="font-size:33px">${VENUE}</div>`, TL.end[0] + .75, DURATION + 1, { cart: { w: 600, top: 100, bottom: 36 } });
+  <div class="tiro" style="font-size:33px">${VENUE}</div>`, TL.end[0] + 1.0, DURATION + 1, { cart: { w: 600, top: 100, bottom: 36 } });
 Object.assign(blocks[blocks.length - 1].el.style, { left: '54px', right: '66px' });   // a little more air beside the garland
 
 function buildCart(b) {                      // sized to the block's laid-out text, once fonts are in
@@ -1017,7 +1025,7 @@ function seekTexts(t) {
     const on = t >= b.t0 - .05 && t <= b.t1 + .6;
     b.el.style.display = on ? 'block' : 'none';
     if (!on) continue;
-    const out = ramp(t, b.t1, b.t1 + .45, 'inout');
+    const out = ramp(t, b.t1, b.t1 + b.fade, 'inout');
     if (!b.fitted) {                                      // cap every title at 800 px wide
       b.fitted = true;
       b.kids.filter(k => k.dataset.fx === 'title').forEach(k => {
@@ -1046,7 +1054,7 @@ function seekTexts(t) {
     }
     b.kids.forEach((k, i) => {
       const st = b.t0 + i * b.stagger, fxk = k.dataset.fx;
-      const a = ramp(t, st, st + (fxk ? .75 : .55), 'out');
+      const a = ramp(t, st, st + (fxk ? b.reveal[0] : b.reveal[1]), 'out');
       k.style.opacity = Math.min(1, a * 1.3) * (1 - out);
       if (fxk) {                                          // titles and rules open from the centre outward
         const r = a * 62;
@@ -1161,7 +1169,7 @@ function seek(t) {
   lightLeak(t);
   seekTexts(t);
   // fade in from black and out at the end (on the top layer, so it covers the titles too)
-  const fade = Math.max(1 - ramp(t, 0, .5), ramp(t, DURATION - .6, DURATION));
+  const fade = Math.max(1 - ramp(t, 0, .35), ramp(t, DURATION - .6, DURATION));
   if (fade > 0) { fg.fillStyle = `rgba(20,6,2,${fade})`; fg.fillRect(0, 0, W, H); }
 }
 
