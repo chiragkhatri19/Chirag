@@ -28,10 +28,16 @@
   .night .gold { color: #f6d27a; }
   .scrim { padding: 26px 0 34px; background: radial-gradient(closest-side, rgba(255,241,214,.9), rgba(255,241,214,.55) 60%, rgba(255,241,214,0)); }
   .softscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(255,244,222,.84), rgba(255,244,222,.6) 55%, rgba(255,244,222,0)); }
-  .nightscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(14,10,40,.55), rgba(14,10,40,.32) 55%, rgba(14,10,40,0)); }
+  .nightscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(14,10,40,.62), rgba(14,10,40,.38) 55%, rgba(14,10,40,0)); }
   .rule { display: block; margin: 8px auto 10px; width: 360px; height: 24px; }
   .mini { display: block; margin: 2px auto 12px; width: 220px; height: 16px; }
   .mini.tight { margin: 0 auto 4px; }
+  /* programme rows: titles right-aligned and times left-aligned on either side of the centre line */
+  .prow { display: grid; grid-template-columns: calc(50% + var(--gut) - 14px) 28px 1fr; align-items: baseline; line-height: 1.2; white-space: nowrap; }
+  .prow > :first-child { justify-self: end; }
+  .prow > :last-child { justify-self: start; }
+  .pdot { justify-self: center; width: 5px; height: 5px; border-radius: 50%; background: #d9a944; transform: translateY(-.28em); }
+  .mini.wide { width: 540px; height: 16px; margin: 0 auto 4px; }
   /* foil titles: a base gradient plus a specular band (moved by seekTexts), clipped to the glyphs */
   .foil, .ruby { display: inline-block; padding: .2em .3em; margin: -.2em -.3em; text-shadow: none;
     -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
@@ -103,24 +109,24 @@ const EVENTS = [   // one slide each; a slide can carry several events. dur: sec
   { d: 0, img: 'E01', dur: 3.75, sky: 'day', items: [
     { hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05 बजे', enTime: '12:05 PM' },
     { hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15 बजे', enTime: '4:15 PM' }] },
-  { d: 0, img: 'E03', dur: 2.5, sky: 'night', anchorTop: 1, top: 66, items: [
+  { d: 0, img: 'E03', dur: 2.5, sky: 'night', anchorTop: 1, top: 48, items: [
     { hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15 बजे', enTime: '7:15 PM' }] },
-  { d: 1, img: 'E04', dur: 2.5, sky: 'day', anchorTop: 1, items: [
+  { d: 1, img: 'E04', dur: 2.5, sky: 'day', anchorTop: 1, kbK: 2, items: [
     { hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
   { d: 1, img: 'E06', dur: 4.375, sky: 'night', anchorTop: 1, top: 66, items: [
     { hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', enTime: '4:00 PM' },
     { hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', enTime: '7:00 PM' },
     { hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', enTime: 'Friday night · 12:15 AM' }] },
-  { d: 2, img: 'E08', dur: 2.5, sky: 'day', anchorTop: 1, items: [
+  { d: 2, img: 'E08', dur: 2.5, sky: 'day', anchorTop: 1, kbK: 5, items: [
     { hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
-  { d: 2, img: 'E09', dur: 2.5, sky: 'day', items: [
+  { d: 2, img: 'E09', dur: 2.5, sky: 'day', cap: 720, items: [
     { hi: 'बारात प्रस्थान एवं बंदोली', en: 'Baraat Prasthan & Bandoli', when: 'दोपहर', time: '3:00 बजे', enTime: '3:00 PM' }] },
   { d: 2, img: 'E10', dur: 3.125, sky: 'night', top: 70, items: [
     { hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', enTime: '7:21 – 9:34 PM' }] },
 ];
 const WIPES = [['drape'], ['petals'], ['flowers', 'pillar']];
 // a top-anchored scene keeps its top edge at the frame top, so the people sit lower, clear of the titles
-const topShift = (e, s, aw = 1) => e.anchorTop ? 960 * e.anchorTop * ((s - 1) - (s - 1.07) * (1 - aw)) : 0;
+const topShift = (e, s) => e.anchorTop ? 960 * (s - 1) * e.anchorTop : 0;
 
 /* ---------------- assets ---------------- */
 const IMG = {};
@@ -755,6 +761,7 @@ function drawCouple(t, c, x, feet, h, t0, door, tBack) {
     g.filter = door.warm ? `brightness(${lerp(door.minLight, 1, k)}) sepia(${.3 * (1 - k)}) saturate(${lerp(1.1, 1, k)})` : `brightness(${lerp(door.minLight || 0, 1, k)})`;
   }
   g.drawImage(im, sx, sy, ww * c.z, hh * c.z);
+  PETAL_KEEP_OUT.push([sx - 20, sy - 20, sx + ww * c.z + 20, sy + hh * c.z * .3 + 20]);   // petals stay off their faces
   g.restore();
 }
 
@@ -792,19 +799,18 @@ function kb(e, t) {                    // gentle Ken Burns per scene; first and 
   const first = e.i === 0, last = e.i === e.n - 1;
   let s;
   if (first && last) s = 1.07 + .05 * Math.sin(p * Math.PI);
-  else if (first) s = 1.07 + .06 * (1 - Math.pow(1 - p, 7));   // carries the fly-through's momentum, then settles
+  else if (first) s = 1.07 + .06 * (1 - Math.pow(1 - p, e.kbK || 7));   // carries the fly-through's momentum (kbK sets the start speed), then settles
   else if (last) s = 1.13 - .06 * E.sine(p);                    // ends where the zoom-out picks it up
   else s = 1.03 + .04 * (e.i % 2 ? 1 - p : p);
   const ox = (e.i % 2 ? -1 : 1) * 14 * (p - .5) * (first || last ? 0 : 1);
-  const aw = first ? E.inout(clamp(p / .45)) : 1;      // a day's first slide eases into its top anchor, matching the zoom's motion at the hand-off
-  return { s, ox, oy: 0, aw };
+  return { s, ox, oy: 0 };
 }
 function drawEvent(e, t, clipL, clipR, extra = {}) {
   const k = kb(e, t);
   g.save();
   if (clipL !== undefined) { const [y0, y1] = extra.clipY || [0, H]; g.beginPath(); g.rect(clipL, y0, clipR - clipL, y1 - y0); g.clip(); }
   const sc = k.s * (extra.s || 1);
-  cover(IMG[e.img], sc, k.ox + (extra.ox || 0), k.oy + topShift(e, sc, k.aw));
+  cover(IMG[e.img], sc, k.ox + (extra.ox || 0), k.oy + topShift(e, sc));
   g.restore();
 }
 function drawEvents(t) {
@@ -981,6 +987,7 @@ block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1
   <div class="tiro" style="font-size:31px;color:#8a2a14">॥<span style="margin:0 4px 0 12px">शुभ विवाह</span>॥</div>${RULE_KID}`,
   TL.couple[0] + .3, TL.couple[1] - .45, { cart: { w: 860, top: 100, bottom: 34 } });
 // event slides: day and date, then one title with its time, or a short programme of two or three events
+const WIDE = `<svg class="mini wide" viewBox="0 0 540 16"><rect x="4" y="7" width="246" height="1.6" fill="url(#rgL)"/><rect x="290" y="7" width="246" height="1.6" fill="url(#rgR)"/><path d="M270 2 L275.5 8 L270 14 L264.5 8Z" fill="#c38a2a"/><circle cx="252" cy="8" r="1.8" fill="#c38a2a"/><circle cx="288" cy="8" r="1.8" fill="#c38a2a"/></svg>`;
 const MINI = `<svg class="mini" viewBox="0 0 220 16"><rect x="4" y="7" width="92" height="2" fill="url(#rgL)"/><rect x="124" y="7" width="92" height="2" fill="url(#rgR)"/><path d="M110 1.5 L116 8 L110 14.5 L104 8Z" fill="#c38a2a"/><circle cx="96" cy="8" r="2" fill="#c38a2a"/><circle cx="124" cy="8" r="2" fill="#c38a2a"/></svg>`;
 DAYS.forEach((d, i) => {
   d.events.forEach(e => {
@@ -1000,8 +1007,8 @@ ${RULE_KID}
         <div class="hi" style="font-size:40px">${it.when} ${it.time}</div>`;
     } else {
       const ts = EN ? 82 : 94, tm = 38;
-      if (n > 2) body = e.items.map((it, k) => `${k ? `<div data-fx="rule"><svg class="mini tight" viewBox="0 0 220 16">${MINI.slice(MINI.indexOf('>') + 1)}</div>` : ''}
-        <div data-fx="title" style="font-size:${EN ? 54 : 62}px;line-height:1.2;white-space:nowrap;margin-top:${k ? 0 : 6}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span><span class="${EN ? 'corm' : 'hi'}" style="font-size:${EN ? 32 : 30}px;margin-left:18px;${EN ? 'font-weight:600' : ''}">${EN ? it.enTime : it.when + ' ' + it.time}</span></div>`).join('');
+      if (n > 2) body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${WIDE}</div>` : ''}
+        <div data-fx="title" class="prow" style="font-size:${EN ? 54 : 62}px;margin-top:${k ? 0 : 6}px;--gut:${EN ? 30 : 60}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span><i class="pdot"></i><span class="${EN ? 'corm' : 'hi'}" style="font-size:30px;${EN ? 'font-weight:600' : ''}">${EN ? it.enTime : it.when + ' ' + it.time}</span></div>`).join('');
       else body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${MINI}</div>` : ''}
         <div data-fx="title" style="font-size:${ts}px;line-height:1.12;margin-top:${k ? 0 : 8}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span></div>
         ${EN ? `<div class="corm" style="font-size:${tm + 4}px;font-weight:600;line-height:1.1">${it.enTime}</div>` : `<div class="hi" style="font-size:${tm}px;line-height:1.3">${it.when} ${it.time}</div>`}`).join('');
