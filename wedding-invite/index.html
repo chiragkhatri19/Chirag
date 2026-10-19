@@ -31,6 +31,7 @@
   .nightscrim { padding: 30px 0 44px; background: radial-gradient(closest-side, rgba(14,10,40,.55), rgba(14,10,40,.32) 55%, rgba(14,10,40,0)); }
   .rule { display: block; margin: 8px auto 10px; width: 360px; height: 24px; }
   .mini { display: block; margin: 2px auto 12px; width: 220px; height: 16px; }
+  .mini.tight { margin: 0 auto 4px; }
   /* foil titles: a base gradient plus a specular band (moved by seekTexts), clipped to the glyphs */
   .foil, .ruby { display: inline-block; padding: .2em .3em; margin: -.2em -.3em; text-shadow: none;
     -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
@@ -102,15 +103,15 @@ const EVENTS = [   // one slide each; a slide can carry several events. dur: sec
   { d: 0, img: 'E01', dur: 3.75, sky: 'day', items: [
     { hi: 'गणेश स्थापना', en: 'Ganesh Sthapana', when: 'दोपहर', time: '12:05 बजे', enTime: '12:05 PM' },
     { hi: 'मायरा स्वागत', en: 'Mayra Swagat', when: 'शाम', time: '4:15 बजे', enTime: '4:15 PM' }] },
-  { d: 0, img: 'E03', dur: 2.5, sky: 'night', items: [
+  { d: 0, img: 'E03', dur: 2.5, sky: 'night', anchorTop: 1, top: 66, items: [
     { hi: 'रिंग सेरेमनी', en: 'Ring Ceremony', when: 'शाम', time: '7:15 बजे', enTime: '7:15 PM' }] },
-  { d: 1, img: 'E04', dur: 2.5, sky: 'day', items: [
+  { d: 1, img: 'E04', dur: 2.5, sky: 'day', anchorTop: 1, items: [
     { hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
-  { d: 1, img: 'E06', dur: 4.375, sky: 'night', items: [
+  { d: 1, img: 'E06', dur: 4.375, sky: 'night', anchorTop: 1, top: 66, items: [
     { hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', enTime: '4:00 PM' },
     { hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', enTime: '7:00 PM' },
     { hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', enTime: 'Friday night · 12:15 AM' }] },
-  { d: 2, img: 'E08', dur: 2.5, sky: 'day', items: [
+  { d: 2, img: 'E08', dur: 2.5, sky: 'day', anchorTop: 1, items: [
     { hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', enTime: '8:00 AM' }] },
   { d: 2, img: 'E09', dur: 2.5, sky: 'day', items: [
     { hi: 'बारात प्रस्थान एवं बंदोली', en: 'Baraat Prasthan & Bandoli', when: 'दोपहर', time: '3:00 बजे', enTime: '3:00 PM' }] },
@@ -118,6 +119,8 @@ const EVENTS = [   // one slide each; a slide can carry several events. dur: sec
     { hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', enTime: '7:21 – 9:34 PM' }] },
 ];
 const WIPES = [['drape'], ['petals'], ['flowers', 'pillar']];
+// a top-anchored scene keeps its top edge at the frame top, so the people sit lower, clear of the titles
+const topShift = (e, s, aw = 1) => e.anchorTop ? 960 * e.anchorTop * ((s - 1) - (s - 1.07) * (1 - aw)) : 0;
 
 /* ---------------- assets ---------------- */
 const IMG = {};
@@ -170,7 +173,9 @@ DAYS.forEach((d, i) => {
   const vw = ow * .96;
   d.camIn = { cx: ox + ow / 2, cy: oy + oh / 2, vw };             // camera ends fully inside the opening: no frame left on screen
   const z = W / vw, sw = 1280 * 1.07 / z, sh = 1920 * 1.07 / z;   // scene placed 7% past full-frame cover at that point
-  d.rectB = { x: d.camIn.cx - sw / 2, y: d.camIn.cy - sh / 2, w: sw, h: sh };
+  const rb = e => ({ x: d.camIn.cx - sw / 2, y: d.camIn.cy - sh / 2 + topShift(e, 1.07) / z, w: sw, h: sh });
+  d.rectBIn = rb(d.events[0]);                                    // the zoom lands on the first slide's framing...
+  d.rectBOut = rb(d.events[d.events.length - 1]);                 // ...and leaves from the last slide's
 });
 const lerpRect = (a, b, q) => ({ x: lerp(a.x, b.x, q), y: lerp(a.y, b.y, q), w: lerp(a.w, b.w, q), h: lerp(a.h, b.h, q) });
 function zoomQ(d, t) {                // 0 = seen from the street, 1 = filling the frame
@@ -534,7 +539,7 @@ function holeScene(d, t) {
 function drawStreet(t, c, alpha) {
   // scenes behind the window openings
   DAYS.forEach((day, d) => {
-    let r = lerpRect(day.rectA, day.rectB, zoomQ(d, t));
+    let r = lerpRect(day.rectA, t >= TL[`zoomOut${d}`][0] ? day.rectBOut : day.rectBIn, zoomQ(d, t));
     // the scene must always cover the part of the window opening that is on screen
     const [hx0, hy0, hx1, hy1] = day.hole;
     const ix0 = Math.max(hx0, c.x0), iy0 = Math.max(hy0, c.y0), ix1 = Math.min(hx1, c.x0 + c.vw), iy1 = Math.min(hy1, c.y0 + c.vh);
@@ -791,13 +796,15 @@ function kb(e, t) {                    // gentle Ken Burns per scene; first and 
   else if (last) s = 1.13 - .06 * E.sine(p);                    // ends where the zoom-out picks it up
   else s = 1.03 + .04 * (e.i % 2 ? 1 - p : p);
   const ox = (e.i % 2 ? -1 : 1) * 14 * (p - .5) * (first || last ? 0 : 1);
-  return { s, ox, oy: 0 };
+  const aw = first ? E.inout(clamp(p / .45)) : 1;      // a day's first slide eases into its top anchor, matching the zoom's motion at the hand-off
+  return { s, ox, oy: 0, aw };
 }
 function drawEvent(e, t, clipL, clipR, extra = {}) {
   const k = kb(e, t);
   g.save();
   if (clipL !== undefined) { const [y0, y1] = extra.clipY || [0, H]; g.beginPath(); g.rect(clipL, y0, clipR - clipL, y1 - y0); g.clip(); }
-  cover(IMG[e.img], k.s * (extra.s || 1), k.ox + (extra.ox || 0), k.oy);
+  const sc = k.s * (extra.s || 1);
+  cover(IMG[e.img], sc, k.ox + (extra.ox || 0), k.oy + topShift(e, sc, k.aw));
   g.restore();
 }
 function drawEvents(t) {
@@ -992,8 +999,10 @@ DAYS.forEach((d, i) => {
 ${RULE_KID}
         <div class="hi" style="font-size:40px">${it.when} ${it.time}</div>`;
     } else {
-      const ts = n > 2 ? (EN ? 66 : 76) : (EN ? 82 : 94), tm = n > 2 ? 34 : 38;
-      body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${MINI}</div>` : ''}
+      const ts = EN ? 82 : 94, tm = 38;
+      if (n > 2) body = e.items.map((it, k) => `${k ? `<div data-fx="rule"><svg class="mini tight" viewBox="0 0 220 16">${MINI.slice(MINI.indexOf('>') + 1)}</div>` : ''}
+        <div data-fx="title" style="font-size:${EN ? 54 : 62}px;line-height:1.2;white-space:nowrap;margin-top:${k ? 0 : 6}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span><span class="${EN ? 'corm' : 'hi'}" style="font-size:${EN ? 32 : 30}px;margin-left:18px;${EN ? 'font-weight:600' : ''}">${EN ? it.enTime : it.when + ' ' + it.time}</span></div>`).join('');
+      else body = e.items.map((it, k) => `${k ? `<div data-fx="rule">${MINI}</div>` : ''}
         <div data-fx="title" style="font-size:${ts}px;line-height:1.12;margin-top:${k ? 0 : 8}px"><span class="hi ${fc}">${EN ? it.en : it.hi}</span></div>
         ${EN ? `<div class="corm" style="font-size:${tm + 4}px;font-weight:600;line-height:1.1">${it.enTime}</div>` : `<div class="hi" style="font-size:${tm}px;line-height:1.3">${it.when} ${it.time}</div>`}`).join('');
     }
