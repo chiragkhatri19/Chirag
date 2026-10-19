@@ -755,6 +755,7 @@ function drawCouple(t, c, x, feet, h, t0, door, tBack) {
 
 /* a near-camera pillar sweeps across the pan from the doorway to the first window; the couple slips away behind it */
 const NEAR_PILLAR = { wx: 2304, par: 4.6, h: 2600 };
+const PILLAR_BLUR = Object.assign(document.createElement('canvas'), { width: W, height: H });
 const nearPillarX = c => (NEAR_PILLAR.wx - c.cx) * c.z * NEAR_PILLAR.par + W / 2;
 function drawNearPillar(t, c) {
   if (t < TL.toWin0[0] || t > TL.toWin0[1]) return;
@@ -762,12 +763,11 @@ function drawNearPillar(t, c) {
   const dx = (nearPillarX(camAt(t + 1 / 30)) - x) * .5;     // shutter: half the per-frame travel
   if (x - w / 2 - Math.abs(dx) > W || x + w / 2 + Math.abs(dx) < 0) return;
   const N = clamp(Math.ceil(Math.abs(dx) / 4), 1, 12);
-  g.save(); g.filter = 'blur(3px) brightness(.78)';
-  for (let k = 0; k < N; k++) {                            // running average of N copies spread across the shutter
-    g.globalAlpha = 1 / (k + 1);
-    g.drawImage(im, x - w / 2 + dx * (N > 1 ? k / (N - 1) - .5 : 0), (H - h) / 2, w, h);
-  }
-  g.restore();
+  const o = PILLAR_BLUR.getContext('2d');                 // equal-weight average of N copies across the shutter, so both edges smear alike
+  o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-over'; o.globalAlpha = 1; o.clearRect(0, 0, W, H);
+  o.globalCompositeOperation = 'lighter'; o.globalAlpha = 1 / N;
+  for (let k = 0; k < N; k++) o.drawImage(im, x - w / 2 + dx * (N > 1 ? k / (N - 1) - .5 : 0), (H - h) / 2, w, h);
+  g.save(); g.filter = 'blur(3px) brightness(.78)'; g.drawImage(PILLAR_BLUR, 0, 0); g.restore();
 }
 /* puppets hanging in the near foreground during the opening (parallax) */
 function drawPuppets(t, c) {
