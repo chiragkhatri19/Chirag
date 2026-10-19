@@ -622,16 +622,17 @@ function drawBanner(t, c) {
   g.save(); g.fillStyle = 'rgba(60,25,5,.22)'; g.filter = 'blur(10px)';
   g.fillRect(sx + 14 * c.z, sy + 26 * c.z, bw * c.z, bh * c.z); g.restore();
   const HEM = .85, uc = Math.min(u, HEM);                 // the tassels below the hem stay wrapped in the roll until the last turn
-  if (u > 0) g.drawImage(im, 0, 0, im.width, im.height * uc, sx, sy, bw * c.z, BANNER.h * uc * c.z);
   const tq = ramp(t, b0 + 1.3, b0 + 2.0, 'out');          // the lace and tassels are lowered out of the last turn
-  if (tq > 0) {
+  if (tq >= 1) g.drawImage(im, sx, sy, bw * c.z, BANNER.h * c.z);   // landed: one image, so no join line in the cloth
+  else if (u > 0) g.drawImage(im, 0, 0, im.width, im.height * uc, sx, sy, bw * c.z, BANNER.h * uc * c.z);
+  if (tq > 0 && tq < 1) {
     const yc = sy + BANNER.h * HEM * c.z, sh = BANNER.h * (1 - HEM) * c.z;
     g.save(); g.beginPath(); g.rect(sx - 40 * c.z, yc, bw * c.z + 80 * c.z, sh + 60 * c.z); g.clip();   // nothing shows above the cut
     g.drawImage(im, 0, im.height * HEM, im.width, im.height * (1 - HEM), sx, yc - (1 - tq) * sh, bw * c.z, sh); g.restore();
   }
   const rk = 1 - ramp(t, b0 + 2.0, b0 + 2.14, 'inout');
-  if (rk > 0) {                                            // rolled cloth at the hem
-    const rr = lerp(19, 12, uc / HEM) * c.z * rk, ry = sy + BANNER.h * uc * c.z + (u > 0 ? 0 : rr * .6);
+  const rr = lerp(19, 12, uc / HEM) * c.z * rk, ry = sy + BANNER.h * uc * c.z + (u > 0 ? 0 : rr * .6);
+  if (rr >= 1.5) {                                         // rolled cloth at the hem (skipped once it is a hairline)
     g.save();
     g.save(); g.fillStyle = 'rgba(60,25,5,.3)'; g.filter = `blur(${6 * c.z}px)`;
     g.fillRect(sx + 12 * c.z, ry + rr * .6, bw * c.z - 24 * c.z, rr * .9); g.restore();
