@@ -34,7 +34,7 @@
   .foil, .ruby { display: inline-block; padding: .2em .3em; margin: -.2em -.3em; text-shadow: none;
     -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
     background-repeat: no-repeat; background-size: 300% 100%, 100% 100%; background-position: 100% 0, 0 0; }
-  .foil { background-image: linear-gradient(100deg, rgba(255,250,230,0) 45%, rgba(255,252,238,.95) 50%, rgba(255,250,230,0) 55%),
+  .foil { background-image: linear-gradient(100deg, rgba(255,250,230,0) 48.5%, rgba(255,250,230,.7) 50%, rgba(255,250,230,0) 51.5%),
       linear-gradient(180deg, #fff2c4 12%, #f6d67a 30%, #dcaa4c 48%, #b98636 60%, #d6a446 72%, #f8de90 86%, #e4b656 100%);
     filter: drop-shadow(0 1px 0 rgba(70,30,6,.55)) drop-shadow(0 6px 16px rgba(8,4,24,.55)); }
   .ruby { background-image: linear-gradient(100deg, rgba(255,214,170,0) 48.5%, rgba(255,214,170,.6) 50%, rgba(255,214,170,0) 51.5%),
@@ -103,7 +103,7 @@ const EVENTS = [
   { d: 1, img: 'E04', enTime: '8:00 AM', hi: 'कार्निवल', en: 'Carnival', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
   { d: 1, img: 'E05', enTime: '4:00 PM', hi: 'बंदोली', en: 'Bandoli', when: 'शाम', time: '4:00 बजे', sky: 'night' },
   { d: 1, img: 'E06', enTime: '7:00 PM', hi: 'संगीत संध्या', en: 'Sangeet Sandhya', when: 'शाम', time: '7:00 बजे', sky: 'night' },
-  { d: 1, img: 'E07', enTime: 'Midnight · 12:15 AM', hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', sky: 'night' },
+  { d: 1, img: 'E07', enTime: 'Friday night · 12:15 AM', hi: 'घड़ी विनायक', en: 'Ghadi Vinayak', when: 'रात्रि', time: '12:15 बजे', sky: 'night' },
   { d: 2, img: 'E08', enTime: '8:00 AM', hi: 'हल्दी एवं जनेऊ', en: 'Haldi & Janeu', when: 'सुबह', time: '8:00 बजे', sky: 'day' },
   { d: 2, img: 'E09', enTime: '3:00 PM', hi: 'बारात प्रस्थान एवं बंदोली', en: 'Baraat Prasthan & Bandoli', when: 'दोपहर', time: '3:00 बजे', sky: 'day' },
   { d: 2, img: 'E10', enTime: '7:21 – 9:34 PM', hi: 'मंगल फेरा', en: 'Mangal Phera', when: 'रात्रि', time: '7:21 – 9:34 बजे', sky: 'night' },
@@ -135,7 +135,7 @@ seg('couple', 3.125);
 const EV_DUR = 3.75, WIPE = .9;   // 6 beats at 96 BPM
 DAYS.forEach((day, d) => {
   seg(`toWin${d}`, 1.25);
-  seg(`label${d}`, 1.875);
+  seg(`label${d}`, 2.5);
   seg(`zoomIn${d}`, 1.25);
   const evs = EVENTS.filter(e => e.d === d);
   evs.forEach((e, i) => { e.t0 = cursor; e.t1 = cursor + EV_DUR; e.i = i; e.n = evs.length; cursor += EV_DUR; });
@@ -161,7 +161,7 @@ DAYS.forEach((d, i) => {
   d.rect = d.rectA;
   const vw = ow * .96;
   d.camIn = { cx: ox + ow / 2, cy: oy + oh / 2, vw };             // camera ends fully inside the opening: no frame left on screen
-  const z = W / vw, sw = 1280 / z, sh = 1920 / z;                 // scene placed so it is exactly the full-frame cover at that point
+  const z = W / vw, sw = 1280 * 1.07 / z, sh = 1920 * 1.07 / z;   // scene placed 7% past full-frame cover at that point
   d.rectB = { x: d.camIn.cx - sw / 2, y: d.camIn.cy - sh / 2, w: sw, h: sh };
 });
 const lerpRect = (a, b, q) => ({ x: lerp(a.x, b.x, q), y: lerp(a.y, b.y, q), w: lerp(a.w, b.w, q), h: lerp(a.h, b.h, q) });
@@ -192,7 +192,8 @@ DAYS.forEach((d, i) => {
   K(TL[`zoomOut${i}`][1], d.rect.cx, 790, 760);
 });
 K(TL.toEnd[1] - .3, 4176, 768, 864);
-K(TL.end[0] + 1.875, 4020, 768, 864);
+K(TL.end[0] + .8, 4176, 768, 864);                       // hold while they step out of the gate, then walk with them
+K(TL.end[0] + 1.9, 4020, 768, 864);
 K(DURATION, 4026, 770, 850);
 
 function camAt(t) {
@@ -216,7 +217,7 @@ const S = (c, x, y) => [(x - c.x0) * c.z, (y - c.y0) * c.z];
 /* ---------------- drawing helpers ---------------- */
 const cv = document.getElementById('cv'); let g = cv.getContext('2d');
 const fx = document.getElementById('fx'), fg = fx.getContext('2d');           // wipes and the fade: above the titles
-const pg = document.getElementById('pt').getContext('2d');                       // petals, dust, light leaks: under the titles
+const pg = document.getElementById('pt').getContext('2d');                       // petals and light leaks: under the titles
 g.imageSmoothingQuality = 'high';
 
 function cover(img, sx = 1, ox = 0, oy = 0) {   // draw an event scene to fill the frame, scaled sx about the centre
@@ -256,7 +257,7 @@ function wtext(c, str, x, y, size, font, fill, alpha = 1, opts = {}) {
   g.textAlign = opts.align || 'center'; g.textBaseline = 'alphabetic';
   if (opts.shadow) { g.shadowColor = opts.shadow; g.shadowBlur = px * .25; g.shadowOffsetY = px * .03; }
   if (opts.emboss) {                                         // pressed into plaster: light lower lip, dark upper lip
-    g.fillStyle = opts.emboss; g.fillText(str, lx, sy + Math.max(1, px * .03));
+    g.fillStyle = opts.emboss; g.fillText(str, lx, sy + Math.max(1, px * (opts.embossOff || .03)));
   }
   g.fillStyle = fill === 'gold' ? goldFill(sy - px, sy + px * .2) : fill === 'ruby' ? rubyFill(sy - px * .8, sy + px * .15) : fill;
   if (opts.clipW !== undefined) { g.beginPath(); g.rect(sx - 2000, sy - px * 2, 2000 + opts.clipW * c.z, px * 3); g.clip(); }
@@ -420,50 +421,60 @@ function foil2(o, x0, y0, x1, y1) {        // satin gold: no stop darker than #a
   return gr;
 }
 // deep-ruby enamel inset with a gilt rim and a cusped top, unfolding from the centre (world coords)
-function insetPath(sx, sy, hw, hh, rise, n = 3) {
+function insetPaths(sx, sy, hw, hh, rise, n = 3) {   // cusped top, square base; halves start at the apex for the draw-on
   const P = u => [sx - hw * (1 - u), sy + rise * (1 - Math.pow(u, 1.3))];
-  const path = new Path2D();
-  path.moveTo(sx - hw, sy + hh); path.lineTo(sx - hw, sy + rise);
-  const side = dir => {
-    for (let i = 1; i <= n; i++) {
-      const ui = dir < 0 ? i / n : 1 - i / n, uo = dir < 0 ? (i - 1) / n : 1 - (i - 1) / n;
-      let [ax, ay] = P(uo), [bx, by] = P(ui);
-      if (dir > 0) { ax = 2 * sx - ax; bx = 2 * sx - bx; }
-      const dx = bx - ax, dy = by - ay, l = Math.hypot(dx, dy), k = .3 * l, nx = dir < 0 ? dy / l : dy / l, ny = -dx / l;
-      path.quadraticCurveTo((ax + bx) / 2 + nx * k * (dir < 0 ? 1 : 1), (ay + by) / 2 + ny * k, bx, by);
-    }
+  const segs = [];
+  for (let i = 1; i <= n; i++) {
+    const a = P(1 - (i - 1) / n), b = P(1 - i / n), dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy), k = .3 * l;
+    segs.push([(a[0] + b[0]) / 2 - dy / l * k, (a[1] + b[1]) / 2 + dx / l * k, b[0], b[1]]);
+  }
+  const half = m => {
+    const X = x => m ? 2 * sx - x : x, p = new Path2D();
+    p.moveTo(sx, sy); for (const [qx, qy, bx, by] of segs) p.quadraticCurveTo(X(qx), qy, X(bx), by);
+    p.lineTo(X(sx - hw), sy + hh); p.lineTo(sx, sy + hh);
+    return p;
   };
-  side(-1); side(1);
-  path.lineTo(sx + hw, sy + hh); path.closePath();
-  return path;
+  const full = new Path2D(), pts = [[sx, sy], ...segs.map(q => [q[2], q[3]])];
+  full.moveTo(sx, sy); for (const [qx, qy, bx, by] of segs) full.quadraticCurveTo(qx, qy, bx, by);
+  full.lineTo(sx - hw, sy + hh); full.lineTo(sx + hw, sy + hh); full.lineTo(sx + hw, sy + rise);
+  for (let i = segs.length - 1; i >= 0; i--) full.quadraticCurveTo(2 * sx - segs[i][0], segs[i][1], 2 * sx - pts[i][0], pts[i][1]);
+  full.closePath();
+  return { left: half(false), right: half(true), full, len: 2.4 * hw + hh };
 }
 function rubyInset(c, cx, top, w, h, p) {
   if (p <= 0) return;
-  const z = c.z, [sx, sy] = S(c, cx, top), hw = w * z / 2, hh = h * z, rise = 20 * z * w / 220, e = E.inout(p);
+  const z = c.z, [sx, sy] = S(c, cx, top), hw = w * z / 2, hh = h * z, rise = 20 * z * w / 220;
+  const pr = E.inout(clamp(p / .6)), pe = E.out(clamp((p - .3) / .7));
+  const O = insetPaths(sx, sy, hw, hh, rise);
   g.save();
-  g.beginPath(); g.rect(sx - hw * e - 6 * z, sy - 20 * z, 2 * hw * e + 12 * z, hh + 40 * z); g.clip();
-  const outer = insetPath(sx, sy, hw, hh, rise);
-  g.save(); g.shadowColor = 'rgba(50,14,2,.45)'; g.shadowBlur = 5 * z; g.shadowOffsetY = 2 * z;
-  const fg2 = g.createLinearGradient(0, sy, 0, sy + hh);
-  fg2.addColorStop(0, '#7a1422'); fg2.addColorStop(.55, '#5e0d14'); fg2.addColorStop(1, '#46070e');
-  g.fillStyle = fg2; g.fill(outer); g.restore();
-  const hl = g.createRadialGradient(sx, sy + hh * .45, 0, sx, sy + hh * .45, hw);
-  hl.addColorStop(0, 'rgba(160,40,52,.35)'); hl.addColorStop(1, 'rgba(160,40,52,0)');
-  g.fillStyle = hl; g.fill(outer);
-  g.lineJoin = 'round';
-  g.strokeStyle = goldFill(sy, sy + hh); g.lineWidth = 2.4 * z; g.stroke(outer);
-  const inner = insetPath(sx, sy + 5 * z, hw - 5 * z, hh - 10 * z, rise * .9);
-  g.strokeStyle = 'rgba(232,200,119,.75)'; g.lineWidth = .7 * z; g.stroke(inner);
+  if (pe > 0) {                                            // enamel floods in once the rim is round
+    g.save(); g.globalAlpha *= pe; g.shadowColor = 'rgba(50,14,2,.45)'; g.shadowBlur = 5 * z; g.shadowOffsetY = 2 * z;
+    const fg2 = g.createLinearGradient(0, sy, 0, sy + hh);
+    fg2.addColorStop(0, '#7a1422'); fg2.addColorStop(.55, '#5e0d14'); fg2.addColorStop(1, '#46070e');
+    g.fillStyle = fg2; g.fill(O.full); g.shadowColor = 'transparent';
+    const hl = g.createRadialGradient(sx, sy + hh * .45, 0, sx, sy + hh * .45, hw);
+    hl.addColorStop(0, 'rgba(160,40,52,.35)'); hl.addColorStop(1, 'rgba(160,40,52,0)');
+    g.fillStyle = hl; g.fill(O.full);
+    const I = insetPaths(sx, sy + 5 * z, hw - 5 * z, hh - 10 * z, rise * .9);
+    g.strokeStyle = 'rgba(232,200,119,.75)'; g.lineWidth = .7 * z; g.stroke(I.full);
+    g.restore();
+  }
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  g.strokeStyle = goldFill(sy, sy + hh); g.lineWidth = 2.4 * z;
+  if (pr < 1) g.setLineDash([pr * O.len, O.len * 3]);
+  g.stroke(O.left); g.stroke(O.right);
   g.restore();
 }
 
 /* the V&K monogram on a ruby inset: outline traces in gold, satin foil floods in, light sweeps across (world coords).
    base is the letters' baseline */
 function monogram(c, cx, base, s, t, t0, opts = {}) {
-  if (t < t0 - .4) return;
-  const z = c.z, size = 112 * s, px = size * z;
-  rubyInset(c, cx, base - 120 * s, 286 * s, 144 * s, ramp(t, t0 - .4, t0 + .2, 'lin'));
-  const glyphs = [['V', cx - 64 * s, base, 0], ['K', cx + 50 * s, base, .18]];
+  if (t < t0 - .5) return;
+  const z = c.z, size = 103 * s, px = size * z;
+  const ib = [cx - 143 * s, base - 125 * s, cx + 143 * s, base + 34 * s];                 // inset box (world)
+  rubyInset(c, cx, ib[1], 286 * s, ib[3] - ib[1], ramp(t, t0 - .5, t0 + .3, 'lin'));
+  if (opts.keepOut) { const [a0, a1] = S(c, ib[0], ib[1]), [b0, b1] = S(c, ib[2], ib[3]); PETAL_KEEP_OUT.push([a0 - 20, a1 - 20, b0 + 20, b1 + 20]); }
+  const glyphs = [['V', cx - 59 * s, base, 0], ['K', cx + 46 * s, base, .18]];
   const font = `700 ${px}px "Cinzel Decorative"`;
   for (const [ch, gx, gy, d] of glyphs) {
     const [sx, sy] = S(c, gx, gy);
@@ -471,8 +482,7 @@ function monogram(c, cx, base, s, t, t0, opts = {}) {
     if (pf > 0) {
       const o = layer(0, o => {
         o.font = font; o.textAlign = 'center'; o.textBaseline = 'alphabetic';
-        o.save(); o.shadowColor = 'rgba(24,2,4,.55)'; o.shadowBlur = px * .025; o.shadowOffsetY = px * .012;
-        o.fillStyle = foil2(o, sx - px * .3, sy - px * .8, sx + px * .05, sy + px * .05); glyph(o, ch, sx, sy, px); o.restore();
+        o.fillStyle = foil2(o, sx - px * .3, sy - px * .8, sx + px * .05, sy + px * .05); glyph(o, ch, sx, sy, px);
         o.globalCompositeOperation = 'source-atop'; o.globalAlpha = .07;
         o.fillStyle = o.createPattern(grainTile, 'repeat'); o.fillRect(sx - px, sy - px * 1.2, px * 2, px * 1.5);
       });
@@ -482,7 +492,8 @@ function monogram(c, cx, base, s, t, t0, opts = {}) {
         gm.addColorStop(0, '#000'); gm.addColorStop(1, 'rgba(0,0,0,0)');
         o.globalCompositeOperation = 'destination-in'; o.globalAlpha = 1; o.fillStyle = gm; o.fillRect(0, 0, W, H); o.globalCompositeOperation = 'source-over';
       }
-      g.drawImage(LAYERS[0], 0, 0);
+      g.save(); g.shadowColor = 'rgba(24,2,4,.55)'; g.shadowBlur = px * .025; g.shadowOffsetY = px * .012;   // one shadow for glyph + bridge
+      g.drawImage(LAYERS[0], 0, 0); g.restore();
     }
     if (pd > 0 && pf < 1) {                                // a fine gold outline is wiped on ahead of the foil
       const o = layer(1, o => { o.font = font; o.textAlign = 'center'; o.lineWidth = Math.max(1, px * .012); o.strokeStyle = '#e8c877'; o.lineJoin = 'round'; o.strokeText(ch, sx, sy); });
@@ -494,9 +505,9 @@ function monogram(c, cx, base, s, t, t0, opts = {}) {
     }
   }
   const pa = ramp(t, t0 + .75, t0 + 1.35, 'out');           // ivory ampersand between the letters
-  inkText(c, '&', cx - 19 * s, base - 18 * s, 60 * s, '700 "Cinzel Decorative"', '#f4e2b8', pa, { mode: 'ltr', lift: 0, feather: 12, shadow: 'rgba(24,2,4,.5)' });
-  const ny = base + 24 * s + 28;
-  inkText(c, 'Veeral & Konika', cx, ny, 28, '"Great Vibes"', '#7a1810', ramp(t, t0 + 1.1, t0 + 2.0, 'inout'), { mode: 'ltr', lift: 0, feather: 22, blur: 0, emboss: 'rgba(255,236,196,.55)' });
+  inkText(c, '&', cx - 17 * s, base - 16 * s, 51 * s, '700 "Cinzel Decorative"', '#f4e2b8', pa, { mode: 'ltr', lift: 0, feather: 12, shadow: 'rgba(24,2,4,.5)' });
+  const ny = base + 34 * s + (opts.nameSize || 28) - 2;
+  inkText(c, 'Veeral & Konika', cx, ny, opts.nameSize || 28, '"Great Vibes"', '#6a1410', ramp(t, t0 + 1.1, t0 + 2.0, 'inout'), { mode: 'ltr', lift: 0, feather: 22, blur: 0, emboss: 'rgba(255,236,196,.55)' });
   if (opts.date) {
     const dstr = EN ? '19 – 21 NOVEMBER 2026' : '19 – 21 नवंबर 2026', df = EN ? '700 "Cinzel"' : '"Rozha One"', ds = EN ? 11.5 : 16;
     inkText(c, dstr, cx, ny + 42, ds, df, '#7a1810', ramp(t, t0 + 1.6, t0 + 2.2, 'lin'), { emboss: 'rgba(255,236,196,.55)', ls: EN ? .12 : 0 });
@@ -546,7 +557,7 @@ function drawStreet(t, c, alpha) {
   if (t < TL.banner[0]) {
     emblem(c, PANEL.x, 667, 68, t, .5);
     invocation(c, PANEL.x, 745, ramp(t, .85, 1.6, 'lin'), 'wall');
-    monogram(c, PANEL.x, 860, .78, t, 1.3, { date: 1 });
+    monogram(c, PANEL.x, 860, .78, t, 1.0, { date: 1 });
   }
 
   // banner hanging from the elder's rod, unrolling downward
@@ -554,13 +565,13 @@ function drawStreet(t, c, alpha) {
 
   // couple stepping out of the haveli doorway
   // ...and heading back inside once the camera moves on to the events
-  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5 }, TL.couple[1] - .35);
+  drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5 });
   // couple waiting at the palace gate for the finale
   drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .66, fromSide: 1, minLight: .62, warm: 1, leafBottom: 1126 });
-  monogram(c, 3785, 640, .92, t, TL.end[0] + 2.6);
+  monogram(c, 3785, 640, .92, t, TL.end[0] + 2.3, { keepOut: 1, nameSize: 30 });
 
   // cycle-rickshaw rolling along the street during the opening
-  const rp = clamp((t - 3.0) / 5.0);
+  const rp = clamp((t - 3.6) / 5.0);
   if (rp > 0 && rp < 1) {
     const rx = lerp(-760, 2900, rp), bob = Math.abs(Math.sin(t * 9)) * 4;
     const rh = 380, rw = rh * IMG.rickshaw.width / IMG.rickshaw.height;
@@ -575,11 +586,11 @@ const PANEL = { x: 363 };                 // centre of the plaster panel at the 
 function invocation(c, x, y, a, where) {
   const col = where === 'wall' ? '#6c150d' : '#8a2a14', emb = where === 'wall' ? 'rgba(255,232,190,.6)' : null;
   if (EN) {
-    const size = where === 'wall' ? 13 : 13.5, str = 'SHREE GANESHAYA NAMAH', f = '700 "Cinzel"', w = measureW(c, str, size, f, { ls: .16 });
+    const size = where === 'wall' ? 12 : 13.5, ls = where === 'wall' ? .11 : .16, str = 'SHREE GANESHAYA NAMAH', f = '700 "Cinzel"', w = measureW(c, str, size, f, { ls });
     ink(c, [x - w / 2 - 22, y - size * 1.1, x + w / 2 + 22, y + size * .4], a, dy => {
-      wtext(c, str, x, y + dy, size, f, col, 1, { ls: .16, emboss: emb });
+      wtext(c, str, x, y + dy, size, f, col, 1, { ls, emboss: emb });
       for (const sgn of [-1, 1]) {
-        const [dx, dy2] = S(c, x + sgn * (w / 2 + 12), y + dy - size * .36), d = 3.2 * c.z;
+        const [dx, dy2] = S(c, x + sgn * (w / 2 + 9), y + dy - size * .36), d = 3.2 * c.z;
         g.save(); g.fillStyle = col; g.beginPath(); g.moveTo(dx, dy2 - d); g.lineTo(dx + d * .7, dy2); g.lineTo(dx, dy2 + d); g.lineTo(dx - d * .7, dy2); g.closePath(); g.fill(); g.restore();
       }
     });
@@ -594,7 +605,7 @@ function invocation(c, x, y, a, where) {
   ink(c, [x - w / 2, y - size * 1.2, x + w / 2, y + size * .5], a, dy => {
     wtext(c, mid, x, y + dy, size, mf, col, 1, { emboss: emb });
     wtext(c, '॥', x - mw / 2 - gap - dw / 2, y + dy, size, mf, col, 1, { emboss: emb });
-    wtext(c, '॥', x + mw / 2 + gap + dw / 2, y + dy, size, mf, col, 1, { emboss: emb });
+    wtext(c, '॥', x + mw / 2 + gap + dw / 2 - 3, y + dy, size, mf, col, 1, { emboss: emb });   // the light visarga leaves more air on the right
   });
 }
 
@@ -609,14 +620,19 @@ function drawBanner(t, c) {
   // soft shadow on the wall
   g.save(); g.fillStyle = 'rgba(60,25,5,.22)'; g.filter = 'blur(10px)';
   g.fillRect(sx + 14 * c.z, sy + 26 * c.z, bw * c.z, bh * c.z); g.restore();
-  if (u > 0) g.drawImage(im, 0, 0, im.width, im.height * u, sx, sy, bw * c.z, bh * c.z);
-  if (u < 1) {                                             // rolled cloth at the bottom edge
-    const rr = lerp(19, 10, u) * c.z, ry = sy + bh * c.z + (u > 0 ? 0 : rr * .6);
+  const HEM = .85, uc = Math.min(u, HEM);                 // the tassels below the hem stay wrapped in the roll until the last turn
+  if (u > 0) g.drawImage(im, 0, 0, im.width, im.height * uc, sx, sy, bw * c.z, BANNER.h * uc * c.z);
+  if (u > HEM) { g.save(); g.globalAlpha *= clamp((u - HEM) / (1 - HEM)); g.drawImage(im, 0, im.height * HEM, im.width, im.height * (1 - HEM), sx, sy + BANNER.h * HEM * c.z, bw * c.z, BANNER.h * (1 - HEM) * c.z); g.restore(); }
+  const rk = 1 - clamp((u - .9) / .1);
+  if (rk > 0) {                                            // rolled cloth at the hem
+    const rr = lerp(19, 12, uc / HEM) * c.z * rk, ry = sy + BANNER.h * uc * c.z + (u > 0 ? 0 : rr * .6);
+    g.save(); g.globalAlpha *= Math.min(1, rk * 1.5);
     g.save(); g.fillStyle = 'rgba(60,25,5,.3)'; g.filter = `blur(${6 * c.z}px)`;
     g.fillRect(sx + 12 * c.z, ry + rr * .6, bw * c.z - 24 * c.z, rr * .9); g.restore();
     const gr = g.createLinearGradient(0, ry - rr, 0, ry + rr);
     gr.addColorStop(0, '#cdb68a'); gr.addColorStop(.45, '#efe1bf'); gr.addColorStop(.7, '#e2cfa6'); gr.addColorStop(1, '#8f744a');
     g.fillStyle = gr; g.beginPath(); g.roundRect(sx + 6 * c.z, ry - rr, bw * c.z - 12 * c.z, rr * 2, rr); g.fill();
+    g.restore();
   }
   // the invitation, line by line: each line inks in from the centre; the names are written left to right
   const body = EN ? 'italic 500 "Cormorant Garamond"' : '"Tiro Devanagari Hindi"', ink1 = '#5a180e', ink2 = '#8a2a14';
@@ -631,18 +647,18 @@ function drawBanner(t, c) {
     { y: 754, s: 'Konika', size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
     { y: 798, s: 'Do join us with your family', size: 19.5, font: body, col: ink1 },
     { y: 823, s: 'for the wedding celebrations', size: 19.5, font: body, col: ink1 },
-    { y: 866, s: '19 – 21 NOVEMBER 2026', size: 18.5, font: '700 "Cinzel"', col: ink2, ls: .04 },
-    { y: 897, s: 'Runicha Dham, Balotra · Rajasthan', size: 19, font: '600 "Cormorant Garamond"', col: ink1 },
+    { y: 866, s: '19 – 21 NOVEMBER 2026', size: 16.5, font: '700 "Cinzel"', col: ink2, ls: .04 },
+    { y: 897, s: 'Runicha Dham, Balotra · Rajasthan', size: 17.5, font: '600 "Cormorant Garamond"', col: ink1 },
   ] : [
     { y: 432, inv: 1 },
     { y: 450, div: 40 },
-    { y: 486, s: 'परमपिता परमेश्वर की असीम कृपा', size: 18.5, font: body, col: ink1 },
-    { y: 511, s: 'एवं बड़ों के आशीर्वाद से', size: 18.5, font: body, col: ink1 },
+    { y: 486, s: 'परमपिता परमेश्वर की असीम कृपा', size: 17.5, font: body, col: ink1 },
+    { y: 511, s: 'एवं बड़ों के आशीर्वाद से', size: 17.5, font: body, col: ink1 },
     { y: 598, hon: 'चि.', s: 'वीरल', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
     { y: 650, s: 'संग', size: 24, font: body, col: ink2, flank: 40 },
     { y: 728, hon: 'सौ. कां.', s: 'कोनिका', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
-    { y: 782, s: 'के शुभ विवाह के मंगल उत्सव में', size: 18.5, font: body, col: ink1 },
-    { y: 808, s: 'आप सपरिवार सादर आमंत्रित हैं', size: 18.5, font: body, col: ink1 },
+    { y: 782, s: 'के शुभ विवाह के मंगल उत्सव में', size: 17.5, font: body, col: ink1 },
+    { y: 808, s: 'आप सपरिवार सादर आमंत्रित हैं', size: 17.5, font: body, col: ink1 },
     { y: 860, s: '19 – 21 नवंबर 2026', size: 27, font: '"Rozha One"', col: ink2 },
     { y: 893, s: 'रुणिचा धाम, बालोतरा (राजस्थान)', size: 18, font: body, col: ink1 },
   ];
@@ -660,13 +676,12 @@ function drawBanner(t, c) {
       const hs = 19, hw = measureW(c, ln.hon, hs, body), gap = 9, x0 = cx - w / 2 - gap - hw;
       ink(c, [x0, ln.y - ln.size * 1.05, cx + w / 2, ln.y + ln.size * .4], a, dy => {
         wtext(c, ln.hon, x0, ln.y + dy - 4, hs, body, ink2, 1, { align: 'left' });
-        wtext(c, ln.s, cx - w / 2, ln.y + dy, ln.size, ln.font, 'ruby', 1, { align: 'left', emboss: 'rgba(201,151,63,.45)' });
+        wtext(c, ln.s, cx - w / 2, ln.y + dy, ln.size, ln.font, 'ruby', 1, { align: 'left', emboss: 'rgba(201,151,63,.4)', embossOff: .014 });
       }, opts);
-      glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - t1 - 1.6);
       glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 6.5 - i * .03);
     } else {
-      inkText(c, ln.s, cx, ln.y, ln.size, ln.font, ln.col, a, { ...opts, emboss: ln.name ? 'rgba(201,151,63,.45)' : undefined });
-      if (ln.name) { glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - t1 - 1.6); glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 6.5 - i * .03); }
+      inkText(c, ln.s, cx, ln.y, ln.size, ln.font, ln.col, a, { ...opts, emboss: ln.name ? 'rgba(201,151,63,.4)' : undefined, embossOff: .014 });
+      if (ln.name) glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - b0 - 6.5 - i * .03);
     }
     if (ln.flank) divider(c, cx, ln.y - ln.size * .32, ln.flank, ramp(t, t1 + .2, t1 + .8, 'inout'), '#b98a34', { gap: w / 2 + 6 });
   });
@@ -676,7 +691,7 @@ function glintName(c, str, x, y, size, font, dt) {        // a warm gold sweep a
   const p = dt / .9;
   if (p <= 0 || p >= 1) return;
   const [sx, sy] = S(c, x, y), w = measureW(c, str, size, font) * c.z;
-  glint(o => { o.font = fontStr(c, size, font); o.textAlign = 'left'; o.fillText(str, sx, sy); }, sx, sx + w, p, 'rgba(255,236,206,A)', .35, 12, sy - size * c.z * .4);
+  glint(o => { o.font = fontStr(c, size, font); o.textAlign = 'left'; o.fillText(str, sx, sy); }, sx, sx + w, p, 'rgba(255,236,206,A)', .5, 12, sy - size * c.z * .4);
 }
 
 // door = { x, open: [x0, y0, x1, y1], sill, jamb: [x0, x1] }: the couple emerges from that opening,
@@ -698,9 +713,9 @@ function drawCouple(t, c, x, feet, h, t0, door, tBack) {
   g.save();
   if (walking) { const [fx0, fy0] = S(c, cx, fy); g.translate(fx0, fy0); g.rotate(.008 * Math.sin(Math.PI * steps * (p - .3) / .7 * 2)); g.translate(-fx0, -fy0); }
   if (!door.fromSide) g.globalAlpha *= clamp(p / .15);
-  if (p < .55) {                                           // still inside: the door frame and leaves occlude them
-    const k = E.sine(clamp((p - .45) / .1));
-    const [ox0, oy0] = S(c, lerp(door.open[0], door.open[0] - 300, k), door.open[1]), [ox1, oy1] = S(c, lerp(door.open[2], door.open[2] + 300, k), door.open[3]);
+  if (p < (door.fromSide ? .9 : .55)) {                   // still inside: the door frame and leaves occlude them
+    const k = E.sine(clamp((p - .45) / .1)), k2 = door.fromSide ? E.sine(clamp((p - .7) / .2)) : k;
+    const [ox0, oy0] = S(c, lerp(door.open[0], door.open[0] - (door.fromSide ? 900 : 300), k), door.open[1]), [ox1, oy1] = S(c, lerp(door.open[2], door.open[2] + 300, k2), door.open[3]);
     g.beginPath(); g.rect(ox0, oy0, ox1 - ox0, oy1 - oy0);
     if (door.leafBottom !== undefined) {                  // below the door leaves nothing occludes them (feet on the step)
       const [, ly] = S(c, 0, door.leafBottom); g.rect(-10, ly, W + 20, H - ly + 10);
@@ -737,9 +752,9 @@ function kb(e, t) {                    // gentle Ken Burns per scene; first and 
   const p = clamp((t - e.t0) / (e.t1 - e.t0));
   const first = e.i === 0, last = e.i === e.n - 1;
   let s;
-  if (first && last) s = 1 + .05 * Math.sin(p * Math.PI);
-  else if (first) s = 1 + .1 * (1 - Math.pow(1 - p, 7));   // carries the fly-through's momentum, then settles
-  else if (last) s = 1.06 - .06 * E.sine(p);
+  if (first && last) s = 1.07 + .05 * Math.sin(p * Math.PI);
+  else if (first) s = 1.07 + .06 * (1 - Math.pow(1 - p, 7));   // carries the fly-through's momentum, then settles
+  else if (last) s = 1.13 - .06 * E.sine(p);                    // ends where the zoom-out picks it up
   else s = 1.03 + .04 * (e.i % 2 ? 1 - p : p);
   const ox = (e.i % 2 ? -1 : 1) * 14 * (p - .5) * (first || last ? 0 : 1);
   return { s, ox, oy: 0 };
@@ -874,12 +889,12 @@ function closedPath(A) {
 }
 const petal = (x, y, rot, len, wid) => `<path transform="translate(${f1(x)} ${f1(y)}) rotate(${rot})" d="M0 0 C ${wid} ${-len * .35} ${wid * .8} ${-len * .8} 0 ${-len} C ${-wid * .8} ${-len * .8} ${-wid} ${-len * .35} 0 0Z"/>`;
 const lotus = (x, y) => [[-66, 16, 5.5], [66, 16, 5.5], [-33, 22, 6.8], [33, 22, 6.8], [0, 27, 8]].map(([r, l, w]) => petal(x, y, r, l, w)).join('');
-const corner = (x, y, dir) => [[dir * 16, 13, 4.4], [dir * 45, 19, 5.6], [dir * 74, 13, 4.4]].map(([r, l, w]) => petal(x, y, r, l, w)).join('') + `<circle cx="${x}" cy="${y}" r="2.2"/>`;
+const corner = (x, y, dir) => [[dir * 16, 21, 7], [dir * 45, 30, 9], [dir * 74, 21, 7]].map(([r, l, w]) => petal(x, y, r, l, w)).join('') + `<circle cx="${x}" cy="${y}" r="2.2"/>`;
 function tassel(x, y) {
   return `<g transform="translate(${f1(x)} ${f1(y)})"><path d="M0 0 V7" stroke="#8e1414" stroke-width="2"/><circle cy="10" r="3.6" fill="url(#cGold)"/>
     <path d="M-4.5 13.5 h9 l-1 5 h-7Z" fill="url(#cGold)"/>
-    <path d="M-3.5 18 L-6.5 44 M-1.7 18 L-2.8 46 M0 18 V47 M1.7 18 L2.8 46 M3.5 18 L6.5 44" stroke="#a31a1a" stroke-width="2" stroke-linecap="round" fill="none"/>
-    <path d="M-5 24 h10" stroke="#e1b04a" stroke-width="2.2"/></g>`;
+    <path d="${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map(k => `M${k * .9} 18 L${f1(k * 2.1)} ${f1(60 - Math.abs(k) * 1.6)}`).join(' ')}" stroke="#a31a1a" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M-5 25 h10" stroke="#e1b04a" stroke-width="2.4"/></g>`;
 }
 let cartN = 0;
 const CART_PAD = 60;
@@ -890,18 +905,20 @@ function cartSVG(w, h, cordTop) {
   const line = (d, sw, col, extra = '') => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
   const both = (S, sw, col, extra) => line(halfPath(S, false), sw, col, extra) + line(halfPath(S, true), sw, col, extra);
   const cx = w / 2, id = 'cc' + (cartN++), P = CART_PAD;
-  const [ax, ay] = A.P(.8), cord = x => `<path d="M ${f1(x)} ${f1(ay)} V ${f1(cordTop)}" stroke="#7e1010" stroke-width="3.4"/><path d="M ${f1(x)} ${f1(ay)} V ${f1(cordTop)}" stroke="#d0563e" stroke-width="1.3" stroke-dasharray="2.5 3.5"/><circle cx="${f1(x)}" cy="${f1(ay)}" r="3.6" fill="none" stroke="url(#cGold)" stroke-width="1.8"/>`;
+  const [ax, ay] = A.P(.8), cord = x => `<path d="M ${f1(x)} ${f1(ay)} V ${f1(cordTop)}" stroke="#7e1010" stroke-width="3.4"/><path d="M ${f1(x)} ${f1(ay)} V ${f1(cordTop)}" stroke="#d0563e" stroke-width="1.3" stroke-dasharray="2.5 3.5"/>`;
+  const grommet = x => `<circle cx="${f1(x)}" cy="${f1(ay + 2)}" r="4.6" fill="#7e1010" stroke="url(#cGold)" stroke-width="2.4"/>`;
   return `<svg class="cart" width="${w + 2 * P}" height="${h + 2 * P}" viewBox="${-P} ${-P} ${w + 2 * P} ${h + 2 * P}" style="margin-left:${-w / 2 - P}px">
-    <defs><clipPath id="${id}"><path d="${closedPath(A)}"/></clipPath></defs>
+    <defs><clipPath id="${id}"><path d="${closedPath(A)}"/></clipPath>
+      <clipPath id="${id}f"><path d="M ${-P} ${-P} H ${w + P} V ${h + P} H ${-P} Z M ${cx - 26} ${-P} V 66 H ${cx + 26} V ${-P} Z" clip-rule="evenodd"/></clipPath></defs>
     ${cord(ax)}${cord(w - ax)}
     <path d="${closedPath(A)}" fill="url(#cPaper)" filter="url(#cShadow)"/>
     <path d="${closedPath(A)}" fill="#fff" filter="url(#cTex)"/>
     <path d="${closedPath(A)}" fill="none" stroke="#f0d9a6" stroke-width="18" opacity=".5" clip-path="url(#${id})"/>
     ${both(A, 6.4, '#7a4e12')}${both(A, 4.2, 'url(#cGold)')}${both(A2, 1, 'rgba(255,248,230,.9)')}
     ${both(B, 1.1, '#a87a2e')}
-    ${line(closedPath(C), 2.1, '#c99a44', 'stroke-dasharray="0 7"')}
+    <g clip-path="url(#${id}f)">${line(closedPath(C), 2.1, '#c99a44', 'stroke-dasharray="0 7"')}</g>
     <g fill="url(#cGold)" stroke="#8a5a14" stroke-width=".6">${lotus(cx, 60)}${corner(34, h - 34, 1)}${corner(w - 34, h - 34, -1)}</g>
-    ${tassel(30, h - 12)}${tassel(w - 30, h - 12)}
+    ${tassel(44, h - 12)}${tassel(w - 44, h - 12)}${grommet(ax)}${grommet(w - ax)}
   </svg>`;
 }
 
@@ -916,23 +933,23 @@ function block(cls, top, html, t0, t1, opts = {}) {
 }
 const foilOf = sky => sky === 'night' ? 'foil' : 'ruby';
 // couple entry title (a plaque hanging over the wall, above the doorway)
-block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1.05"><span class="script ruby">Veeral weds Konika</span></div>
+block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1.05"><span class="script ruby">Veeral <span style="font-size:.56em">weds</span> Konika</span></div>
   <div class="cinzel" style="font-size:26px;letter-spacing:8px;margin-top:8px">The Wedding Celebrations</div>${RULE_KID}` :
   `<div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">वीरल <span style="font-size:.56em">संग</span> कोनिका</span></div>
-  <div class="tiro" style="font-size:31px;color:#8a2a14;word-spacing:4px">॥ शुभ विवाह ॥</div>${RULE_KID}`,
+  <div class="tiro" style="font-size:31px;color:#8a2a14">॥<span style="margin:0 4px 0 12px">शुभ विवाह</span>॥</div>${RULE_KID}`,
   TL.couple[0] + .4, TL.couple[1] - .55, { cart: { w: 860, top: 100, bottom: 34 } });
 DAYS.forEach((d, i) => {
   block('day', 170, EN ? `<div data-fx="title" style="font-size:96px;line-height:1.12"><span class="hi ruby">${d.enDay}</span></div>
     <div class="corm" style="font-size:42px;font-weight:600">${d.enDate}</div>${RULE_KID}` : `<div data-fx="title" style="font-size:100px;line-height:1.12"><span class="hi ruby">${d.hi}</span></div>
-    <div class="tiro" style="font-size:40px">${d.date}</div>${RULE_KID}`, TL[`label${i}`][0] - .1, TL[`zoomIn${i}`][0] - .45, { cart: { w: 720, top: 100, bottom: 30 } });
+    <div class="tiro" style="font-size:40px">${d.date}</div>${RULE_KID}`, TL[`label${i}`][0] - .1, TL[`zoomIn${i}`][0] - .45, { cart: { w: 680, top: 100, bottom: 30 } });
   d.events.forEach(e => {
     const fc = foilOf(e.sky), cls = e.sky === 'day' ? 'day softscrim' : 'night nightscrim', last = e.i === e.n - 1;
-    const t0 = e.t0 + (e.i === 0 ? .15 : .12), t1 = e.t1 - (last ? .5 : .95);
+    const t0 = e.t0 + (e.i === 0 ? .15 : .12), t1 = e.t1 - (last ? .5 : .7);
     if (EN) block(cls, 104, `<div class="cinzel" style="font-size:25px;letter-spacing:5px">${d.enDate}</div>
       <div data-fx="title" style="font-size:${e.en.length > 18 ? 76 : 104}px;line-height:1.16;margin-top:6px"><span class="hi ${fc}">${e.en}</span></div>${RULE_KID}
       <div class="corm" style="font-size:50px;font-weight:600">${e.enTime}</div>
       <div class="corm" style="font-size:36px;font-weight:600;margin-top:2px">${VENUE}</div>`, t0, t1, { stagger: .08 });
-    else block(cls, 104, `<div class="tiro" style="font-size:32px">${d.date.replace(' · ', ', ')}</div>
+    else block(cls, 104, `<div class="tiro" style="font-size:32px">${d.date}</div>
       <div data-fx="title" style="font-size:${e.hi.length > 20 ? 86 : e.hi.length > 11 ? 100 : 116}px;line-height:1.16;margin-top:6px"><span class="hi ${fc}">${e.hi}</span></div>
       <div class="cinzel" style="font-size:27px;letter-spacing:6px">${e.en}</div>${RULE_KID}
       <div class="hi" style="font-size:42px">${e.when} ${e.time}</div>
@@ -945,7 +962,7 @@ block('day', 150, EN ? `<div class="corm" style="font-size:42px;font-style:itali
   <div class="corm" style="font-size:34px;font-weight:600">${VENUE}</div>` : `<div class="tiro" style="font-size:40px;color:#8a2a14">आपके आगमन की</div>
   <div data-fx="title" style="font-size:96px;line-height:1.15"><span class="hi ruby">प्रतीक्षा में</span></div>${RULE_KID}
   <div class="hi" style="font-size:38px;color:#8a2a14">19 – 21 नवंबर 2026</div>
-  <div class="tiro" style="font-size:33px">${VENUE}</div>`, TL.end[0] + 1.8, DURATION + 1, { cart: { w: 700, top: 100, bottom: 36 } });
+  <div class="tiro" style="font-size:33px">${VENUE}</div>`, TL.end[0] + 1.95, DURATION + 1, { cart: { w: 640, top: 100, bottom: 36 } });
 
 function buildCart(b) {                      // sized to the block's laid-out text, once fonts are in
   const { w, top, bottom } = b.cart, h = b.el.offsetHeight + top + bottom;
@@ -961,6 +978,13 @@ function seekTexts(t) {
     b.el.style.display = on ? 'block' : 'none';
     if (!on) continue;
     const out = ramp(t, b.t1, b.t1 + .45, 'inout');
+    if (!b.fitted) {                                      // cap every title at 800 px wide
+      b.fitted = true;
+      b.kids.filter(k => k.dataset.fx === 'title').forEach(k => {
+        const sp = k.querySelector('.foil, .ruby'), fs = parseFloat(k.style.fontSize), w = sp.offsetWidth - .6 * fs;
+        if (w > 800) k.style.fontSize = (fs * 800 / w).toFixed(1) + 'px';
+      });
+    }
     if (b.el.classList.contains('softscrim') || b.el.classList.contains('nightscrim')) b.el.style.opacity = ramp(t, b.t0 - .05, b.t0 + .45, 'out') * (1 - out);
     if (b.cart) {                                         // the plaque drops in on its cords, swings, settles; later it is drawn back up
       if (!b.cartEl) buildCart(b);
@@ -1001,6 +1025,7 @@ function seekTexts(t) {
 }
 
 /* ---------------- particles ---------------- */
+const PETAL_KEEP_OUT = [];                 // screen rects petals fade out of (filled while drawing the frame)
 function petals(t, n, alpha, seed = 0) {
   if (alpha <= 0) return;
   const cols = ['#ff8f1c', '#ffb42e', '#e8501e', '#ffd04a', '#d4202c', '#f46a8a'];
@@ -1013,33 +1038,14 @@ function petals(t, n, alpha, seed = 0) {
     const r = (7 + rnd(k, 4) * 7) * depth;
     pg.save(); pg.translate(x, y); pg.rotate(t * (rnd(k, 6) - .5) * 4 + k);
     pg.scale(1, .35 + .65 * Math.abs(Math.sin(t * 1.7 + k)));
-    pg.globalAlpha = alpha * [.55, .85, 1][i % 3];
+    let keep = clamp((y - 470) / 150);                       // fade out through the title band at the top
+    for (const [x0, y0, x1, y1] of PETAL_KEEP_OUT) keep *= clamp(Math.max(x0 - x, x - x1, y0 - y, y - y1) / 24);
+    if (keep <= 0) { pg.restore(); continue; }
+    pg.globalAlpha = alpha * [.55, .85, 1][i % 3] * keep;
     pg.fillStyle = cols[k % cols.length];
     pg.beginPath(); pg.moveTo(0, -r); pg.bezierCurveTo(r * .9, -r * .6, r * .7, r * .7, 0, r); pg.bezierCurveTo(-r * .7, r * .7, -r * .9, -r * .6, 0, -r); pg.fill();
     pg.restore();
   }
-}
-const dustSprite = (() => {               // soft warm bokeh disc
-  const c = Object.assign(document.createElement('canvas'), { width: 64, height: 64 }), o = c.getContext('2d');
-  const gr = o.createRadialGradient(32, 32, 0, 32, 32, 32);
-  gr.addColorStop(0, 'rgba(255,240,200,1)'); gr.addColorStop(.3, 'rgba(255,214,130,.6)'); gr.addColorStop(1, 'rgba(255,190,90,0)');
-  o.fillStyle = gr; o.fillRect(0, 0, 64, 64);
-  return c;
-})();
-function dust(t, n, alpha, seed = 0) {      // gold dust drifting up through the light
-  if (alpha <= 0) return;
-  pg.save(); pg.globalCompositeOperation = 'lighter';
-  for (let i = 0; i < n; i++) {
-    const k = i + seed * 50, big = rnd(k, 21) > .8;
-    const r = big ? 14 + rnd(k, 22) * 16 : 2.5 + rnd(k, 22) * 5;
-    const vy = big ? 10 + rnd(k, 23) * 10 : 22 + rnd(k, 23) * 30;
-    const y = H + 40 - ((rnd(k, 24) * (H + 80) + t * vy) % (H + 80));
-    const x = rnd(k, 25) * W + Math.sin(t * (.4 + rnd(k, 26) * .6) + k) * 30;
-    const tw = .55 + .45 * Math.sin(t * (1.2 + rnd(k, 27) * 2) + k * 2.1);
-    pg.globalAlpha = alpha * tw * (big ? .16 : .75);
-    pg.drawImage(dustSprite, x - r, y - r, r * 2, r * 2);
-  }
-  pg.restore();
 }
 function lightLeak(t) {                    // warm light sweeping across as the camera passes through a window
   DAYS.forEach((d, i) => {
@@ -1055,7 +1061,7 @@ function lightLeak(t) {                    // warm light sweeping across as the 
       pg.fillStyle = gr; pg.fillRect(0, 0, W, H);
       pg.translate(x, y); pg.scale(7, .07);                // anamorphic streak through the hot spot
       gr = pg.createRadialGradient(0, 0, 0, 0, 0, 160);
-      gr.addColorStop(0, `rgba(255,226,180,${.32 * k})`); gr.addColorStop(1, 'rgba(255,200,140,0)');
+      gr.addColorStop(0, `rgba(255,226,180,${.5 * k})`); gr.addColorStop(1, 'rgba(255,200,140,0)');
       pg.fillStyle = gr; pg.beginPath(); pg.arc(0, 0, 160, 0, 7); pg.fill();
       pg.restore();
     }
@@ -1066,7 +1072,7 @@ function motionBlur(dx, dy) {
   const o = LAYERS[2].getContext('2d');
   o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'copy'; o.globalAlpha = 1; o.filter = 'none'; o.drawImage(cv, 0, 0);
   g.save(); g.setTransform(1, 0, 0, 1, 0, 0);
-  const N = 7;
+  const N = clamp(Math.ceil(Math.hypot(dx, dy) / 2), 8, 24);
   for (let k = 1; k < N; k++) {                            // running average; edges keep the sharp base
     const f = (k % 2 ? 1 : -1) * Math.ceil(k / 2) / (N - 1);
     g.globalAlpha = 1 / (k + 1); g.drawImage(LAYERS[2], dx * f, dy * f);
@@ -1091,6 +1097,7 @@ function streetAlpha(t) {
 function seek(t) {
   g.setTransform(1, 0, 0, 1, 0, 0);
   g.clearRect(0, 0, W, H);
+  PETAL_KEEP_OUT.length = 0;
   fg.clearRect(0, 0, W, H);
   pg.clearRect(0, 0, W, H);
   if (inEvents(t)) drawEvents(t);
@@ -1107,11 +1114,9 @@ function seek(t) {
   g.fillStyle = vg; g.fillRect(0, 0, W, H);
   // fade in from black, out at the end
 
-  petals(t, 26, ramp(t, TL.couple[0] + .6, TL.couple[0] + 1.4) * (1 - ramp(t, TL.toWin0[0] + .6, TL.toWin0[1])), 1);
+  petals(t, 26, ramp(t, TL.couple[0] + .6, TL.couple[0] + 1.4) * (1 - ramp(t, TL.couple[1] - .5, TL.toWin0[0] + .2)), 1);
   if (inEvents(t)) petals(t, 16, .55, 2);
   petals(t, 34, ramp(t, TL.end[0], TL.end[0] + 1), 3);
-  dust(t, 22, 1.6 * (ramp(t, .4, 1.4) * (1 - ramp(t, TL.toBanner[0], TL.toBanner[1])) + ramp(t, TL.end[0] + .4, TL.end[0] + 1.6)), 0);
-  if (!inEvents(t)) dust(t, 16, .7 * DAYS.reduce((m, d, i) => Math.max(m, ramp(t, TL[`toWin${i}`][0] + .6, TL[`label${i}`][0] + .2) * (1 - ramp(t, TL[`zoomIn${i}`][0], TL[`zoomIn${i}`][1]))), 0), 1);
   lightLeak(t);
   seekTexts(t);
   // fade in from black and out at the end (on the top layer, so it covers the titles too)
