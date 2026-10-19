@@ -22,7 +22,7 @@ async function openPage(browser) {
   page.on('console', m => { if (m.type() === 'error') console.error('console:', m.text()); });
   await page.goto(PAGE, { waitUntil: 'networkidle' });
   await page.evaluate(async () => {
-    const probes = ['86px "Rozha One"', '40px "Tiro Devanagari Hindi"', '34px "Cinzel"', '120px "Great Vibes"', '40px "Cormorant Garamond"', 'italic 40px "Cormorant Garamond"'];
+    const probes = ['700 80px "Cinzel Decorative"', '700 40px "Amita"', '86px "Rozha One"', '40px "Tiro Devanagari Hindi"', '34px "Cinzel"', '120px "Great Vibes"', '40px "Cormorant Garamond"', 'italic 40px "Cormorant Garamond"'];
     await Promise.all(probes.map(f => document.fonts.load(f, 'श्री गणेश Veeral Konika 0123')));
     await document.fonts.ready;
     await Promise.all([...document.images].map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; })));

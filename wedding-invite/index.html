@@ -6,7 +6,7 @@
 <title>Veeral weds Konika</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Cinzel:wght@500;700&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&family=Amita:wght@700&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; background: #1b0a05; overflow: hidden; }
   #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #c9974f; transform-origin: 0 0; }
@@ -27,7 +27,19 @@
   .night .gold { color: #f6d27a; }
   .scrim { padding: 26px 0 34px; background: radial-gradient(closest-side, rgba(255,241,214,.9), rgba(255,241,214,.55) 60%, rgba(255,241,214,0)); }
   .softscrim { padding: 20px 0 30px; background: radial-gradient(closest-side, rgba(255,241,214,.7), rgba(255,241,214,0)); }
-  .rule { display: block; margin: 10px auto; width: 300px; height: 16px; }
+  .rule { display: block; margin: 8px auto 10px; width: 360px; height: 24px; }
+  /* foil titles: a base gradient plus a specular band (moved by seekTexts), clipped to the glyphs */
+  .foil, .ruby { display: inline-block; padding: .2em .3em; margin: -.2em -.3em; text-shadow: none;
+    -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+    background-repeat: no-repeat; background-size: 300% 100%, 100% 100%; background-position: 100% 0, 0 0; }
+  .foil { background-image: linear-gradient(100deg, rgba(255,250,230,0) 45%, rgba(255,252,238,.95) 50%, rgba(255,250,230,0) 55%),
+      linear-gradient(180deg, #fff2c4 12%, #f6d67a 30%, #dba744 48%, #a06816 60%, #d29e3e 72%, #f8de90 86%, #e4b656 100%);
+    filter: drop-shadow(0 2px 0 #5a2406) drop-shadow(0 4px 14px rgba(12,4,20,.7)); }
+  .ruby { background-image: linear-gradient(100deg, rgba(255,214,150,0) 45%, rgba(255,230,176,.95) 50%, rgba(255,214,150,0) 55%),
+      linear-gradient(180deg, #5a0b08 14%, #861a10 34%, #a92c18 52%, #c2442a 66%, #7a140e 90%);
+    filter: drop-shadow(0 1.5px 0 rgba(212,158,66,.95)) drop-shadow(0 0 14px rgba(255,244,222,.85)); }
+  .cart { position: absolute; left: 50%; pointer-events: none; overflow: visible; }
+  .block.carded > :not(.cart) { position: relative; }
   #hint { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 9; font: 600 22px 'Cormorant Garamond', serif;
           color: #fff4dc; background: rgba(92,18,16,.88); border: 2px solid #e9b85a; border-radius: 40px; padding: 14px 30px; cursor: pointer; display: none; }
 </style>
@@ -35,7 +47,15 @@
 <body>
 <div id="stage">
   <canvas id="cv" width="1080" height="1920"></canvas>
-  <div id="texts"></div>
+  <div id="texts"><svg width="0" height="0" style="position:absolute"><defs>
+    <linearGradient id="rgL" x1="0" x2="1"><stop offset="0" stop-color="#c38a2a" stop-opacity="0"/><stop offset="1" stop-color="#c38a2a"/></linearGradient>
+    <linearGradient id="rgR" x1="0" x2="1"><stop offset="0" stop-color="#c38a2a"/><stop offset="1" stop-color="#c38a2a" stop-opacity="0"/></linearGradient>
+    <linearGradient id="cPaper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffaf0"/><stop offset=".7" stop-color="#fbf0d8"/><stop offset="1" stop-color="#f3e0b8"/></linearGradient>
+    <linearGradient id="cGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9c46a"/><stop offset=".35" stop-color="#b07a22"/><stop offset=".55" stop-color="#f3d58a"/><stop offset="1" stop-color="#a26c1a"/></linearGradient>
+    <filter id="cTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9 .6" numOctaves="3" seed="7"/>
+      <feColorMatrix values="0 0 0 0 .5  0 0 0 0 .34  0 0 0 0 .14  0 0 0 .5 -.12"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+    <filter id="cShadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#3a1204" flood-opacity=".38"/></filter>
+  </defs></svg></div>
   <canvas id="fx" width="1080" height="1920"></canvas>
 </div>
 <div id="hint">▶ Tap to play with music</div>
@@ -88,11 +108,12 @@ const WIPES = [['pillar', 'drape'], ['flowers', 'drape', 'petals'], ['flowers', 
 const IMG = {};
 const names = ['street', 'couple', 'rickshaw', 'puppets', 'banner', 'drape', 'pillar', 'flowers', 'petals'];
 const load = (k, src) => new Promise(r => { const i = new Image(); i.onload = () => r(); i.onerror = () => r(); i.src = src; IMG[k] = i; });
-const fontsReady = Promise.all(['72px "Rozha One"', '40px "Tiro Devanagari Hindi"', 'italic 40px "Tiro Devanagari Hindi"', '40px "Cinzel"', '700 40px "Cinzel"', '80px "Great Vibes"', '600 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"']
+const fontsReady = Promise.all(['72px "Rozha One"', '40px "Tiro Devanagari Hindi"', 'italic 40px "Tiro Devanagari Hindi"', '40px "Cinzel"', '700 40px "Cinzel"', '80px "Great Vibes"', '600 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"', '700 40px "Cinzel Decorative"', '700 40px "Amita"']
   .map(f => document.fonts.load(f, 'श्री गणेशाय नमः V&K Veeral वीरल कोनिका 0123'))).then(() => document.fonts.ready);
 window.__ready = Promise.all([
   ...names.map(n => load(n, `assets/v2/${n}.webp`)),
   ...EVENTS.map(e => load(e.img, `assets/v2/${e.img}.jpg`)),
+  load('ganesha', 'assets/art/ganesha.webp'),
   fontsReady,
 ]);
 
@@ -100,7 +121,7 @@ window.__ready = Promise.all([
 const TL = {};
 let cursor = 0;
 const seg = (name, dur) => { TL[name] = [cursor, cursor + dur]; cursor += dur; return TL[name]; };
-seg('open', 3.0);
+seg('open', 3.625);
 seg('toBanner', 1.6);
 seg('banner', 8.125);
 seg('toDoor', 1.25);
@@ -152,7 +173,7 @@ const DOOR_OPEN = [1968, 520, 2258, 1152], DOOR_SILL = 1150;    // world rect of
 const keys = [];                       // [t, cx, cy, vw]
 const K = (t, cx, cy, vw) => keys.push([t, cx, cy, vw]);
 K(0, 432, 768, 864);
-K(TL.open[1], 372, 812, 700);
+K(TL.open[1], 363, 792, 560);
 K(TL.toBanner[1], 1395, 640, 660);
 K(TL.banner[1], 1395, 650, 640);
 K(TL.toDoor[1], 2120, 768, 864);
@@ -196,70 +217,211 @@ function cover(img, sx = 1, ox = 0, oy = 0) {   // draw an event scene to fill t
   const w = img.width * s, h = img.height * s;
   g.drawImage(img, (W - w) / 2 + ox, (H - h) / 2 + oy, w, h);
 }
-function goldFill(y0, y1) {
-  const gr = g.createLinearGradient(0, y0, 0, y1);
-  gr.addColorStop(0, '#fff1bf'); gr.addColorStop(.35, '#f2c862'); gr.addColorStop(.62, '#8a5a10'); gr.addColorStop(1, '#f0cf78');
+function goldFill(y0, y1, o = g) {         // brushed gold foil, light-dark-light bands
+  const gr = o.createLinearGradient(0, y0, 0, y1);
+  [[0, '#fff3c6'], [.18, '#f7d77c'], [.38, '#d9a43c'], [.52, '#a66c16'], [.58, '#8c5810'], [.66, '#c58c2c'], [.84, '#f3d27a'], [1, '#b27a22']]
+    .forEach(([k, col]) => gr.addColorStop(k, col));
   return gr;
+}
+function rubyFill(y0, y1, o = g) {         // deep red ink for the names on the cloth
+  const gr = o.createLinearGradient(0, y0, 0, y1);
+  [[0, '#5e0c08'], [.35, '#8c1c10'], [.6, '#b0301a'], [.75, '#c2442a'], [1, '#741210']].forEach(([k, col]) => gr.addColorStop(k, col));
+  return gr;
+}
+function fontStr(c, size, font, opts = {}) {
+  const fm = font.match(/^((?:italic\s+)?(?:\d{3}\s+)?)(.*)$/);            // style/weight must come before the size
+  return `${fm[1]}${opts.weight || ''} ${size * c.z}px ${fm[2]}`;
+}
+function measureW(c, str, size, font, opts = {}) {   // width in world units
+  g.save(); g.font = fontStr(c, size, font, opts); g.letterSpacing = opts.ls ? `${opts.ls * size * c.z}px` : '0px';
+  const w = g.measureText(str).width / c.z; g.restore();
+  return w;
 }
 // world-anchored text (scales with the camera)
 function wtext(c, str, x, y, size, font, fill, alpha = 1, opts = {}) {
   if (alpha <= 0) return;
   const [sx, sy] = S(c, x, y), px = size * c.z;
   g.save();
-  g.globalAlpha = alpha;
-  const fm = font.match(/^((?:italic\s+)?(?:\d{3}\s+)?)(.*)$/);           // style/weight must come before the size
-  g.font = `${fm[1]}${opts.weight || ''} ${px}px ${fm[2]}`;
+  g.globalAlpha *= alpha;
+  g.font = fontStr(c, size, font, opts);
+  g.letterSpacing = opts.ls ? `${opts.ls * px}px` : '0px';
+  const lx = sx + (opts.ls && (opts.align || 'center') === 'center' ? opts.ls * px / 2 : 0);   // trailing tracking would shift centred text
   g.textAlign = opts.align || 'center'; g.textBaseline = 'alphabetic';
   if (opts.shadow) { g.shadowColor = opts.shadow; g.shadowBlur = px * .25; g.shadowOffsetY = px * .03; }
-  g.fillStyle = fill === 'gold' ? goldFill(sy - px, sy + px * .2) : fill;
+  if (opts.emboss) {                                         // pressed into plaster: light lower lip, dark upper lip
+    g.fillStyle = opts.emboss; g.fillText(str, lx, sy + Math.max(1, px * .03));
+  }
+  g.fillStyle = fill === 'gold' ? goldFill(sy - px, sy + px * .2) : fill === 'ruby' ? rubyFill(sy - px * .8, sy + px * .15) : fill;
   if (opts.clipW !== undefined) { g.beginPath(); g.rect(sx - 2000, sy - px * 2, 2000 + opts.clipW * c.z, px * 3); g.clip(); }
-  g.fillText(str, sx, sy + (opts.dy || 0) * px);
-  if (opts.stroke) { g.shadowColor = 'transparent'; g.lineWidth = Math.max(1, px * .02); g.strokeStyle = opts.stroke; g.strokeText(str, sx, sy); }
+  g.fillText(str, lx, sy + (opts.dy || 0) * px);
+  if (opts.stroke) { g.shadowColor = 'transparent'; g.lineWidth = Math.max(1, px * .02); g.strokeStyle = opts.stroke; g.strokeText(str, lx, sy); }
   g.restore();
 }
 
-const monoCanvas = Object.assign(document.createElement('canvas'), { width: 1080, height: 1920 });
-const gleamCanvas = Object.assign(document.createElement('canvas'), { width: 1080, height: 1920 });
-/* monogram painted on a plaster panel (world coords) */
-function monogram(c, cx, cy, s, p, gleam) {
+/* offscreen layers for reveals: draw into one, mask it, then composite it onto the main canvas */
+const LAYERS = [0, 1, 2].map(() => Object.assign(document.createElement('canvas'), { width: W, height: H }));
+function layer(k, draw) {
+  const o = LAYERS[k].getContext('2d');
+  o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-over'; o.globalAlpha = 1; o.filter = 'none';
+  o.clearRect(0, 0, W, H);
+  const main = g; g = o; draw(o); g = main;
+  return o;
+}
+// soft reveal of a layer between screen x0..x1: 'center' grows outward, 'ltr' writes left to right
+function revealMask(o, x0, x1, p, f, mode) {
+  o.globalCompositeOperation = 'destination-in';
+  let gm;
+  if (mode === 'ltr') {
+    const e = lerp(x0 - f, x1 + f, p);
+    gm = o.createLinearGradient(e - f, 0, e, 0);
+    gm.addColorStop(0, '#000'); gm.addColorStop(1, 'rgba(0,0,0,0)');
+  } else {
+    const cx = (x0 + x1) / 2, R = p * ((x1 - x0) / 2 + f);
+    if (R < 1) { o.clearRect(0, 0, W, H); o.globalCompositeOperation = 'source-over'; return; }
+    gm = o.createLinearGradient(cx - R, 0, cx + R, 0);
+    const k = Math.min(.5, f / (2 * R));
+    gm.addColorStop(0, 'rgba(0,0,0,0)'); gm.addColorStop(k, '#000'); gm.addColorStop(1 - k, '#000'); gm.addColorStop(1, 'rgba(0,0,0,0)');
+  }
+  o.fillStyle = gm; o.fillRect(0, 0, W, H);
+  o.globalCompositeOperation = 'source-over';
+}
+// world-space group that inks in: soft reveal, slight lift and de-blur. box = [x0, y0, x1, y1] in world units
+function ink(c, box, a, draw, opts = {}) {
+  if (a <= 0) return;
+  if (a >= 1) { draw(0); return; }
+  const o = layer(0, () => draw((1 - a) * (opts.lift ?? 6)));
+  const [x0, y0] = S(c, box[0], box[1]), [x1, y1] = S(c, box[2], box[3]);
+  revealMask(o, x0, x1, opts.mode === 'ltr' ? a : E.out(a), (opts.feather ?? 26) * c.z, opts.mode || 'center');
+  const pad = 12 * c.z, bx = Math.max(0, x0 - pad), by = Math.max(0, y0 - pad), bw = Math.min(W, x1 + pad) - bx, bh = Math.min(H, y1 + pad) - by;
+  if (bw <= 0 || bh <= 0) return;
+  g.save(); g.globalAlpha *= Math.min(1, a * 1.6);
+  const bl = (1 - a) * (opts.blur ?? 2.2) * c.z;
+  if (bl > .3) g.filter = `blur(${bl}px)`;
+  g.drawImage(LAYERS[0], bx, by, bw, bh, bx, by, bw, bh);
+  g.restore();
+}
+function inkText(c, str, x, y, size, font, fill, a, opts = {}) {
+  const w = measureW(c, str, size, font, opts);
+  const x0 = opts.align === 'left' ? x : x - w / 2;
+  ink(c, [x0, y - size * 1.05, x0 + w, y + size * .45], a, dy => wtext(c, str, x, y + dy, size, font, fill, 1, opts), opts);
+}
+// light sweep clipped to glyphs. sil(o) draws the silhouettes in white on the layer; band runs x0..x1 (screen)
+function glint(sil, x0, x1, p, col, alpha, w) {
+  if (p <= 0 || p >= 1) return;
+  const o = layer(1, () => {}); o.fillStyle = '#fff'; sil(o);
+  const gx = lerp(x0 - w, x1 + w, E.inout(p));
+  const gr = o.createLinearGradient(gx - w, 0, gx + w, 0);
+  gr.addColorStop(0, col.replace('A', 0)); gr.addColorStop(.5, col.replace('A', 1)); gr.addColorStop(1, col.replace('A', 0));
+  o.globalCompositeOperation = 'source-in'; o.fillStyle = gr; o.fillRect(0, 0, W, H);
+  g.save(); g.globalCompositeOperation = 'lighter'; g.globalAlpha *= alpha * Math.sin(p * Math.PI); g.drawImage(LAYERS[1], 0, 0); g.restore();
+}
+function star(x, y, r, a, o = g) {         // four-point glint
+  if (a <= 0) return;
+  o.save(); o.globalCompositeOperation = 'lighter'; o.globalAlpha *= a; o.translate(x, y);
+  const gr = o.createRadialGradient(0, 0, 0, 0, 0, r);
+  gr.addColorStop(0, 'rgba(255,250,225,1)'); gr.addColorStop(.25, 'rgba(255,226,150,.55)'); gr.addColorStop(1, 'rgba(255,200,100,0)');
+  o.fillStyle = gr;
+  for (const [sx, sy] of [[1, .07], [.07, 1]]) { o.save(); o.scale(sx, sy); o.beginPath(); o.arc(0, 0, r, 0, 7); o.fill(); o.restore(); }
+  o.beginPath(); o.arc(0, 0, r * .28, 0, 7); o.fill();
+  o.restore();
+}
+// thin ornamental divider that draws outward from a centre diamond (world coords)
+function divider(c, x, y, half, p, col = '#9a6418', opts = {}) {
   if (p <= 0) return;
-  const reveal = p * 1.2;
-  // V & K, revealed left to right like a brush stroke
-  const span = 230 * s;
-  const [lx] = S(c, cx - span / 2, cy);
-  const edge = lx + clamp(reveal) * (span * c.z + 100 * c.z);
-  const main = g;                                   // letters go to an offscreen layer, revealed with a soft brush edge
-  const mo = monoCanvas.getContext('2d');
-  mo.setTransform(1, 0, 0, 1, 0, 0); mo.globalCompositeOperation = 'source-over'; mo.clearRect(0, 0, W, H);
-  g = mo;
-  wtext(c, 'V', cx - 62 * s, cy + 40 * s, 128 * s, '"Cinzel"', 'gold', 1, { weight: 700, shadow: 'rgba(70,20,5,.55)', stroke: '#5c1210' });
-  wtext(c, '&', cx + 2 * s, cy + 18 * s, 78 * s, '"Great Vibes"', '#8e1d14', 1, {});
-  wtext(c, 'K', cx + 64 * s, cy + 40 * s, 128 * s, '"Cinzel"', 'gold', 1, { weight: 700, shadow: 'rgba(70,20,5,.55)', stroke: '#5c1210' });
-  g = main;
-  if (reveal < 1) {
-    const gm = mo.createLinearGradient(edge - 70 * c.z, 0, edge, 0);
-    gm.addColorStop(0, 'rgba(0,0,0,1)'); gm.addColorStop(1, 'rgba(0,0,0,0)');
-    mo.globalCompositeOperation = 'destination-in'; mo.fillStyle = gm; mo.fillRect(0, 0, W, H);
+  const [sx, sy] = S(c, x, y), z = c.z, e = E.out(p), hw = half * z * e, gap = (opts.gap || 0) * z;
+  g.save(); g.globalAlpha *= Math.min(1, p * 2);
+  for (const dir of [-1, 1]) {
+    const xa = sx + dir * (gap + 7 * z), xb = sx + dir * (gap + 7 * z + hw);
+    const gr = g.createLinearGradient(xa, 0, xb, 0);
+    gr.addColorStop(0, col); gr.addColorStop(1, col + '00');
+    g.fillStyle = gr; g.beginPath();
+    g.moveTo(xa, sy - .9 * z); g.lineTo(xb, sy); g.lineTo(xa, sy + .9 * z); g.closePath(); g.fill();
+    if (e > .35) { g.fillStyle = col; g.beginPath(); g.arc(sx + dir * (gap + 7 * z + hw * .22), sy, 1.5 * z * Math.min(1, (e - .35) * 4), 0, 7); g.fill(); }
   }
-  g.drawImage(monoCanvas, 0, 0);
-  // thin gold rules and the names under it
-  const a2 = clamp((p - .55) / .45);
-  const [rx, ry] = S(c, cx, cy + 82 * s);
-  g.save(); g.globalAlpha = a2; g.strokeStyle = goldFill(ry - 2, ry + 2); g.lineWidth = 2.2 * c.z * s;
-  g.beginPath(); g.moveTo(rx - 80 * s * c.z * a2, ry); g.lineTo(rx + 80 * s * c.z * a2, ry); g.stroke(); g.restore();
-  wtext(c, 'Veeral & Konika', cx, cy + 132 * s, 34 * s, '"Great Vibes"', '#7d1a12', a2, {});
-  if (gleam !== undefined && gleam > 0 && gleam < 1) {            // light sweep, clipped to the letters
-    const off = gleamCanvas, o = off.getContext('2d');
-    o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-over'; o.clearRect(0, 0, W, H);
-    const [vx, vy] = S(c, cx - 62 * s, cy + 40 * s), [kx] = S(c, cx + 64 * s, cy), px = 128 * s * c.z;
-    o.font = `700 ${px}px "Cinzel"`; o.textAlign = 'center'; o.fillStyle = '#fff';
-    o.fillText('V', vx, vy); o.fillText('K', kx, vy);
-    const [gx] = S(c, cx - span / 2 + gleam * span * 1.3, cy);
-    const gr = o.createLinearGradient(gx - 45 * c.z, 0, gx + 45 * c.z, 0);
-    gr.addColorStop(0, 'rgba(255,246,210,0)'); gr.addColorStop(.5, 'rgba(255,246,210,1)'); gr.addColorStop(1, 'rgba(255,246,210,0)');
-    o.globalCompositeOperation = 'source-in'; o.fillStyle = gr; o.fillRect(0, 0, W, H);
-    g.save(); g.globalCompositeOperation = 'lighter'; g.globalAlpha = .55 * Math.sin(gleam * Math.PI); g.drawImage(off, 0, 0); g.restore();
+  if (!opts.gap) {
+    const d = 4.2 * z * E.back(clamp(p * 1.6));
+    g.fillStyle = col; g.beginPath(); g.moveTo(sx, sy - d); g.lineTo(sx + d * .7, sy); g.lineTo(sx, sy + d); g.lineTo(sx - d * .7, sy); g.closePath(); g.fill();
   }
+  g.restore();
+}
+
+/* the gilded Ganesha medallion at the top of the opening panel */
+function emblem(c, x, y, size, t, t0) {
+  const a = ramp(t, t0 + .15, t0 + 1.0, 'out');
+  if (t < t0) return;
+  const [sx, sy] = S(c, x, y), z = c.z, r = size * z * .63;
+  g.save(); g.globalCompositeOperation = 'screen';          // warm halo behind it
+  const pulse = 1 + .08 * Math.sin(clamp((t - t0 - .4) / 1.2) * Math.PI);
+  const hg = g.createRadialGradient(sx, sy, 0, sx, sy, r * 2.2 * pulse);
+  hg.addColorStop(0, `rgba(255,220,150,${.5 * a})`); hg.addColorStop(.45, `rgba(255,196,110,${.2 * a})`); hg.addColorStop(1, 'rgba(255,180,90,0)');
+  g.fillStyle = hg; g.fillRect(sx - r * 2.5, sy - r * 2.5, r * 5, r * 5); g.restore();
+  const pr = ramp(t, t0, t0 + 1.0, 'inout');               // ring draws on from the top, both ways
+  g.save(); g.lineCap = 'round';
+  g.shadowColor = 'rgba(70,24,4,.45)'; g.shadowBlur = 3 * z; g.shadowOffsetY = 1 * z;
+  g.strokeStyle = goldFill(sy - r, sy + r); g.lineWidth = 2.2 * z;
+  g.beginPath(); g.arc(sx, sy, r, -Math.PI / 2 - Math.PI * pr, -Math.PI / 2 + Math.PI * pr); g.stroke();
+  const pr2 = ramp(t, t0 + .2, t0 + 1.15, 'inout');
+  g.lineWidth = .8 * z; g.beginPath(); g.arc(sx, sy, r * 1.1, Math.PI / 2 - Math.PI * pr2, Math.PI / 2 + Math.PI * pr2); g.stroke();
+  for (let k = 0; k < 8; k++) {                            // beads around the ring
+    const ang = -Math.PI / 2 + k * Math.PI / 4, on = clamp((pr * Math.PI - Math.abs(((ang + Math.PI / 2 + Math.PI) % (2 * Math.PI)) - Math.PI)) * 3);
+    if (on <= 0) continue;
+    g.fillStyle = '#e9c060'; g.beginPath(); g.arc(sx + Math.cos(ang) * r * 1.1, sy + Math.sin(ang) * r * 1.1, 1.6 * z * on, 0, 7); g.fill();
+  }
+  g.restore();
+  if (a <= 0) return;
+  const sc = lerp(.82, 1, a), w = size * z * sc, h = w * 900 / 904;
+  g.save(); g.globalAlpha *= a;
+  g.shadowColor = 'rgba(60,18,2,.55)'; g.shadowBlur = 6 * z; g.shadowOffsetY = 2.5 * z;
+  g.drawImage(IMG.ganesha, sx - w / 2, sy - h / 2, w, h); g.restore();
+  star(sx + r * .02, sy - r * .86, 16 * z, Math.sin(clamp((t - t0 - .9) / .6) * Math.PI) * .9);
+}
+
+/* the V&K monogram: outline draws on, gold foil floods in, light sweeps across (world coords) */
+function monogram(c, cx, cy, s, t, t0) {
+  if (t < t0) return;
+  const z = c.z, size = 112 * s, px = size * z;
+  const glyphs = [['V', cx - 73 * s, cy + 40 * s, 0], ['K', cx + 41 * s, cy + 40 * s, .18]];   // offset left: the K's tail sweeps right
+  const font = `700 ${px}px "Cinzel Decorative"`;
+  for (const [ch, gx, gy, d] of glyphs) {
+    const [sx, sy] = S(c, gx, gy);
+    const pd = ramp(t, t0 + d, t0 + d + .85, 'inout'), pf = ramp(t, t0 + d + .4, t0 + d + 1.1, 'inout');
+    if (pf > 0) {                                          // foil fill, swept in from lower left
+      const o = layer(0, o => {
+        o.font = font; o.textAlign = 'center'; o.textBaseline = 'alphabetic';
+        o.save(); o.filter = `blur(${px * .03}px)`; o.fillStyle = 'rgba(58,18,4,.55)'; o.fillText(ch, sx + px * .025, sy + px * .05); o.restore();
+        o.fillStyle = '#4a1606'; o.fillText(ch, sx, sy + px * .016);
+        o.fillStyle = '#fff4cc'; o.fillText(ch, sx, sy - px * .01);
+        o.fillStyle = goldFill(sy - px * .78, sy + px * .04, o); o.fillText(ch, sx, sy);
+        o.lineWidth = Math.max(1, px * .008); o.strokeStyle = 'rgba(92,30,6,.8)'; o.strokeText(ch, sx, sy);
+      });
+      if (pf < 1) {
+        const ax = sx - px * .6, ay = sy + px * .2, bx = sx + px * .6, by = sy - px * 1.0, f = .3, u = lerp(-f, 1 + f, pf);
+        const gm = o.createLinearGradient(lerp(ax, bx, u - f), lerp(ay, by, u - f), lerp(ax, bx, u), lerp(ay, by, u));
+        gm.addColorStop(0, '#000'); gm.addColorStop(1, 'rgba(0,0,0,0)');
+        o.globalCompositeOperation = 'destination-in'; o.fillStyle = gm; o.fillRect(0, 0, W, H); o.globalCompositeOperation = 'source-over';
+      }
+      g.drawImage(LAYERS[0], 0, 0);
+    }
+    if (pd > 0 && pf < 1) {                                // the outline traces itself first
+      g.save(); g.font = font; g.textAlign = 'center';
+      g.globalAlpha *= 1 - pf;
+      g.setLineDash([pd * px * 5, px * 12]); g.lineDashOffset = 0;
+      g.lineWidth = Math.max(1, px * .014); g.strokeStyle = '#6a1c0a'; g.lineCap = 'round';
+      g.strokeText(ch, sx, sy); g.restore();
+    }
+  }
+  // ampersand, inked between the letters
+  const pa = ramp(t, t0 + .75, t0 + 1.35, 'out');
+  inkText(c, '&', cx - 16 * s, cy + 22 * s, 64 * s, '700 "Cinzel Decorative"', '#8e1d14', pa, { mode: 'ltr', lift: 0, feather: 12 });
+  // rule, names
+  divider(c, cx, cy + 40 * s + 19, 84 * s, ramp(t, t0 + 1.0, t0 + 1.6, 'inout'), '#9a6418');
+  inkText(c, 'Veeral & Konika', cx, cy + 40 * s + 52 * Math.max(1, s), 32 * Math.max(1, s), '"Great Vibes"', '#7a1810', ramp(t, t0 + 1.1, t0 + 2.0, 'inout'), { mode: 'ltr', lift: 0, feather: 22, blur: 0, emboss: 'rgba(255,236,196,.55)' });
+  // specular sweep across the foil and a glint on the V's flourish
+  const gp = (t - t0 - 1.45) / 1.0;
+  const [vx, vy] = S(c, glyphs[0][1], glyphs[0][2]), [kx] = S(c, glyphs[1][1], 0);
+  glint(o => { o.font = font; o.textAlign = 'center'; o.fillText('V', vx, vy); o.fillText('K', kx, vy); },
+    vx - px * .6, kx + px * .6, gp, 'rgba(255,248,214,A)', .75, 40 * z * s);
+  star(vx + px * .45, vy - px * .94, 22 * z * s, Math.sin(clamp((t - t0 - 2.15) / .7) * Math.PI));
 }
 
 /* ---------------- street ---------------- */
@@ -297,10 +459,13 @@ function drawStreet(t, c, alpha) {
   if (alpha <= 0) return;
   g.save(); g.globalAlpha = alpha;
 
-  // opening monogram + Ganesh line on the plaster panel at the left
-  const pm = ramp(t, .5, 2.6, 'out');
-  wtext(c, EN ? '|| Shree Ganeshaya Namah ||' : '॥ श्री गणेशाय नमः ॥', 360, 672, EN ? 13 : 21, EN ? '"Cinzel"' : '"Tiro Devanagari Hindi"', '#7a1a10', ramp(t, .2, 1.0), { shadow: 'rgba(255,240,210,.8)' });
-  monogram(c, 360, 830, .92, pm, (t - 2.2) / 1.0);
+  // opening, on the plaster panel at the left: Ganesha medallion, invocation, V&K monogram
+  if (t < TL.banner[0]) {
+    emblem(c, PANEL.x, 668, 70, t, .3);
+    invocation(c, PANEL.x, 749, ramp(t, .85, 1.6, 'lin'), 'wall');
+    divider(c, PANEL.x, 765, 58, ramp(t, 1.15, 1.8, 'inout'), '#8f5a14');
+    monogram(c, PANEL.x, 830, .84, t, 1.3);
+  }
 
   // banner hanging from the elder's rod, unrolling downward
   drawBanner(t, c);
@@ -310,7 +475,7 @@ function drawStreet(t, c, alpha) {
   drawCouple(t, c, DOOR.x, DOOR.feet, DOOR.h, TL.couple[0], { x: DOOR.x, open: [1993, 520, 2234, 1152], sill: DOOR_SILL, small: .5 }, TL.couple[1] - .35);
   // couple waiting at the palace gate for the finale
   drawCouple(t, c, 4180, 1336, 780, TL.toEnd[1] - .1, { x: 4500, open: [4440, 560, 4560, 1182], sill: 1182, small: .44, fromSide: 1, minLight: .62, warm: 1, leafBottom: 1126 });
-  monogram(c, 3780, 600, 1.0, ramp(t, TL.end[0] + 1.0, TL.end[0] + 2.5, 'out'), (t - TL.end[0] - 2.5) / 1.2);
+  monogram(c, 3785, 600, 1.0, t, TL.end[0] + .9);
 
   // cycle-rickshaw rolling along the street during the opening
   const rp = clamp((t - .8) / 11.5);
@@ -321,6 +486,30 @@ function drawStreet(t, c, alpha) {
     g.drawImage(IMG.rickshaw, sx, sy, rw * c.z, rh * c.z);
   }
   g.restore();
+}
+
+const PANEL = { x: 363 };                 // centre of the plaster panel at the far left (x 242–485, y 594–1055)
+// ॥ श्री गणेशाय नमः ॥: calligraphic Amita between Tiro dandas; on the wall it is pressed into the plaster
+function invocation(c, x, y, a, where) {
+  const col = where === 'wall' ? '#6c150d' : '#8a2a14', emb = where === 'wall' ? 'rgba(255,232,190,.6)' : null;
+  if (EN) {
+    const size = where === 'wall' ? 11.5 : 12.5, str = 'SHREE GANESHAYA NAMAH', f = '700 "Cinzel"', w = measureW(c, str, size, f, { ls: .16 });
+    ink(c, [x - w / 2 - 22, y - size * 1.1, x + w / 2 + 22, y + size * .4], a, dy => {
+      wtext(c, str, x, y + dy, size, f, col, 1, { ls: .16, emboss: emb });
+      for (const sgn of [-1, 1]) {
+        const [dx, dy2] = S(c, x + sgn * (w / 2 + 12), y + dy - size * .36), d = 3.2 * c.z;
+        g.save(); g.fillStyle = col; g.beginPath(); g.moveTo(dx, dy2 - d); g.lineTo(dx + d * .7, dy2); g.lineTo(dx, dy2 + d); g.lineTo(dx - d * .7, dy2); g.closePath(); g.fill(); g.restore();
+      }
+    });
+    return;
+  }
+  const size = where === 'wall' ? 21 : 20.5, mid = 'श्री गणेशाय नमः', mf = '700 "Amita"', df = '"Rozha One"';
+  const mw = measureW(c, mid, size, mf), dw = measureW(c, '॥', size, df), gap = size * .3, w = mw + 2 * (dw + gap);
+  ink(c, [x - w / 2, y - size * 1.2, x + w / 2, y + size * .5], a, dy => {
+    wtext(c, mid, x, y + dy, size, mf, col, 1, { emboss: emb });
+    wtext(c, '॥', x - mw / 2 - gap - dw / 2, y + dy, size, df, col, 1, { emboss: emb });
+    wtext(c, '॥', x + mw / 2 + gap + dw / 2, y + dy, size, df, col, 1, { emboss: emb });
+  });
 }
 
 function drawBanner(t, c) {
@@ -339,39 +528,63 @@ function drawBanner(t, c) {
     gr.addColorStop(0, '#cdb68a'); gr.addColorStop(.45, '#efe1bf'); gr.addColorStop(.7, '#e2cfa6'); gr.addColorStop(1, '#8f744a');
     g.fillStyle = gr; g.beginPath(); g.roundRect(sx + 6 * c.z, ry - rr, bw * c.z - 12 * c.z, rr * 2, rr); g.fill();
   }
-  // the invitation, line by line
-  const lines = EN ? [
-    ['|| Shree Ganeshaya Namah ||', 430, 17, '"Cinzel"', '#8a2a14'],
-    ['With the blessings of the Almighty', 474, 19, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
-    ['and the love of our elders', 500, 19, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
-    ['we joyfully invite you to the wedding of', 546, 16, '600 "Cormorant Garamond"', '#5c1a10'],
-    ['Veeral', 612, 64, '"Great Vibes"', '#b2321a'],
-    ['with', 652, 22, 'italic 500 "Cormorant Garamond"', '#8a2a14'],
-    ['', 690, 15, '"Cinzel"', '#5c1a10'],
-    ['Konika', 744, 64, '"Great Vibes"', '#b2321a'],
-    ['Do join us with your family', 798, 18, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
-    ['for the wedding celebrations', 824, 18, 'italic 500 "Cormorant Garamond"', '#5c1a10'],
-    ['19 – 21 November 2026', 876, 20, '700 "Cinzel"', '#8a2a14'],
-    ['Runicha Dham, Balotra · Rajasthan', 906, 16, '600 "Cormorant Garamond"', '#5c1a10'],
+  // the invitation, line by line: each line inks in from the centre; the names are written left to right
+  const body = EN ? 'italic 500 "Cormorant Garamond"' : '"Tiro Devanagari Hindi"', ink1 = '#5a180e', ink2 = '#8a2a14';
+  const L = EN ? [
+    { y: 432, inv: 1 },
+    { y: 449, div: 40 },
+    { y: 484, s: 'With the blessings of the Almighty', size: 20, font: body, col: ink1 },
+    { y: 509, s: 'and the love of our elders', size: 20, font: body, col: ink1 },
+    { y: 549, s: 'we joyfully invite you to the wedding of', size: 17, font: '600 "Cormorant Garamond"', col: ink1 },
+    { y: 622, s: 'Veeral', size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
+    { y: 664, s: 'with', size: 23, font: body, col: ink2, flank: 40 },
+    { y: 742, s: 'Konika', size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
+    { y: 788, s: 'Do join us with your family', size: 19.5, font: body, col: ink1 },
+    { y: 813, s: 'for the wedding celebrations', size: 19.5, font: body, col: ink1 },
+    { y: 860, s: '19 – 21 NOVEMBER 2026', size: 18, font: '700 "Cinzel"', col: ink2, ls: .06, flank: 26 },
+    { y: 891, s: 'Runicha Dham, Balotra · Rajasthan', size: 17.5, font: '600 "Cormorant Garamond"', col: ink1 },
   ] : [
-    ['॥ श्री गणेशाय नमः ॥', 430, 19, '"Tiro Devanagari Hindi"', '#8a2a14'],
-    ['परमपिता परमेश्वर की असीम कृपा', 474, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['एवं बड़ों के आशीर्वाद से', 500, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['चि.', 548, 15, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['वीरल', 608, 58, '"Rozha One"', '#b2321a'],
-    ['संग', 652, 24, '"Tiro Devanagari Hindi"', '#8a2a14'],
-    ['सौ. कां.', 690, 15, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['कोनिका', 750, 58, '"Rozha One"', '#b2321a'],
-    ['के शुभ विवाह के मंगल उत्सव में', 800, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['आप सपरिवार सादर आमंत्रित हैं', 826, 19, '"Tiro Devanagari Hindi"', '#5c1a10'],
-    ['19 – 21 नवम्बर 2026', 878, 25, '"Rozha One"', '#8a2a14'],
-    ['रुणिचा धाम, बालोतरा (राजस्थान)', 908, 15.5, '"Tiro Devanagari Hindi"', '#5c1a10'],
+    { y: 432, inv: 1 },
+    { y: 450, div: 40 },
+    { y: 486, s: 'परमपिता परमेश्वर की असीम कृपा', size: 19.5, font: body, col: ink1 },
+    { y: 512, s: 'एवं बड़ों के आशीर्वाद से', size: 19.5, font: body, col: ink1 },
+    { y: 598, hon: 'चि.', s: 'वीरल', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
+    { y: 650, s: 'संग', size: 24, font: body, col: ink2, flank: 40 },
+    { y: 728, hon: 'सौ. कां.', s: 'कोनिका', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
+    { y: 782, s: 'के शुभ विवाह के मंगल उत्सव में', size: 19.5, font: body, col: ink1 },
+    { y: 808, s: 'आप सपरिवार सादर आमंत्रित हैं', size: 19.5, font: body, col: ink1 },
+    { y: 860, s: '19 – 21 नवम्बर 2026', size: 27, font: '"Rozha One"', col: ink2, flank: 26 },
+    { y: 893, s: 'रुणिचा धाम, बालोतरा (राजस्थान)', size: 17.5, font: body, col: ink1 },
   ];
-  lines.forEach(([s, y, size, font, col, it], i) => {
-    const a = ramp(t, b0 + 1.5 + i * .16, b0 + 2.1 + i * .16, 'out');
-    if (a <= 0 || u < (y - BANNER.top + 20) / BANNER.h) return;
-    wtext(c, s, BANNER.cx, y + (1 - a) * 8, size, `${it ? 'italic ' : ''}${font}`, col, a, {});
+  const cx = BANNER.cx;
+  let tl = b0 + 1.45;
+  L.forEach((ln, i) => {
+    const t1 = tl; tl += ln.name ? .6 : .17;
+    if (u < (ln.y - BANNER.top + 20) / BANNER.h) return;
+    if (ln.inv) return invocation(c, cx, ln.y, ramp(t, t1, t1 + .7, 'lin'), 'cloth');
+    if (ln.div) return divider(c, cx, ln.y, ln.div, ramp(t, t1, t1 + .6, 'inout'), '#b98a34');
+    const a = ramp(t, t1, t1 + (ln.name ? 1.0 : .7), ln.name ? 'inout' : 'lin');
+    const opts = { ls: ln.ls, mode: ln.name ? 'ltr' : 'center', feather: ln.name ? 30 : 26, lift: ln.name ? 0 : 6 };
+    const w = measureW(c, ln.s, ln.size, ln.font, opts);
+    if (ln.hon) {                                           // honorific sits small before the name, on the same line
+      const hs = 19, hw = measureW(c, ln.hon, hs, body), gap = 9, x0 = cx - (hw + gap + w) / 2;
+      ink(c, [x0, ln.y - ln.size * 1.05, x0 + hw + gap + w, ln.y + ln.size * .4], a, dy => {
+        wtext(c, ln.hon, x0, ln.y + dy - 4, hs, body, ink2, 1, { align: 'left' });
+        wtext(c, ln.s, x0 + hw + gap, ln.y + dy, ln.size, ln.font, 'ruby', 1, { align: 'left', emboss: 'rgba(214,160,72,.55)' });
+      }, opts);
+      glintName(c, ln.s, x0 + hw + gap, ln.y, ln.size, ln.font, t - t1 - 1.6);
+    } else {
+      inkText(c, ln.s, cx, ln.y, ln.size, ln.font, ln.col, a, { ...opts, emboss: ln.name ? 'rgba(214,160,72,.55)' : undefined });
+      if (ln.name) glintName(c, ln.s, cx - w / 2, ln.y, ln.size, ln.font, t - t1 - 1.6);
+    }
+    if (ln.flank) divider(c, cx, ln.y - ln.size * .32, ln.flank, ramp(t, t1 + .2, t1 + .8, 'inout'), '#b98a34', { gap: w / 2 + 6 });
   });
+}
+function glintName(c, str, x, y, size, font, dt) {        // a warm gold sweep across a name once it is written
+  const p = dt / .9;
+  if (p <= 0 || p >= 1) return;
+  const [sx, sy] = S(c, x, y), w = measureW(c, str, size, font) * c.z;
+  glint(o => { o.font = fontStr(c, size, font); o.textAlign = 'left'; o.fillText(str, sx, sy); }, sx, sx + w, p, 'rgba(255,206,120,A)', .55, 34 * c.z);
 }
 
 // door = { x, open: [x0, y0, x1, y1], sill, jamb: [x0, x1] }: the couple emerges from that opening,
@@ -532,54 +745,151 @@ function wipe(kind, a, b, p, t) {
 
 /* ---------------- DOM text ---------------- */
 const textsEl = document.getElementById('texts');
-const RULE = `<svg class="rule" viewBox="0 0 300 16"><defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#c98f2c" stop-opacity="0"/><stop offset=".5" stop-color="#c98f2c"/><stop offset="1" stop-color="#c98f2c" stop-opacity="0"/></linearGradient></defs><rect y="7" width="300" height="2" fill="url(#rg)"/><path d="M150 1 L158 8 L150 15 L142 8Z" fill="#c98f2c"/><circle cx="128" cy="8" r="2.5" fill="#c98f2c"/><circle cx="172" cy="8" r="2.5" fill="#c98f2c"/></svg>`;
+const RULE = `<svg class="rule" viewBox="0 0 360 24"><path d="M8 12 L146 12" stroke="url(#rgL)" stroke-width="1.7"/><path d="M214 12 L352 12" stroke="url(#rgR)" stroke-width="1.7"/>
+  <path d="M70 16.5 Q110 16.5 142 14" stroke="url(#rgL)" stroke-width=".9" fill="none"/><path d="M290 16.5 Q250 16.5 218 14" stroke="url(#rgR)" stroke-width=".9" fill="none"/>
+  <g fill="#c38a2a"><circle cx="152" cy="12" r="2.3"/><circle cx="208" cy="12" r="2.3"/><path d="M180 1 C186.5 7 186.5 14 180 21 C173.5 14 173.5 7 180 1Z"/>
+  <path d="M179 21 C171 20 164 14.5 161.5 7.5 C169.5 9.5 175.5 14 179 21Z"/><path d="M181 21 C189 20 196 14.5 198.5 7.5 C190.5 9.5 184.5 14 181 21Z"/></g></svg>`;
+const RULE_KID = `<div data-fx="rule">${RULE}</div>`;
+
+/* arch cartouche (a cusped jharokha arch on ivory paper) that frames the day cards and titles */
+function archSegs(w, h, m, rise, bulge) {   // left half, from the apex round to the bottom centre; the right half mirrors it
+  const n = 5, cx = w / 2, top = m + 22, sh = 26;               // cusped lobes along the arch, then a short shoulder step
+  const P = u => [cx - (cx - m - sh) * u, top + rise * Math.pow(u, 1.6)];
+  const segs = [];
+  for (let i = 1; i <= n; i++) {
+    const A = P((i - 1) / n), B = P(i / n), dx = B[0] - A[0], dy = B[1] - A[1], l = Math.hypot(dx, dy), k = bulge * l * (i === 1 ? 1.25 : 1);
+    segs.push({ c: [(A[0] + B[0]) / 2 - dy / l * k, (A[1] + B[1]) / 2 + dx / l * k], p: B });
+  }
+  const yb = top + rise;
+  segs.push({ p: [m, yb] }, { p: [m, h - m - 14] }, { c: [m, h - m], p: [m + 14, h - m] }, { p: [cx - 16, h - m] }, { p: [cx, h - m + 6] });
+  return { s: [cx, top - 9], segs, w };
+}
+const f1 = v => v.toFixed(1);
+function halfPath(A, mir) {
+  const X = x => mir ? A.w - x : x;
+  let d = `M ${f1(X(A.s[0]))} ${f1(A.s[1])}`;
+  for (const sg of A.segs) d += sg.c ? ` Q ${f1(X(sg.c[0]))} ${f1(sg.c[1])} ${f1(X(sg.p[0]))} ${f1(sg.p[1])}` : ` L ${f1(X(sg.p[0]))} ${f1(sg.p[1])}`;
+  return d;
+}
+function closedPath(A) {
+  let d = halfPath(A, false);
+  const pts = [A.s, ...A.segs.map(sg => sg.p)];
+  for (let i = A.segs.length - 1; i >= 0; i--) {
+    const sg = A.segs[i], to = pts[i];
+    d += sg.c ? ` Q ${f1(A.w - sg.c[0])} ${f1(sg.c[1])} ${f1(A.w - to[0])} ${f1(to[1])}` : ` L ${f1(A.w - to[0])} ${f1(to[1])}`;
+  }
+  return d + ' Z';
+}
+let cartN = 0;
+const CART_PAD = 40;
+function cartSVG(w, h) {
+  const rise = Math.min(66, h * .2), A = archSegs(w, h, 12, rise, .2), B = archSegs(w, h, 24, rise, .17), C = archSegs(w, h, 32, rise, .15);
+  const line = (d, cls, sw, col, extra = '') => `<path class="${cls}" d="${d}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+  const cx = w / 2, id = 'cc' + (cartN++), P = CART_PAD;     // padded so the drop shadow stays inside the reveal mask
+  return `<svg class="cart" width="${w + 2 * P}" height="${h + 2 * P}" viewBox="${-P} ${-P} ${w + 2 * P} ${h + 2 * P}" style="margin-left:${-w / 2 - P}px">
+    <defs><clipPath id="${id}"><path d="${closedPath(A)}"/></clipPath></defs>
+    <path class="cfill" d="${closedPath(A)}" fill="url(#cPaper)" filter="url(#cShadow)"/>
+    <path class="cfill" d="${closedPath(A)}" fill="#fff" filter="url(#cTex)"/>
+    <path class="cfill" d="${closedPath(A)}" fill="none" stroke="#f0d9a6" stroke-width="16" opacity=".55" clip-path="url(#${id})"/>
+    ${line(halfPath(A, false), 'cl', 3, 'url(#cGold)')}${line(halfPath(A, true), 'cl', 3, 'url(#cGold)')}
+    ${line(halfPath(B, false), 'cl', 1.2, '#be8d36')}${line(halfPath(B, true), 'cl', 1.2, '#be8d36')}
+    <g class="cdots">${line(closedPath(C), '', 2.2, '#c99a44', 'stroke-dasharray="0 7"')}</g>
+    <g class="cfin" fill="#b38030" transform="translate(0 32)">
+      <path d="M ${cx} 0 C ${cx + 6} 7 ${cx + 6} 15 ${cx} 22 C ${cx - 6} 15 ${cx - 6} 7 ${cx} 0Z"/>
+      <path d="M ${cx - 1} 22 C ${cx - 9} 21 ${cx - 15} 15 ${cx - 17} 8 C ${cx - 9} 10 ${cx - 4} 15 ${cx - 1} 22Z"/>
+      <path d="M ${cx + 1} 22 C ${cx + 9} 21 ${cx + 15} 15 ${cx + 17} 8 C ${cx + 9} 10 ${cx + 4} 15 ${cx + 1} 22Z"/>
+      <circle cx="${cx - 26}" cy="17" r="2.2"/><circle cx="${cx + 26}" cy="17" r="2.2"/>
+    </g>
+    <path class="cfin2" fill="#b38030" d="M ${cx} ${h - 15} l 7 8 l -7 8 l -7 -8 Z"/>
+  </svg>`;
+}
+
 const blocks = [];
 function block(cls, top, html, t0, t1, opts = {}) {
   const el = document.createElement('div');
-  el.className = `block ${cls}`; el.style.top = top + 'px'; el.innerHTML = html;
+  el.className = `block ${cls}${opts.cart ? ' carded' : ''}`; el.style.top = top + 'px'; el.innerHTML = html;
   textsEl.appendChild(el);
-  blocks.push({ el, t0, t1, kids: [...el.children], stagger: opts.stagger || .16, scrim: opts.scrim });
-  if (opts.scrim) el.style.background = opts.scrim;
+  const kids = [...el.children];
+  kids.forEach(k => { k._foils = [...k.querySelectorAll('.foil, .ruby')]; });
+  blocks.push({ el, t0, t1, kids, stagger: opts.stagger || .16, delay: opts.cart ? .3 : 0, cart: opts.cart });
 }
+const foilOf = sky => sky === 'night' ? 'foil' : 'ruby';
 // couple entry title (over the wall, above the doorway)
-block('day scrim', 130, EN ? `<div class="script" style="font-size:118px;line-height:1;color:#8a1e12">Veeral weds Konika</div>
-  <div class="cinzel" style="font-size:30px;letter-spacing:8px;margin-top:10px">The Wedding Celebrations</div>${RULE}` : `<div class="script" style="font-size:96px;line-height:1;color:#8a1e12">Veeral weds Konika</div>
-  <div class="hi" style="font-size:66px;margin-top:6px">वीरल <span class="gold">संग</span> कोनिका</div>${RULE}`, TL.couple[0] + .5, TL.toWin0[0] + .15);
+block('day', 150, EN ? `<div data-fx="title" style="font-size:98px;line-height:1.05"><span class="script ruby">Veeral weds Konika</span></div>
+  <div class="cinzel" style="font-size:27px;letter-spacing:8px;margin-top:6px">The Wedding Celebrations</div>${RULE_KID}` :
+  `<div class="tiro" style="font-size:34px;letter-spacing:1px;color:#8a2a14">शुभ विवाह</div>
+  <div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">वीरल <span style="font-size:.56em">संग</span> कोनिका</span></div>${RULE_KID}`,
+  TL.couple[0] + .4, TL.toWin0[0] + .15, { cart: { w: 860, top: 94, bottom: 30 } });
 DAYS.forEach((d, i) => {
-  block('day scrim', 150, EN ? `<div class="script gold" style="font-size:118px;line-height:1.05">${d.enDay}</div>
-    <div class="corm" style="font-size:44px;font-weight:600">${d.enDate}</div>${RULE}` : `<div class="hi gold" style="font-size:96px;line-height:1.1">${d.hi}</div>
-    <div class="tiro" style="font-size:42px">${d.date}</div>${RULE}`, TL[`toWin${i}`][0] + (i === 0 ? 1.0 : .7), TL[`zoomIn${i}`][0] + .1);
+  block('day', 170, EN ? `<div data-fx="title" style="font-size:112px;line-height:1.05"><span class="script ruby">${d.enDay}</span></div>
+    <div class="corm" style="font-size:42px;font-weight:600">${d.enDate}</div>${RULE_KID}` : `<div data-fx="title" style="font-size:100px;line-height:1.12"><span class="hi ruby">${d.hi}</span></div>
+    <div class="tiro" style="font-size:40px">${d.date}</div>${RULE_KID}`, TL[`toWin${i}`][0] + (i === 0 ? .9 : .6), TL[`zoomIn${i}`][0] + .1, { cart: { w: 720, top: 94, bottom: 26 } });
   d.events.forEach(e => {
-    const long = e.hi.length > 11;
-    if (EN) block(e.sky === 'day' ? 'day softscrim' : e.sky, 120, `<div class="cinzel" style="font-size:28px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
-      <div class="script gold" style="font-size:${e.en.length > 18 ? 92 : 118}px;line-height:1.12;margin-top:4px">${e.en.replace(' · ', ' &amp; ')}</div>${RULE}
+    const long = e.hi.length > 11, fc = foilOf(e.sky);
+    if (EN) block(e.sky === 'day' ? 'day softscrim' : e.sky, 120, `<div class="cinzel" style="font-size:27px;letter-spacing:5px">${d.enDay} · ${d.enDate.split(' · ')[1]}</div>
+      <div data-fx="title" style="font-size:${e.en.length > 18 ? 92 : 118}px;line-height:1.12;margin-top:4px"><span class="script ${fc}">${e.en.replace(' · ', ' &amp; ')}</span></div>${RULE_KID}
       <div class="corm" style="font-size:50px;font-weight:600">${e.enTime}</div>
       <div class="corm" style="font-size:36px;font-weight:600;margin-top:2px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : .12), e.t1 - (e.i === e.n - 1 ? .2 : .32), { stagger: .08 });
     else block(e.sky === 'day' ? 'day softscrim' : e.sky, 120, `<div class="tiro" style="font-size:36px;letter-spacing:.5px">${d.hi} · ${d.date}</div>
-      <div class="hi gold" style="font-size:${long ? 100 : 116}px;line-height:1.16;margin-top:6px">${e.hi}</div>
-      <div class="cinzel" style="font-size:28px;letter-spacing:6px">${e.en}</div>${RULE}
+      <div data-fx="title" style="font-size:${long ? 100 : 116}px;line-height:1.16;margin-top:6px"><span class="hi ${fc}">${e.hi}</span></div>
+      <div class="cinzel" style="font-size:27px;letter-spacing:6px">${e.en}</div>${RULE_KID}
       <div class="hi" style="font-size:46px">${e.when} ${e.time}</div>
       <div class="tiro" style="font-size:34px;margin-top:4px">${VENUE}</div>`, e.t0 + (e.i === 0 ? .15 : .12), e.t1 - (e.i === e.n - 1 ? .2 : .32), { stagger: .08 });
   });
 });
-block('day scrim', 90, EN ? `<div class="script gold" style="font-size:96px;line-height:1.08">Awaiting your<br>gracious presence</div>${RULE}
-  <div class="cinzel" style="font-size:34px;letter-spacing:5px">19 – 21 November 2026</div>
-  <div class="corm" style="font-size:36px;font-weight:600">${VENUE}</div>` : `<div class="hi gold" style="font-size:76px;line-height:1.2">आपके आगमन की<br>प्रतीक्षा में</div>${RULE}
-  <div class="tiro" style="font-size:40px">19 – 21 नवम्बर 2026</div>
-  <div class="tiro" style="font-size:34px">${VENUE}</div>`, TL.end[0] + 1.6, DURATION + 1, { stagger: .3 });
+block('day', 120, EN ? `<div data-fx="title" style="font-size:88px;line-height:1.1"><span class="script ruby">Awaiting your<br>gracious presence</span></div>${RULE_KID}
+  <div class="cinzel" style="font-size:31px;letter-spacing:5px">19 – 21 November 2026</div>
+  <div class="corm" style="font-size:35px;font-weight:600">${VENUE}</div>` : `<div data-fx="title" style="font-size:74px;line-height:1.24"><span class="hi ruby">आपके आगमन की<br>प्रतीक्षा में</span></div>${RULE_KID}
+  <div class="hi" style="font-size:40px;color:#8a2a14">19 – 21 नवम्बर 2026</div>
+  <div class="tiro" style="font-size:34px">${VENUE}</div>`, TL.end[0] + 1.6, DURATION + 1, { stagger: .3, cart: { w: 760, top: 94, bottom: 34 } });
+blocks[blocks.length - 1].el.style.top = '150px';
 
+function buildCart(b) {                      // sized to the block's laid-out text, once fonts are in
+  const { w, top, bottom } = b.cart, h = b.el.offsetHeight + top + bottom;
+  b.el.insertAdjacentHTML('afterbegin', cartSVG(w, h));
+  const svg = b.el.firstElementChild;
+  svg.style.top = -top - CART_PAD + 'px';
+  b.cartEl = svg; b.fill = [...svg.querySelectorAll('.cfill')]; b.fin = svg.querySelector('.cfin'); b.dots = svg.querySelector('.cdots');
+  b.lines = [...svg.querySelectorAll('.cl')].map(p => { const L = p.getTotalLength(); p.style.strokeDasharray = `${L} ${L}`; return { p, L }; });
+}
 function seekTexts(t) {
   for (const b of blocks) {
-    const on = t >= b.t0 - .05 && t <= b.t1 + .6;
+    const on = t >= b.t0 - .2 && t <= b.t1 + .6;
     b.el.style.display = on ? 'block' : 'none';
     if (!on) continue;
     const out = ramp(t, b.t1, b.t1 + .45, 'inout');
-    if (b.scrim !== undefined || b.el.classList.contains('scrim') || b.el.classList.contains('softscrim')) b.el.style.opacity = ramp(t, b.t0 - .05, b.t0 + .45, 'out') * (1 - out);
+    if (b.el.classList.contains('softscrim')) b.el.style.opacity = ramp(t, b.t0 - .05, b.t0 + .45, 'out') * (1 - out);
+    if (b.cart) {
+      if (!b.cartEl) buildCart(b);
+      const pin = ramp(t, b.t0 - .15, b.t0 + .85, 'inout');
+      b.cartEl.style.opacity = 1 - out;
+      b.cartEl.style.transform = `scale(${lerp(.965, 1, E.out(ramp(t, b.t0 - .15, b.t0 + .6)))}) translateY(${-out * 10}px)`;
+      const q = E.inout(ramp(t, b.t0 - .2, b.t0 + .45)), r = q * 54;   // the plaque unfolds from the centre
+      const m = q >= 1 ? 'none' : `linear-gradient(90deg, transparent ${50 - r - 5}%, #000 ${50 - r}%, #000 ${50 + r}%, transparent ${50 + r + 5}%)`;
+      b.cartEl.style.webkitMaskImage = m; b.cartEl.style.maskImage = m;
+      b.fill.forEach(f => { f.style.opacity = ramp(t, b.t0 - .2, b.t0 + .1, 'out') * (f.getAttribute('fill') === 'none' ? .55 : 1); });
+      b.dots.style.opacity = ramp(t, b.t0 + .4, b.t0 + .9);
+      b.lines.forEach(({ p, L }) => { p.style.strokeDashoffset = L * (1 - pin); });
+      const fa = ramp(t, b.t0 + .55, b.t0 + 1.0, 'out');
+      b.fin.style.opacity = fa; b.cartEl.querySelector('.cfin2').style.opacity = fa;
+      b.fin.setAttribute('transform', `translate(${b.cart.w / 2 * (1 - lerp(.4, 1, E.back(fa)))} ${32 + 11 * (1 - lerp(.4, 1, E.back(fa)))}) scale(${lerp(.4, 1, E.back(fa))})`);
+    }
     b.kids.forEach((k, i) => {
-      const a = ramp(t, b.t0 + i * b.stagger, b.t0 + i * b.stagger + .55, 'out');
-      k.style.opacity = a * (1 - out);
-      k.style.transform = `translateY(${(1 - a) * 26 - out * 18}px)`;
-      k.style.filter = a < 1 ? `blur(${(1 - a) * 8}px)` : '';
+      const st = b.t0 + b.delay + i * b.stagger, fxk = k.dataset.fx;
+      const a = ramp(t, st, st + (fxk ? .75 : .55), 'out');
+      k.style.opacity = Math.min(1, a * 1.3) * (1 - out);
+      if (fxk) {                                          // titles and rules open from the centre outward
+        const r = a * 62;
+        const m = a >= 1 ? 'none' : `linear-gradient(90deg, transparent ${50 - r - 12}%, #000 ${50 - r}%, #000 ${50 + r}%, transparent ${50 + r + 12}%)`;
+        k.style.webkitMaskImage = m; k.style.maskImage = m;
+      }
+      const sc = fxk === 'title' ? lerp(1.06, 1, a) : 1;
+      k.style.transform = `translateY(${(1 - a) * (fxk ? 8 : 22) - out * 16}px) scale(${sc})`;
+      k.style.filter = a < 1 ? `blur(${(1 - a) * (fxk === 'title' ? 9 : 7)}px)` : '';
+      if (k._foils.length) {                              // one shimmer across the foil after it lands
+        const sp = ramp(t, st + .65, st + 1.65, 'inout');
+        k._foils.forEach(f => { f.style.backgroundPosition = `${lerp(95, 5, sp)}% 0, 0 0`; });
+      }
     });
   }
 }
@@ -613,6 +923,44 @@ function sparkles(t, n, alpha) {
     fg.beginPath(); for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4, rr = k % 2 ? r * .22 : r; fg.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
     fg.closePath(); fg.fill(); fg.restore();
   }
+}
+
+const dustSprite = (() => {               // soft warm bokeh disc
+  const c = Object.assign(document.createElement('canvas'), { width: 64, height: 64 }), o = c.getContext('2d');
+  const gr = o.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, 'rgba(255,240,200,1)'); gr.addColorStop(.3, 'rgba(255,214,130,.6)'); gr.addColorStop(1, 'rgba(255,190,90,0)');
+  o.fillStyle = gr; o.fillRect(0, 0, 64, 64);
+  return c;
+})();
+function dust(t, n, alpha, seed = 0) {      // gold dust drifting up through the light
+  if (alpha <= 0) return;
+  fg.save(); fg.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < n; i++) {
+    const k = i + seed * 50, big = rnd(k, 21) > .8;
+    const r = big ? 14 + rnd(k, 22) * 16 : 2.5 + rnd(k, 22) * 5;
+    const vy = big ? 10 + rnd(k, 23) * 10 : 22 + rnd(k, 23) * 30;
+    const y = H + 40 - ((rnd(k, 24) * (H + 80) + t * vy) % (H + 80));
+    const x = rnd(k, 25) * W + Math.sin(t * (.4 + rnd(k, 26) * .6) + k) * 30;
+    const tw = .55 + .45 * Math.sin(t * (1.2 + rnd(k, 27) * 2) + k * 2.1);
+    fg.globalAlpha = alpha * tw * (big ? .16 : .75);
+    fg.drawImage(dustSprite, x - r, y - r, r * 2, r * 2);
+  }
+  fg.restore();
+}
+function lightLeak(t) {                    // warm sunlight flaring as the camera passes through a window
+  let k = 0;
+  DAYS.forEach((d, i) => {
+    k = Math.max(k, Math.exp(-Math.pow((t - TL[`zoomIn${i}`][1] + .12) / .3, 2)), Math.exp(-Math.pow((t - TL[`zoomOut${i}`][0] - .12) / .3, 2)));
+  });
+  if (k < .01) return;
+  fg.save(); fg.globalCompositeOperation = 'screen';
+  let gr = fg.createRadialGradient(W * .92, H * .12, 0, W * .92, H * .12, H * .75);
+  gr.addColorStop(0, `rgba(255,196,120,${.5 * k})`); gr.addColorStop(.4, `rgba(255,150,70,${.2 * k})`); gr.addColorStop(1, 'rgba(255,120,40,0)');
+  fg.fillStyle = gr; fg.fillRect(0, 0, W, H);
+  gr = fg.createRadialGradient(W * .05, H * .9, 0, W * .05, H * .9, H * .5);
+  gr.addColorStop(0, `rgba(255,120,90,${.28 * k})`); gr.addColorStop(1, 'rgba(255,100,60,0)');
+  fg.fillStyle = gr; fg.fillRect(0, 0, W, H);
+  fg.restore();
 }
 
 /* ---------------- main ---------------- */
@@ -649,6 +997,9 @@ function seek(t) {
   if (inEvents(t)) petals(t, 16, .55, 2);
   petals(t, 34, ramp(t, TL.end[0], TL.end[0] + 1), 3);
   sparkles(t, 30, ramp(t, TL.end[0] + 1.2, TL.end[0] + 2.2));
+  dust(t, 34, ramp(t, .2, 1.2) * (1 - ramp(t, TL.toBanner[0], TL.toBanner[1])) + ramp(t, TL.end[0] + .4, TL.end[0] + 1.6), 0);
+  if (!inEvents(t)) dust(t, 16, .7 * DAYS.reduce((m, d, i) => Math.max(m, ramp(t, TL[`toWin${i}`][0] + .6, TL[`label${i}`][0] + .2) * (1 - ramp(t, TL[`zoomIn${i}`][0], TL[`zoomIn${i}`][1]))), 0), 1);
+  lightLeak(t);
   seekTexts(t);
   // fade in from black and out at the end (on the top layer, so it covers the titles too)
   const fade = Math.max(1 - ramp(t, 0, .7), ramp(t, DURATION - .6, DURATION));

@@ -4,9 +4,9 @@
 
 ## Story
 
-1. **A painted Rajasthani street.** The camera opens on a gold V&K monogram under "॥ श्री गणेशाय नमः ॥", with puppets swaying in the foreground and a cycle-rickshaw rolling past.
+1. **A painted Rajasthani street.** The camera pushes in on a plaster panel. A gilded Ganesha medallion draws on, "॥ श्री गणेशाय नमः ॥" inks in, and the V&K monogram traces its outline, floods with gold foil and catches a glint. Puppets sway in the foreground and a cycle-rickshaw rolls past.
 2. **The invitation.** An elder at his window unrolls a long cloth banner that reads श्री गणेशाय नमः, then the blessings, चि. वीरल संग सौ. कां. कोनिका, the dates and the venue.
-3. **The couple's entry.** Veeral and Konika step out of the haveli doorway.
+3. **The couple's entry.** Veeral and Konika step out of the haveli doorway under an ivory arch plaque that unfolds with their names.
 4. **Three days through three windows.** For each day, the camera pans to that day's window, shows the day card, then flies through the window into its events. Each event is its own painted scene, with the event name, time and venue. Between events the camera passes behind a pillar or drape, or through flowers or a burst of petals. After the last event the camera pulls back out to the street.
    - Day 1: गणेश स्थापना, मायरा स्वागत, रिंग सेरेमनी
    - Day 2: कार्निवल, बंदोली, संगीत संध्या, घड़ी विनायक
@@ -55,7 +55,7 @@ All content lives in `index.html`, in the `DAYS` and `EVENTS` arrays near the to
 
 ```bash
 python3 tools/prep_assets.py                       # after changing anything in codex/out
-python3 tools/make_music.py /tmp/music.wav 76.775 4.6 4.6,20.85,37.1,57.1,70.85 \
+python3 tools/make_music.py /tmp/music.wav 77.4 5.225 5.225,21.475,37.725,57.725,71.475 \
   && ffmpeg -y -i /tmp/music.wav -c:a aac -b:a 192k assets/music.m4a
 NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite.mp4 --audio assets/music.m4a
 INVITE_LANG=en NODE_PATH=$(npm root -g) node tools/render.mjs video veeral-weds-konika-invite-english.mp4 --audio assets/music.m4a
