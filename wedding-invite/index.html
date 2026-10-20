@@ -98,6 +98,10 @@ const ramp = (t, a, b, ease = 'inout') => E[ease](clamp((t - a) / (b - a)));
 /* ---------------- content ---------------- */
 const LANG = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'hi';
 const EN = LANG === 'en';
+// whose name comes first: the bride's (default) or, with ?first=veeral, the groom's
+const GROOM_FIRST = new URLSearchParams(location.search).get('first') === 'veeral';
+const pair = (bride, groom) => GROOM_FIRST ? [groom, bride] : [bride, groom];
+const NAMES_EN = pair('Konika', 'Veeral').join(' & ');
 const VENUE = EN ? 'Runicha Dham, Balotra · Rajasthan' : 'रुणिचा धाम, बालोतरा (राजस्थान)';
 const VENUE_SHORT = EN ? 'Runicha Dham, Balotra' : 'रुणिचा धाम, बालोतरा';
 const DAYS = [
@@ -484,7 +488,8 @@ function rubyInset(c, cx, top, w, h, p) {
   g.restore();
 }
 
-const MONO = { k: -70, amp: -4, v: 58 };   // glyph centres (x 1/s): the K's leg and the V's swash leave room for the ampersand
+// glyph centres (x 1/s), tuned per order so the K's leg and the V's swash leave room for the ampersand
+const MONO = GROOM_FIRST ? { order: ['V', 'K'], x: [-59, 46], amp: -19 } : { order: ['K', 'V'], x: [-70, 58], amp: -4 };
 /* the K&V monogram on a ruby inset: outline traces in gold, satin foil floods in, light sweeps across (world coords).
    base is the letters' baseline */
 function monogram(c, cx, base, s, t, t0, opts = {}) {
@@ -493,7 +498,7 @@ function monogram(c, cx, base, s, t, t0, opts = {}) {
   const ib = [cx - 143 * s, base - 125 * s, cx + 143 * s, base + 38 * s];                 // inset box (world)
   rubyInset(c, cx, ib[1], 286 * s, ib[3] - ib[1], ramp(t, t0 - .5, t0 + .3, 'lin'));
   if (opts.keepOut) { const [a0, a1] = S(c, ib[0], ib[1]), [b0, b1] = S(c, ib[2], ib[3]); PETAL_KEEP_OUT.push([a0 - 20, a1 - 20, b0 + 20, b1 + 20]); }
-  const glyphs = [['K', cx + MONO.k * s, base, 0], ['V', cx + MONO.v * s, base, .18]];   // the bride's initial first
+  const glyphs = MONO.order.map((ch, i) => [ch, cx + MONO.x[i] * s, base, i * .18]);
   const font = `700 ${px}px "Cinzel Decorative"`;
   for (const [ch, gx, gy, d] of glyphs) {
     const [sx, sy] = S(c, gx, gy);
@@ -526,7 +531,7 @@ function monogram(c, cx, base, s, t, t0, opts = {}) {
   const pa = ramp(t, t0 + .75, t0 + 1.35, 'out');           // ivory ampersand between the letters
   inkText(c, '&', cx + MONO.amp * s, base - 16 * s, 48 * s, '700 "Cinzel Decorative"', '#f4e2b8', pa, { mode: 'ltr', lift: 0, feather: 12, shadow: 'rgba(24,2,4,.5)' });
   const ny = base + 38 * s + (opts.nameSize || 28) - 4;
-  inkText(c, 'Konika & Veeral', cx, ny, opts.nameSize || 28, '"Great Vibes"', '#6a1410', ramp(t, t0 + 1.1, t0 + 2.0, 'inout'), { mode: 'ltr', lift: 0, feather: 22, blur: 0, emboss: 'rgba(255,236,196,.55)' });
+  inkText(c, NAMES_EN, cx, ny, opts.nameSize || 28, '"Great Vibes"', '#6a1410', ramp(t, t0 + 1.1, t0 + 2.0, 'inout'), { mode: 'ltr', lift: 0, feather: 22, blur: 0, emboss: 'rgba(255,236,196,.55)' });
   if (opts.date) {
     const dstr = EN ? '19 – 21 NOVEMBER 2026' : '19 – 21 नवंबर 2026', df = EN ? '700 "Cinzel"' : '"Rozha One"', ds = EN ? 11.5 : 16;
     inkText(c, dstr, cx, ny + 42, ds, df, '#7a1810', ramp(t, t0 + 1.6, t0 + 2.2, 'lin'), { emboss: 'rgba(255,236,196,.55)', ls: EN ? .12 : 0 });
@@ -669,9 +674,9 @@ function drawBanner(t, c) {
     { y: 486, s: 'By the grace of the Almighty', size: 19.5, font: body, col: ink1 },
     { y: 511, s: 'and the blessings of our elders', size: 19.5, font: body, col: ink1 },
     { y: 550, s: 'we joyfully invite you to the wedding of', size: 18.5, font: body, col: ink1 },
-    { y: 634, s: 'Konika', size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
+    { y: 634, s: pair('Konika', 'Veeral')[0], size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
     { y: 676, s: '&', size: 40, font: '"Great Vibes"', col: ink2, flank: 40 },
-    { y: 754, s: 'Veeral', size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
+    { y: 754, s: pair('Konika', 'Veeral')[1], size: 76, font: '"Great Vibes"', col: 'ruby', name: 1 },
     { y: 798, s: 'Do join us with your family', size: 19.5, font: body, col: ink1 },
     { y: 823, s: 'for the wedding celebrations', size: 19.5, font: body, col: ink1 },
     { y: 866, s: '19 – 21 NOVEMBER 2026', size: 16.5, font: '700 "Cinzel"', col: ink2, ls: .04 },
@@ -681,9 +686,9 @@ function drawBanner(t, c) {
     { y: 450, div: 40 },
     { y: 486, s: 'परमपिता परमेश्वर की असीम कृपा', size: 17.5, font: body, col: ink1 },
     { y: 511, s: 'एवं बड़ों के आशीर्वाद से', size: 17.5, font: body, col: ink1 },
-    { y: 598, hon: 'सौ. कां.', s: 'कोनिका', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
+    { y: 598, ...pair({ hon: 'सौ. कां.', s: 'कोनिका' }, { hon: 'चि.', s: 'विरल' })[0], size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
     { y: 650, s: 'संग', size: 24, font: body, col: ink2, flank: 40 },
-    { y: 728, hon: 'चि.', s: 'विरल', size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
+    { y: 728, ...pair({ hon: 'सौ. कां.', s: 'कोनिका' }, { hon: 'चि.', s: 'विरल' })[1], size: 66, font: '"Rozha One"', col: 'ruby', name: 1 },
     { y: 782, s: 'के शुभ विवाह के मंगल उत्सव में', size: 17.5, font: body, col: ink1 },
     { y: 808, s: 'आप सपरिवार सादर आमंत्रित हैं', size: 17.5, font: body, col: ink1 },
     { y: 860, s: '19 – 21 नवंबर 2026', size: 27, font: '"Rozha One"', col: ink2 },
@@ -982,9 +987,9 @@ function block(cls, top, html, t0, t1, opts = {}) {
 }
 const foilOf = sky => sky === 'night' ? 'foil' : 'ruby';
 // couple entry title (a plaque hanging over the wall, above the doorway)
-block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1.05"><span class="script ruby">Konika <span style="font-size:.56em">weds</span> Veeral</span></div>
+block('day', 150, EN ? `<div data-fx="title" style="font-size:92px;line-height:1.05"><span class="script ruby">${pair('Konika', 'Veeral').join(' <span style="font-size:.56em">weds</span> ')}</span></div>
   <div class="cinzel" style="font-size:26px;letter-spacing:8px;margin-top:8px">The Wedding Celebrations</div>${RULE_KID}` :
-  `<div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">कोनिका <span style="font-size:.56em">संग</span> विरल</span></div>
+  `<div data-fx="title" style="font-size:94px;line-height:1.15"><span class="hi ruby">${pair('कोनिका', 'विरल').join(' <span style="font-size:.56em">संग</span> ')}</span></div>
   <div class="tiro" style="font-size:31px;color:#8a2a14">॥<span style="margin:0 4px 0 12px">शुभ विवाह</span>॥</div>${RULE_KID}`,
   TL.couple[0] + .3, TL.couple[1] - .45, { cart: { w: 860, top: 100, bottom: 34 } });
 // event slides: day and date, then one title with its time, or a short programme of two or three events
@@ -1196,6 +1201,7 @@ function seek(t) {
 }
 
 document.documentElement.lang = LANG;
+document.title = pair('Konika', 'Veeral').join(' weds ');
 window.__DURATION = DURATION;
 window.__seek = seek;
 window.__TL = TL;

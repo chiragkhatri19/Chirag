@@ -14,7 +14,8 @@ import { fileURLToPath, pathToFileURL } from 'url';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PAGE = pathToFileURL(path.join(ROOT, process.env.INVITE_PAGE || 'index.html')).href + '?capture' + (process.env.INVITE_LANG ? '&lang=' + process.env.INVITE_LANG : '');  // INVITE_LANG=en for English
+const PAGE = pathToFileURL(path.join(ROOT, process.env.INVITE_PAGE || 'index.html')).href + '?capture' + (process.env.INVITE_LANG ? '&lang=' + process.env.INVITE_LANG : '')   // INVITE_LANG=en for English
+  + (process.env.INVITE_FIRST ? '&first=' + process.env.INVITE_FIRST : '');                                 // INVITE_FIRST=veeral: the groom's name first
 
 async function openPage(browser) {
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
